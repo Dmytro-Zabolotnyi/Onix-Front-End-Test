@@ -1,0 +1,1241 @@
+/*
+html5doctor.com Reset Stylesheet
+v1.6.1
+Last Updated: 2010-09-17
+Author: Richard Clark - http://richclarkdesign.com
+Twitter: @rich_clark
+*/
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+body {
+    line-height:1;
+}
+
+article,aside,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section {
+    display:block;
+}
+
+nav ul {
+    list-style:none;
+}
+
+blockquote, q {
+    quotes:none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content:'';
+    content:none;
+}
+
+a {
+    margin:0;
+    padding:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+/* change colours to suit your needs */
+ins {
+    background-color:#ff9;
+    color:#000;
+    text-decoration:none;
+}
+
+/* change colours to suit your needs */
+mark {
+    background-color:#ff9;
+    color:#000;
+    font-style:italic;
+    font-weight:bold;
+}
+
+del {
+    text-decoration: line-through;
+}
+
+abbr[title], dfn[title] {
+    border-bottom:1px dotted;
+    cursor:help;
+}
+
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+
+/* change border colour to suit your needs */
+hr {
+    display:block;
+    height:1px;
+    border:0;
+    border-top:1px solid #cccccc;
+    margin:1em 0;
+    padding:0;
+}
+
+input, select {
+    vertical-align:middle;
+}
+
+/* ======================= end of reset ======================== */
+/* ============================================================= */
+/* ================= page styling starts here ================== */
+
+body{
+    font-family: Helvetica, sans-serif;
+    font-weight: normal;
+    background: #eeebe5;
+    display: flex;
+    flex-direction: row;
+}
+
+html {
+    overflow: hidden;
+}
+
+/* ---------- left column ----------- */
+.left-column {
+    display: flex;
+    flex-direction: column;
+    background: #000000;
+    min-width: 270px;
+    height: 127.4vh;
+    color: #FFFFFF;
+}
+
+.header, .user-info, .task-stats, .menu {
+    display: flex;
+    flex-direction: row;
+}
+
+.header-logo, .user-picture, .completed-tasks {
+    margin-left: 30px;
+}
+
+.header {
+    align-items: center;
+    height: 84px;
+}
+
+.header-logo {
+    display: block;
+    min-width: 21.6px;
+    height: 18.9px;
+    margin-right: 13px;
+}
+
+.header-logo::before {
+    position: absolute;
+    content: "";
+    width: 21.6px;
+    height: 18.9px;
+    background-size: 21.6px 18.9px;
+    background: url(../assets/Logo@3x.svg);
+}
+
+.company-name {
+    display: block;
+    width: 100%;
+}
+
+.company-name::before {
+    content: "PROJECTUS";
+    font-size: 16px;
+    line-height: 24px;
+    color: #FFFFFF;
+}
+
+.search {
+    display: block;
+    min-width: 16px;
+    height: 16px;
+    margin-right: 20px;
+}
+
+.search::before{
+    position: absolute;
+    content: "";
+    width: 16px;
+    height: 16px;
+    background-size: 16px 16px;
+    background: url(../assets/Search@3x.svg);
+}
+
+.user-info {
+    display: flex;
+    flex-direction: row;
+    height: 80px;
+    background: #202020;
+    align-items: center;
+}
+
+.user-picture {
+    display: block;
+    height: 48px;
+    width: 48px;
+    margin-right: 15px;
+}
+
+.user-picture::before {
+    position: absolute;
+    content: "";
+    height: 48px;
+    width: 48px;
+    border-radius: 50%;
+    background: url(../assets/user-pic.png);
+    background-size: 48px 48px;
+}
+
+.user-name-and-status {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    width: 100px;
+    white-space: normal;
+}
+
+.user-name, .user-status {
+    display: flex;
+    position: relative;
+    align-items: center;
+}
+
+.user-name {
+    align-items: flex-end;
+}
+
+.user-name + .user-status {
+    margin-top: 2px;
+}
+
+.user-name-and-status .user-name::before {
+    content: "Jean Gonzales";
+    font-size: 14px;
+    line-height: 17px;
+    color: #FFFFFF;
+}
+
+.user-name-and-status .user-status::before {
+    content: "Product Owner";
+    font-size: 12px;
+    line-height: 14px;
+    color: #9B9B9B;
+}
+
+.user-menu {
+    position: relative;
+    width: 62px;
+    margin-left: auto;
+}
+
+.user-menu-button {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.user-menu-shapes {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    right: 28px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #A5A5A5;
+    border-radius: 50%;
+    box-shadow: 6px 0 0 0 #A5A5A5, -6px 0 0 0 #A5A5A5;
+}
+
+.task-stats {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    margin-bottom: 31px;
+}
+
+.completed-tasks, .open-tasks {
+    display: flex;
+    flex-direction: column;
+}
+
+.open-tasks {
+    margin-left: 19px;
+}
+
+.total-number, .open-number {
+    height: 27px;
+}
+
+.label {
+    height: 17px;
+}
+
+.completed-tasks .total-number::before {
+    content: "372";
+}
+
+.open-tasks .open-number::before {
+    content: "11";
+}
+
+.completed-tasks .total-number::before, .open-tasks .open-number::before {
+    font-size: 20px;
+    line-height: 24px;
+    color: #FFFFFF;
+}
+
+.completed-tasks .label::before {
+    content: "Completed Tasks";
+}
+
+.open-tasks .label::before {
+    content: "Open Tasks";
+}
+
+.completed-tasks .label::before, .open-tasks .label::before {
+    font-size: 12px;
+    line-height: 14px;
+    color: #878787;
+}
+
+.aside-menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.aside-menu .menu::before {
+    content: "MENU";
+    font-size: 12px;
+    line-height: 18px;
+    color: #878787;
+    margin-bottom: 10px;
+    padding-left: 30px;
+}
+
+.aside-menu-home, .aside-menu-tasks, .aside-menu-notifications {
+    height: 38px;
+    width: 240px;
+    padding-left: 30px;
+}
+
+.aside-menu-home, .aside-menu-tasks {
+    display: block;
+    position: relative;
+}
+
+.aside-menu-home div, .aside-menu-tasks div, .aside-menu-notifications span {
+    font-size: 14px;
+    line-height: 22px;
+    color: #FFFFFF;
+}
+
+.aside-menu-home div, .aside-menu-tasks div {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    line-height: 22px;
+    color: #FFFFFF;
+}
+
+.aside-menu-notifications {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.aside-menu-notifications span + .notification-counter {
+    margin-left: 10px;
+}
+
+.notification-counter {
+    display: block;
+    position: relative;
+    min-height: 20px;
+    min-width: 19px;
+    border-radius: 50%;
+    background: #FFC200;
+}
+
+.notification-counter::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    content: "3";
+    font-size: 13px;
+    color: #131313;
+}
+/* -------- left column ends here --------------- */
+
+/* ----------right column starts here -------------*/
+.right-column {
+    width: 100%;
+}
+
+.top-menu {
+    position: relative;
+    height: 106px;
+    background: #FFFFFF;
+}
+
+.logo {
+    margin-top: 40px;
+    margin-left: 30px;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: #ffc200;
+}
+
+.logo::before{
+    position: relative;
+    display: block;
+    content: "";
+    width: inherit;
+    height: inherit;
+    background-image: url(../assets/Shapes@2x.png);
+    background-size: 40px 40px;
+}
+
+.website-redesign {
+    position: relative;
+    display: block;
+    width: 265px;
+    height: 43px;
+    margin-top: 35px;
+    margin-left: 15px;
+}
+
+.website-redesign span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 32px;
+    color: #131313;
+    white-space: nowrap;
+}
+
+.top-menu .menu {
+    position: relative;
+    display: block;
+    margin-top: 45px;
+    margin-left: 11px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #EAEAEA;
+}
+
+.top-menu .menu::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 4px;
+    height: 4px;
+    margin-left: -2px;
+    margin-top: -2px;
+    background-color: #A5A5A5;
+    border-radius: 50%;
+    box-shadow: 6px 0 0 0 #A5A5A5, -6px 0 0 0 #A5A5A5;
+}
+
+.users {
+    right: 208px;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    margin-top: 45px;
+}
+
+.pic1, .pic2 {
+    margin-right: 5px;
+}
+
+.pic1::before {
+    background: url(../assets/face2.png);
+}
+.pic2::before {
+    background: url(../assets/face3.png);
+}
+.pic3::before {
+    background: url(../assets/face4.png);
+}
+
+.pic1::before, .pic2::before, .pic3::before {
+    display: block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    content: "";
+    background-size: 30px 30px;
+}
+
+.share {
+    position: absolute;
+    display: block;
+    margin-top: 45px;
+    right: 126px;
+    height: 30px;
+    width: 67px;
+    border-radius: 15px;
+    background: #EAEAEA;
+}
+
+.share::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    content: "Share";
+    font-size: 14px;
+    color: #131313;
+}
+
+.chat {
+    position: absolute;
+    margin-top: 45px;
+    right: 30px;
+    height: 30px;
+    width: 81px;
+    border-radius: 15px;
+    background: #FFF8DD;
+}
+
+.chat div::before {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    content: "";
+    background: url("../assets/Combined Shape@1x.svg");
+}
+
+.chat span::before {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    transform: translateY(-50%);
+    content: "Chat";
+    font-size: 14px;
+    color: #FFC200;
+}
+
+.top-menu, .tabs {
+    display: flex;
+    flex-direction: row;
+}
+
+.tabs {
+    position: relative;
+    padding-bottom: 14px;
+    background: #FFFFFF;
+}
+
+.tabs span {
+    font-size: 16px;
+    color: #131313;
+    opacity: 0.7;
+}
+
+#tasks {
+    margin-left: 30px;
+}
+
+#kanban {
+    margin-left: 32px;
+}
+
+#activity {
+    margin-left: 27px;
+    opacity: 1;
+}
+
+#calendar {
+    margin-left: 31px;
+}
+
+#files {
+    margin-left: 27px;
+}
+
+.active-tab-indicator::before {
+    position: absolute;
+    top: 28px;
+    left: 185px;
+    content: "";
+    display: block;
+    width: 51px;
+    height: 2px;
+    background: #FFC200;
+}
+
+.tab-content {
+    height: max-content;
+    background: #eeebe5;
+    justify-content: center;
+    position: relative;
+}
+
+.container {
+    background: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    width: 50.7vw;
+    height: 67.4vh;
+    border-radius: 8px;
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translate(-50%);
+    box-sizing: border-box;
+    padding: 35px 30px;
+    overflow-y: auto;
+}
+
+.day {
+    margin-bottom: 2px;
+}
+
+.day::before {
+    content: "TODAY";
+    opacity: 0.5;
+    font-size: 14px;
+    color: #131313;
+}
+
+.messages {
+    display: flex;
+    flex-direction: column-reverse;
+    align-content: flex-start;
+}
+
+.message1, .message2, .message3 {
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+    justify-content: space-between;
+}
+
+.message-icon {
+    display: block;
+    position: relative;
+    min-width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.message-content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 35vw;
+    margin-right: 5px;
+}
+
+.message-text {
+    display: block;
+    position: relative;
+    width: 85%;
+}
+
+.message-time {
+    display: block;
+    position: relative;
+    min-width: 55px;
+    height: 20px;
+}
+
+.message1 .message-icon {
+    background: #E3EFFF;
+}
+
+.message1 .message-icon::before {
+    background: url(../assets/Icon@3x.svg);
+}
+.message2 .message-icon::before {
+    background: url(../assets/Icon@3x.svg);
+}
+.message3 .message-icon::before {
+    background: url(../assets/Icon@3x.svg);
+}
+
+.message1 .message-icon::before, .message2 .message-icon::before, .message3 .message-icon::before {
+    position: absolute;
+    content: "";
+    width: 12px;
+    height: 9px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.message1 .message-text::before {
+    content: "Darika Samak uploaded 4 files on An option to search in current projects or in all projects";
+}
+.message2 .message-text::before {
+    content: "Emilee Simchenko commented on Account for teams and personal in bottom style";
+}
+.message3 .message-text::before {
+    content: "Darika Samak mark as done Listing on Product Hunt so that we can reach as many potential users";
+}
+
+.message1 .message-text::before, .message2 .message-text::before, .message3 .message-text::before {
+    font-size: 16px;
+    color: #131313;
+    line-height: 20px;
+}
+
+.message1 .message-time::before {
+    content: "6:02 PM";
+}
+.message2 .message-time::before {
+    content: "7:32 PM";
+}
+.message3 .message-time::before {
+    content: "8:40 PM";
+}
+
+.message1 .message-time::before, .message2 .message-time::before, .message3 .message-time::before {
+    opacity: 0.7;
+    font-size: 14px;
+    color: #131313;
+    text-align: right;
+    line-height: 20px;
+}
+
+.message1 .message-attachment {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.message1 .message-attachment div {
+    display: block;
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.message1 .attachment1::before {
+    background: url(../assets/attached-pic1.jpg);
+}
+.message1 .attachment2::before {
+    background: url(../assets/attached-pic2.jpg);
+}
+.message1 .attachment3::before {
+    background: url(../assets/attached-pic3.jpg);
+}
+.message1 .attachment4::before {
+    background: url(../assets/attached-pic4.jpg);
+}
+
+.message1 .attachment1::before, .message1 .attachment2::before,.message1 .attachment3::before,.message1 .attachment4::before {
+    display: block;
+    content: "";
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+}
+
+.message2 .message-icon {
+    background: #FFF8DD;
+}
+
+.message2 .message-attachment {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    background: #F7F6F3;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 20px 20px;
+    margin-top: 20px;
+}
+
+.message2 .message-attachment::before {
+    font-size: 15px;
+    line-height: 18px;
+    color: #131313;
+    content: "During a project build, it is necessary to evaluate the product design and development against project requirements and outcomes";
+}
+
+.message3 .message-icon {
+    background: #CEF9C6;
+}
+/* --------- right column ends here --------- */
+
+/* =================== response behavior section starts here =============== */
+@media screen and (min-width: 1500px) {
+    .container {
+        width: 60vw;
+    }
+
+    .message-content {
+        width: 50vw;
+    }
+}
+
+/* --------------- */
+
+@media screen and (max-width: 980px), (max-aspect-ratio: 17/16){
+    body {
+        flex-direction: column;
+    }
+
+    .left-column {
+        height: min-content;
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .header, .user-info {
+        height: 65px;
+    }
+
+    .header-logo {
+        margin-left: 5vw;
+    }
+
+    .aside-menu, .task-stats {
+        height: 60px;
+        align-items: center;
+    }
+
+    .header {
+        width: 60%;
+    }
+
+    .aside-menu {
+        width: 55%;
+    }
+
+    .user-info, .task-stats {
+        width: 40%;
+    }
+
+    .task-stats, .aside-menu {
+        margin: 0;
+        padding: 0;
+    }
+
+    .aside-menu {
+        flex-wrap: wrap;
+    }
+
+    .aside-menu .menu {
+        display: none;
+    }
+
+    .aside-menu-home, .aside-menu-tasks, .aside-menu-notifications {
+        padding: 0;
+        width: 25%;
+        height: 20px;
+    }
+
+    .aside-menu-home, .aside-menu-tasks {
+        margin-right: 20px;
+    }
+
+    .aside-menu-home {
+        min-width: 59px;
+    }
+
+    .aside-menu-tasks {
+        min-width: 78px;
+    }
+
+    .aside-menu-notifications {
+        min-width: 112px;
+    }
+
+    .user-picture {
+        margin-left: 10px;
+    }
+
+    .completed-tasks {
+        margin-left: 0;
+    }
+
+    .company-name {
+        margin-right: 20px;
+        width: max-content;
+    }
+
+    .task-stats {
+        order: 2;
+        justify-content: space-evenly;
+    }
+
+    .aside-menu {
+        flex-direction: row;
+        margin-left: 5vw;
+    }
+
+    .container {
+        width: 80vw;
+        height: 60vh;
+    }
+
+    .message-content {
+        width: 50vw;
+    }
+}
+
+/* -------------------- */
+
+@media screen and (max-width: 710px), (max-aspect-ratio: 37/48) {
+    .top-menu {
+        height: 116px;
+    }
+
+    .website-redesign, .top-menu .menu {
+        top: -15px;
+    }
+
+    .logo {
+        margin-top: 25px;
+    }
+
+    .users, .share, .chat {
+        top: 27px;
+    }
+}
+
+/* -------------- */
+
+@media screen and (max-width: 460px), (max-aspect-ratio: 1/2) {
+    .header-logo {
+        width: 5vw;
+        height: 5vw;
+    }
+
+    .header-logo::before {
+        width: 5vw;
+        height: 5vw;
+        background-size: 5vw 5vw;
+        background-repeat: no-repeat;
+    }
+
+    .header, .user-info {
+        height: 15vw;
+    }
+
+    .company-name::before {
+        font-size: 3.5vw;
+    }
+
+    .search {
+        width: 4vw;
+        height: 4vw;
+    }
+
+    .search::before {
+        width: 3.8vw;
+        height: 3.8vw;
+        background-size: 3.8vw 3.8vw;
+        background-repeat: no-repeat;
+    }
+
+    .user-picture {
+        width: 9.5vw;
+        height: 9.5vw;
+    }
+
+    .user-picture::before {
+        width: 9.5vw;
+        height: 9.5vw;
+        background-size: 9.5vw 9.5vw;
+        background-repeat: no-repeat;
+    }
+
+    .user-name-and-status .user-name::before {
+        font-size: 3vw;
+        line-height: 3.3vw;
+    }
+
+    .user-name-and-status .user-status::before {
+        font-size: 2.5vw;
+        line-height: 2.7vw;
+    }
+
+    .user-menu-shapes {
+        right: 5vw;
+    }
+
+    .aside-menu, .task-stats {
+        height: 5vh;
+    }
+
+    .aside-menu-home div, .aside-menu-tasks div, .aside-menu-notifications span {
+        font-size: 3vw;
+        line-height: 3.3vw;
+    }
+
+    .notification-counter {
+        min-height: 4.2vw;
+        min-width: 4.2vw;
+    }
+
+    .notification-counter::before {
+        font-size: 3.1vw;
+    }
+
+    .completed-tasks, .open-tasks {
+        height: 5vh;
+    }
+
+    .total-number, .open-number {
+        height: 2.5vh;
+    }
+
+    .completed-tasks .total-number::before,  .open-tasks .open-number::before {
+        font-size: 4.7vw;
+        line-height: 5vw;
+    }
+
+    .completed-tasks .label::before, .open-tasks .label::before {
+        font-size: 2.7vw;
+        line-height: 2.9vw;
+    }
+
+    .open-tasks {
+        margin-left: 4.5vw;
+    }
+
+    .top-menu {
+        height: 26vw;
+    }
+
+    .logo {
+        margin-top: 5vw;
+        margin-left: 5vw;
+        width: 8.8vw;
+        height: 8.8vw;
+        border-radius: 1.7vw;
+    }
+
+    .logo::before {
+        width: 8.8vw;
+        height: 8.8vw;
+        background-size: 8.8vw 8.8vw;
+    }
+
+    .website-redesign {
+        width: 60vw;
+        height: 10.5vw;
+        margin-top: 7vw;
+        margin-left: 2vw;
+        top: -3.2vw;
+    }
+
+    .website-redesign span {
+        font-size: 7vw;
+    }
+
+    .top-menu .menu {
+        margin-top: 9vw;
+        margin-left: 2vw;
+        width: 7vw;
+        height: 7vw;
+        min-width: 7vw;
+        min-height: 7vw;
+        top: -3.2vw;
+    }
+
+    .top-menu .menu::before {
+        width: 0.9vw;
+        height: 0.9vw;
+        margin-left: -0.45vw;
+        margin-top: -0.45vw;
+        box-shadow: 1.35vw 0 0 0 #A5A5A5, -1.35vw 0 0 0 #A5A5A5;
+    }
+
+    .users {
+        right: 45vw;
+        margin-top: 6vh;
+    }
+
+    .pic1, .pic2 {
+        margin-right: 1.2vw;
+    }
+
+    .pic1::before, .pic2::before, .pic3::before {
+        width: 7vw;
+        height: 7vw;
+        background-size: 7vw 7vw;
+    }
+
+    .share {
+        margin-top: 6vh;
+        right: 27vw;
+        width: 15vw;
+        height: 7vw;
+        border-radius: 3.25vw;
+    }
+
+    .share::before {
+        font-size: 3.1vw;
+    }
+
+    .chat {
+        margin-top: 6vh;
+        right: 6.55vw;
+        width: 17.65vw;
+        height: 7vw;
+        border-radius: 3.25vw;
+    }
+
+    .chat div::before {
+        width: 3.5vw;
+        height: 3.5vw;
+        left: 3.3vw;
+        background-size: 3.5vw 3.5vw;
+        background-repeat: no-repeat;
+    }
+
+    .chat span::before {
+        right: 3.1vw;
+        font-size: 3.1vw;
+    }
+
+    .tabs {
+        padding-bottom: 3.05vw;
+    }
+
+    .tabs span {
+        font-size: 3.5vw;
+    }
+
+    #tasks {
+        margin-left: 5vw;
+    }
+
+    #kanban, #activity, #calendar, #files  {
+        margin-left: 7vw;
+    }
+
+    .active-tab-indicator::before {
+        top: 6vw;
+        left: 40vw;
+        width: 11.1vw;
+        height: 0.53vw;
+    }
+
+    .container {
+        border-radius: 1.75vw;
+        top: 6.54vw;
+        width: 85vw;
+        height: 65vh;
+        padding: 5.62vw 4.54vw;
+    }
+
+    .day {
+        margin-bottom: 0.65vw;
+    }
+
+    .day::before {
+        font-size: 3vw;
+    }
+
+    .message1, .message2, .message3 {
+        margin-top: 6.54vw;
+    }
+
+    .message-icon {
+        min-width: 8.71vw;
+        height: 8.71vw;
+        margin-right: 4.355vw;
+    }
+
+    .message-content {
+        width: 40vw;
+        margin-right: 1.4vw;
+    }
+
+    .message-time {
+        min-width: min-content;
+        height: min-content;
+    }
+
+    .message1 .message-icon::before, .message2 .message-icon::before, .message3 .message-icon::before {
+        width: 2.62vw;
+        height: 1.96vw;
+        background-size: 2.62vw 1.96vw;
+    }
+
+    .message1 .message-text::before, .message2 .message-text::before, .message3 .message-text::before {
+        font-size: 3.5vw;
+        line-height: 4.5vw;
+    }
+
+    .message1 .message-time::before, .message2 .message-time::before, .message3 .message-time::before {
+        font-size: 3vw;
+        line-height: 4vw;
+    }
+
+    .message1 .message-attachment div {
+        width: 21.79vw;
+        height: 21.79vw;
+        margin-right: 2.18vw;
+        margin-bottom: 2.18vw;
+    }
+
+    .message1 .attachment1::before, .message1 .attachment2::before, .message1 .attachment3::before, .message1 .attachment4::before {
+        width: 21.79vw;
+        height: 21.79vw;
+        border-radius: 1.75vw;
+        background-size: 21.79vw 21.79vw;
+        background-repeat: no-repeat;
+    }
+
+    .message2 .message-attachment {
+        border-radius: 2.175vw;
+        padding: 4.35vw 4.35vw;
+        margin-top: 4.35vw;
+    }
+
+    .message2 .message-attachment::before {
+        font-size: 3.26vw;
+        line-height: 4vw;
+    }
+    /* ============ response behavior section ends here ============== */
+}
