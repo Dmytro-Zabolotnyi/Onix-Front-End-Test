@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap');
+
 /*
 html5doctor.com Reset Stylesheet
 v1.6.1
@@ -101,6 +103,10 @@ input, select {
     vertical-align:middle;
 }
 
+li {
+    list-style: none;
+}
+
 /* ======================= end of reset ======================== */
 /* ============================================================= */
 /* ================= page styling starts here ================== */
@@ -111,9 +117,11 @@ body{
     background: #eeebe5;
     display: flex;
     flex-direction: row;
+    height: 100%;
 }
 
 html {
+    height: 100%;
     overflow: hidden;
 }
 
@@ -123,7 +131,7 @@ html {
     flex-direction: column;
     background: #000000;
     min-width: 270px;
-    height: 127.4vh;
+    height: 100%;
     color: #FFFFFF;
 }
 
@@ -351,13 +359,13 @@ html {
     position: relative;
 }
 
-.aside-menu-home div, .aside-menu-tasks div, .aside-menu-notifications span {
+.aside-menu-home span, .aside-menu-tasks span, .aside-menu-notifications span {
     font-size: 14px;
     line-height: 22px;
     color: #FFFFFF;
 }
 
-.aside-menu-home div, .aside-menu-tasks div {
+.aside-menu-home span, .aside-menu-tasks span {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -398,18 +406,47 @@ html {
 
 /* ----------right column starts here -------------*/
 .right-column {
+    display: flex;
+    flex-direction: column;
     width: 100%;
+    height: 100%;
 }
 
 .top-menu {
-    position: relative;
-    height: 106px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 136px;
     background: #FFFFFF;
 }
 
-.logo {
-    margin-top: 40px;
+.upper-part {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     margin-left: 30px;
+    margin-right: 30px;
+    margin-top: 35px;
+    justify-content: space-between;
+}
+
+.upper-left, .upper-right {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    flex: 1;
+}
+
+.upper-left + .upper-right {
+    margin-left: 12px;
+}
+
+.upper-right {
+    justify-content: flex-end;
+}
+
+.logo {
+    margin-top: 4.5px;
     width: 40px;
     height: 40px;
     border-radius: 8px;
@@ -426,17 +463,19 @@ html {
     background-size: 40px 40px;
 }
 
-.website-redesign {
-    position: relative;
-    display: block;
-    width: 265px;
-    height: 43px;
-    margin-top: 35px;
+.logo + .project-name {
     margin-left: 15px;
 }
 
-.website-redesign span {
+.project-name {
+    position: relative;
+    width: 265px;
+    height: 43px;
+}
+
+.project-name span {
     position: absolute;
+    line-height: 38px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -445,13 +484,17 @@ html {
     white-space: nowrap;
 }
 
+.project-name + .menu {
+    margin-left: 11px;
+}
+
 .top-menu .menu {
     position: relative;
-    display: block;
-    margin-top: 45px;
-    margin-left: 11px;
+    margin-top: 10px;
     width: 30px;
     height: 30px;
+    min-width: 30px;
+    min-height: 30px;
     border-radius: 50%;
     background: #EAEAEA;
 }
@@ -471,11 +514,9 @@ html {
 }
 
 .users {
-    right: 208px;
-    position: absolute;
     display: flex;
     flex-direction: row;
-    margin-top: 45px;
+    margin-top: 9px;
 }
 
 .pic1, .pic2 {
@@ -501,11 +542,17 @@ html {
     background-size: 30px 30px;
 }
 
+.users + .share, .share + .chat {
+    margin-left: 15px;
+}
+
+.share, .chat {
+    margin-top: 10px;
+}
+
 .share {
-    position: absolute;
+    position: relative;
     display: block;
-    margin-top: 45px;
-    right: 126px;
     height: 30px;
     width: 67px;
     border-radius: 15px;
@@ -523,9 +570,7 @@ html {
 }
 
 .chat {
-    position: absolute;
-    margin-top: 45px;
-    right: 30px;
+    position: relative;
     height: 30px;
     width: 81px;
     border-radius: 15px;
@@ -553,19 +598,18 @@ html {
     color: #FFC200;
 }
 
-.top-menu, .tabs {
+.tabs {
     display: flex;
     flex-direction: row;
-}
-
-.tabs {
-    position: relative;
-    padding-bottom: 14px;
+    height: min-content;
     background: #FFFFFF;
 }
 
-.tabs span {
+.tabs li {
     font-size: 16px;
+    align-items: center;
+    line-height: 19px;
+    padding-bottom: 14px;
     color: #131313;
     opacity: 0.7;
 }
@@ -581,6 +625,7 @@ html {
 #activity {
     margin-left: 27px;
     opacity: 1;
+    border-bottom: 2px #FFC200 solid;
 }
 
 #calendar {
@@ -591,19 +636,10 @@ html {
     margin-left: 27px;
 }
 
-.active-tab-indicator::before {
-    position: absolute;
-    top: 28px;
-    left: 185px;
-    content: "";
-    display: block;
-    width: 51px;
-    height: 2px;
-    background: #FFC200;
-}
-
 .tab-content {
-    height: max-content;
+    display: flex;
+    height: 100%;
+    width: available;
     background: #eeebe5;
     justify-content: center;
     position: relative;
@@ -662,7 +698,7 @@ html {
     display: flex;
     flex-direction: column;
     position: relative;
-    width: 35vw;
+    width: 100%;
     margin-right: 5px;
 }
 
@@ -684,10 +720,10 @@ html {
 }
 
 .message1 .message-icon::before {
-    background: url(../assets/Icon@3x.svg);
+    background: url(../assets/toolbarButton-download1.svg);
 }
 .message2 .message-icon::before {
-    background: url(../assets/Icon@3x.svg);
+    background: url(../assets/square-speech-bubble-svgrepo-com.svg);
 }
 .message3 .message-icon::before {
     background: url(../assets/Icon@3x.svg);
@@ -697,10 +733,11 @@ html {
     position: absolute;
     content: "";
     width: 12px;
-    height: 9px;
+    height: 12px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    background-size: 12px 12px;
 }
 
 .message1 .message-text::before {
@@ -806,10 +843,6 @@ html {
     .container {
         width: 60vw;
     }
-
-    .message-content {
-        width: 50vw;
-    }
 }
 
 /* --------------- */
@@ -910,39 +943,35 @@ html {
         margin-left: 5vw;
     }
 
+    .right-column {
+        height: 100vh;
+    }
+
+    .tab-content {
+        width: 100%;
+        height: 100%;
+    }
+
     .container {
         width: 80vw;
         height: 60vh;
     }
-
-    .message-content {
-        width: 50vw;
-    }
 }
 
 /* -------------------- */
-
-@media screen and (max-width: 710px), (max-aspect-ratio: 37/48) {
-    .top-menu {
-        height: 116px;
-    }
-
-    .website-redesign, .top-menu .menu {
-        top: -15px;
-    }
-
-    .logo {
-        margin-top: 25px;
-    }
-
-    .users, .share, .chat {
-        top: 27px;
+@media screen and (max-width: 710px) {
+    .upper-part {
+        margin-top: 15px;
+        margin-bottom: 15px;
     }
 }
-
 /* -------------- */
 
 @media screen and (max-width: 460px), (max-aspect-ratio: 1/2) {
+    .left-column {
+        height: min-content;
+    }
+
     .header-logo {
         width: 5vw;
         height: 5vw;
@@ -1002,10 +1031,10 @@ html {
     }
 
     .aside-menu, .task-stats {
-        height: 5vh;
+        height: 6.5vh;
     }
 
-    .aside-menu-home div, .aside-menu-tasks div, .aside-menu-notifications span {
+    .aside-menu-home span, .aside-menu-tasks span, .aside-menu-notifications span {
         font-size: 3vw;
         line-height: 3.3vw;
     }
@@ -1042,12 +1071,21 @@ html {
     }
 
     .top-menu {
-        height: 26vw;
+        height: auto;
+        max-height: max-content;
+        min-height: unset;
+    }
+
+    .upper-part {
+        height: min-content;
+        margin-left: 6vw;
+        margin-right: 6vw;
+        margin-top: 1.3vh;
+        margin-bottom: 2.5vw;
     }
 
     .logo {
-        margin-top: 5vw;
-        margin-left: 5vw;
+        margin-top: 0.6vh;
         width: 8.8vw;
         height: 8.8vw;
         border-radius: 1.7vw;
@@ -1059,26 +1097,21 @@ html {
         background-size: 8.8vw 8.8vw;
     }
 
-    .website-redesign {
+    .project-name {
         width: 60vw;
         height: 10.5vw;
-        margin-top: 7vw;
-        margin-left: 2vw;
-        top: -3.2vw;
     }
 
-    .website-redesign span {
+    .project-name span {
         font-size: 7vw;
     }
 
     .top-menu .menu {
-        margin-top: 9vw;
-        margin-left: 2vw;
+        margin-top: 1vh;
         width: 7vw;
         height: 7vw;
         min-width: 7vw;
         min-height: 7vw;
-        top: -3.2vw;
     }
 
     .top-menu .menu::before {
@@ -1087,11 +1120,6 @@ html {
         margin-left: -0.45vw;
         margin-top: -0.45vw;
         box-shadow: 1.35vw 0 0 0 #A5A5A5, -1.35vw 0 0 0 #A5A5A5;
-    }
-
-    .users {
-        right: 45vw;
-        margin-top: 6vh;
     }
 
     .pic1, .pic2 {
@@ -1104,9 +1132,11 @@ html {
         background-size: 7vw 7vw;
     }
 
+    .users + .share, .share + .chat {
+        margin-left: 3.1vw;
+    }
+
     .share {
-        margin-top: 6vh;
-        right: 27vw;
         width: 15vw;
         height: 7vw;
         border-radius: 3.25vw;
@@ -1117,8 +1147,6 @@ html {
     }
 
     .chat {
-        margin-top: 6vh;
-        right: 6.55vw;
         width: 17.65vw;
         height: 7vw;
         border-radius: 3.25vw;
@@ -1138,11 +1166,12 @@ html {
     }
 
     .tabs {
-        padding-bottom: 3.05vw;
+        height: 7vw;
     }
 
-    .tabs span {
+    .tabs li {
         font-size: 3.5vw;
+        line-height: 4.5vw;
     }
 
     #tasks {
@@ -1153,18 +1182,19 @@ html {
         margin-left: 7vw;
     }
 
-    .active-tab-indicator::before {
-        top: 6vw;
-        left: 40vw;
-        width: 11.1vw;
-        height: 0.53vw;
+    .tab-content {
+        box-sizing: border-box;
+        padding: 5vw 5vw;
     }
 
     .container {
+        position: relative;
+        left: 0; top: 0; transform: none;
+        /*top: 50%;
+        transform: translate(-50%, -50%);*/
         border-radius: 1.75vw;
-        top: 6.54vw;
-        width: 85vw;
-        height: 65vh;
+        width: 100%;
+        height: 100%;
         padding: 5.62vw 4.54vw;
     }
 
@@ -1187,7 +1217,6 @@ html {
     }
 
     .message-content {
-        width: 40vw;
         margin-right: 1.4vw;
     }
 
