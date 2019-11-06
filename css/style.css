@@ -412,11 +412,16 @@ html {
     height: 100%;
 }
 
+.tab-content {
+    flex: 1;
+}
+
 .top-menu {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     min-height: 136px;
+    height: fit-content;
     background: #FFFFFF;
 }
 
@@ -1182,6 +1187,10 @@ html {
         margin-left: 7vw;
     }
 
+    #activity {
+        border-bottom: 0.435vw #FFC200 solid;
+    }
+
     .tab-content {
         box-sizing: border-box;
         padding: 5vw 5vw;
@@ -1189,12 +1198,12 @@ html {
 
     .container {
         position: relative;
-        left: 0; top: 0; transform: none;
-        /*top: 50%;
-        transform: translate(-50%, -50%);*/
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
         border-radius: 1.75vw;
-        width: 100%;
-        height: 100%;
+        width: 98%;
+        height: 98%;
         padding: 5.62vw 4.54vw;
     }
 
