@@ -111,28 +111,78 @@ li {
 /* ============================================================= */
 /* ================= page styling starts here ================== */
 
-body{
-    font-family: Helvetica, sans-serif;
-    font-weight: normal;
-    background: #eeebe5;
-    display: flex;
-    flex-direction: row;
-    height: 100%;
-}
-
 html {
     height: 100%;
     overflow: hidden;
 }
 
+body{
+    font-family: Helvetica, sans-serif;
+    font-weight: normal;
+    background: #eeebe5;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.left-column {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 270px;
+    height: 100%;
+}
+
+.right-column {
+    height: 100%;
+    margin-left: 270px;
+}
+
+label {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #FFC200;
+    z-index: 1;
+    transition: left 0.3s, transform 0.3s;
+}
+
+label::before {
+    position: absolute;
+    content: "";
+    width: 40px;
+    height: 40px;
+    background: url(../assets/chevron-right.svg);
+}
+
+label:hover {
+    cursor: pointer;
+    box-shadow: 0 0 4px black;
+}
+
+input[type="checkbox"]{
+    display: none;
+}
+
+
+input[type="checkbox"]:checked ~ label {
+    transform: rotate(180deg);
+    left: 250px;
+}
+
+input[type="checkbox"]:checked ~ .left-column {
+    margin-left: 0px;
+}
+
 /* ---------- left column ----------- */
 .left-column {
-    display: flex;
-    flex-direction: column;
     background: #000000;
-    min-width: 270px;
-    height: 100%;
     color: #FFFFFF;
+    transition: margin-left 0.3s, width 0.3s;
 }
 
 .header, .user-info, .task-stats, .menu {
@@ -254,29 +304,22 @@ html {
     color: #9B9B9B;
 }
 
-.user-menu {
-    position: relative;
-    width: 62px;
-    margin-left: auto;
-}
-
 .user-menu-button {
-    position: absolute;
+    position: relative;
     width: 40px;
     height: 40px;
-    border-radius: 8px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    margin-right: 12px;
+    margin-left: auto;
 }
 
 .user-menu-shapes {
     position: absolute;
     width: 4px;
     height: 4px;
-    right: 28px;
     top: 50%;
-    transform: translateY(-50%);
+    left: 50%;
+    transform: translate(-50%, -50%);
     background-color: #A5A5A5;
     border-radius: 50%;
     box-shadow: 6px 0 0 0 #A5A5A5, -6px 0 0 0 #A5A5A5;
@@ -408,8 +451,7 @@ html {
 .right-column {
     display: flex;
     flex-direction: column;
-    width: 100%;
-    height: 100%;
+    transition: opacity 0.3s, margin-left 0.3s;
 }
 
 .tab-content {
@@ -853,113 +895,23 @@ html {
 /* --------------- */
 
 @media screen and (max-width: 980px), (max-aspect-ratio: 17/16){
-    body {
-        flex-direction: column;
+    label {
+        display: block;
+        left: 30px;
     }
 
     .left-column {
-        height: min-content;
-        width: 100%;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-between;
-    }
-
-    .header, .user-info {
-        height: 65px;
-    }
-
-    .header-logo {
-        margin-left: 5vw;
-    }
-
-    .aside-menu, .task-stats {
-        height: 60px;
-        align-items: center;
-    }
-
-    .header {
-        width: 60%;
-    }
-
-    .aside-menu {
-        width: 55%;
-    }
-
-    .user-info, .task-stats {
-        width: 40%;
-    }
-
-    .task-stats, .aside-menu {
-        margin: 0;
-        padding: 0;
-    }
-
-    .aside-menu {
-        flex-wrap: wrap;
-    }
-
-    .aside-menu .menu {
-        display: none;
-    }
-
-    .aside-menu-home, .aside-menu-tasks, .aside-menu-notifications {
-        padding: 0;
-        width: 25%;
-        height: 20px;
-    }
-
-    .aside-menu-home, .aside-menu-tasks {
-        margin-right: 20px;
-    }
-
-    .aside-menu-home {
-        min-width: 59px;
-    }
-
-    .aside-menu-tasks {
-        min-width: 78px;
-    }
-
-    .aside-menu-notifications {
-        min-width: 112px;
-    }
-
-    .user-picture {
-        margin-left: 10px;
-    }
-
-    .completed-tasks {
-        margin-left: 0;
-    }
-
-    .company-name {
-        margin-right: 20px;
-        width: max-content;
-    }
-
-    .task-stats {
-        order: 2;
-        justify-content: space-evenly;
-    }
-
-    .aside-menu {
-        flex-direction: row;
-        margin-left: 5vw;
+        margin-left: -270px;
     }
 
     .right-column {
-        height: 100vh;
-    }
-
-    .tab-content {
+        margin-left: 0;
         width: 100%;
-        height: 100%;
     }
 
     .container {
-        width: 80vw;
-        height: 60vh;
+        width: 80%;
+        height: 90%;
     }
 }
 
@@ -973,13 +925,34 @@ html {
 /* -------------- */
 
 @media screen and (max-width: 460px), (max-aspect-ratio: 1/2) {
+    label {
+        width: 8.71vw;
+        height: 8.71vw;
+        left: 1.6%;
+    }
+
+    label::before {
+        width: 8.71vw;
+        height: 8.71vw;
+    }
+
+    input[type="checkbox"]:checked ~ label {
+        left: 55.4%;
+    }
+
     .left-column {
-        height: min-content;
+        width: 59.5%;
+        margin-left: -59.5%;
+    }
+
+    .header-logo, .user-picture, .completed-tasks {
+        margin-left: 6vw;
     }
 
     .header-logo {
         width: 5vw;
         height: 5vw;
+        margin-right: 3vw;
     }
 
     .header-logo::before {
@@ -990,7 +963,7 @@ html {
     }
 
     .header, .user-info {
-        height: 15vw;
+        height: 9vh;
     }
 
     .company-name::before {
@@ -1000,6 +973,7 @@ html {
     .search {
         width: 4vw;
         height: 4vw;
+        margin-right: 4.6vw;
     }
 
     .search::before {
@@ -1031,12 +1005,64 @@ html {
         line-height: 2.7vw;
     }
 
-    .user-menu-shapes {
-        right: 5vw;
+    .user-menu-button {
+        width: 8.5vw;
+        height: 8.5vw;
+        border-radius: 2.4vw;
     }
 
-    .aside-menu, .task-stats {
+    .user-menu-shapes {
+        right: 6vw;
+        width: 1vw;
+        height: 1vw;
+        box-shadow: 1.5vw 0 0 0 #A5A5A5, -1.5vw 0 0 0 #A5A5A5
+    }
+
+    .task-stats {
+        margin-bottom: 1vh;
         height: 6.5vh;
+    }
+
+    .completed-tasks, .open-tasks {
+        height: 5vh;
+    }
+
+    .total-number, .open-number {
+        height: 2.8vh;
+    }
+
+    .open-tasks {
+        margin-left: 4.5vw;
+    }
+
+    .completed-tasks .total-number::before,  .open-tasks .open-number::before {
+        font-size: 4.7vw;
+        line-height: 5vw;
+    }
+
+    .completed-tasks .label::before, .open-tasks .label::before {
+        font-size: 2.7vw;
+        line-height: 2.9vw;
+    }
+
+    .aside-menu .menu::before {
+        padding-left: 6vw;
+        margin-bottom: 1vh;
+        font-size: 2.7vw;
+        line-height: 4.5vw;
+    }
+
+    .aside-menu-home, .aside-menu-tasks, .aside-menu-notifications {
+        height: 20vh;
+        padding-left: 6vw;
+    }
+
+    .aside-menu-notifications span + .notification-counter {
+        margin-left: 2vw;
+    }
+
+    .aside-menu {
+        height: 16vh;
     }
 
     .aside-menu-home span, .aside-menu-tasks span, .aside-menu-notifications span {
@@ -1051,28 +1077,6 @@ html {
 
     .notification-counter::before {
         font-size: 3.1vw;
-    }
-
-    .completed-tasks, .open-tasks {
-        height: 5vh;
-    }
-
-    .total-number, .open-number {
-        height: 2.5vh;
-    }
-
-    .completed-tasks .total-number::before,  .open-tasks .open-number::before {
-        font-size: 4.7vw;
-        line-height: 5vw;
-    }
-
-    .completed-tasks .label::before, .open-tasks .label::before {
-        font-size: 2.7vw;
-        line-height: 2.9vw;
-    }
-
-    .open-tasks {
-        margin-left: 4.5vw;
     }
 
     .top-menu {

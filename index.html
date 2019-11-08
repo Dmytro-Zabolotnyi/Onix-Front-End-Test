@@ -8,51 +8,10 @@
 </head>
 <body>
 
-    <!-- left/top side of the page, contains header, user info, task info
-     and menu -->
-    <section class="left-column">
-        <header class="header">
-            <div class="header-logo"></div>
-            <div class="company-name"></div>
-            <div class="search"></div>
-        </header>
-        <section class="user-info">
-            <div class="user-picture"></div>
-            <section class="user-name-and-status">
-                <div class="user-name"></div>
-                <div class="user-status"></div>
-            </section>
-            <div class="user-menu">
-                <div class="user-menu-button"></div>
-                <div class="user-menu-shapes"></div>
-            </div>
-        </section>
-        <section class="task-stats">
-            <section class="completed-tasks">
-                <div class="total-number"></div>
-                <div class="label"></div>
-            </section>
-            <section class="open-tasks">
-                <div class="open-number"></div>
-                <div class="label"></div>
-            </section>
-        </section>
-        <ul class="aside-menu">
-            <li class="menu"></li>
-            <li class="aside-menu-home">
-                <span>Home</span>
-            </li>
-            <li class="aside-menu-tasks">
-                <span>My Tasks</span>
-            </li>
-            <li class="aside-menu-notifications">
-                <span>Notifications</span>
-                <div class="notification-counter"></div>
-            </li>
-        </ul>
-    </section> <!-- left/upper part of the page ends here -->
+    <input type="checkbox" id="slide-menu-button">
+    <label for="slide-menu-button"></label>
 
-    <!-- right/lower part of the page, presumably containing information
+    <!-- right part of the page, presumably containing information
     about currently chosen project -->
     <section class="right-column">
         <header class="top-menu">
@@ -124,7 +83,51 @@
                 </section>
             </div>
         </section>
-    </section> <!-- right/lower part of the page ends here. -->
+    </section> <!-- right part of the page ends here. -->
+
+    <!-- left part of the page, contains header, user info, task info
+     and menu -->
+    <section class="left-column">
+        <header class="header">
+            <div class="header-logo"></div>
+            <div class="company-name"></div>
+            <div class="search"></div>
+        </header>
+        <section class="user-info">
+            <div class="user-picture"></div>
+            <section class="user-name-and-status">
+                <div class="user-name"></div>
+                <div class="user-status"></div>
+            </section>
+            <div class="user-menu-button">
+                <div class="user-menu-shapes"></div>
+            </div>
+        </section>
+        <section class="task-stats">
+            <section class="completed-tasks">
+                <div class="total-number"></div>
+                <div class="label"></div>
+            </section>
+            <section class="open-tasks">
+                <div class="open-number"></div>
+                <div class="label"></div>
+            </section>
+        </section>
+        <ul class="aside-menu">
+            <li class="menu"></li>
+            <li class="aside-menu-home">
+                <span>Home</span>
+            </li>
+            <li class="aside-menu-tasks">
+                <span>My Tasks</span>
+            </li>
+            <li class="aside-menu-notifications">
+                <span>Notifications</span>
+                <div class="notification-counter"></div>
+            </li>
+        </ul>
+    </section> <!-- left/upper part of the page ends here -->
+
 
 </body>
 </html>
