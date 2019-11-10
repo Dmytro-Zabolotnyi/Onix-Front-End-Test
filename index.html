@@ -6,7 +6,7 @@
     <title>Onix-Front-End-Test</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body onload="getAttachmentsArray()">
 
     <input type="checkbox" id="slide-menu-button">
     <label for="slide-menu-button"></label>
@@ -56,10 +56,10 @@
                         <div class="message-content">
                             <span class="message-text"></span>
                             <div class="message-attachment">
-                                <div class="attachment1"></div>
-                                <div class="attachment2"></div>
-                                <div class="attachment3"></div>
-                                <div class="attachment4"></div>
+                                <div class="attachment1" onclick="changeNotificationsCounter(this)"></div>
+                                <div class="attachment2" onclick="changeNotificationsCounter(this)"></div>
+                                <div class="attachment3" onclick="changeNotificationsCounter(this)"></div>
+                                <div class="attachment4" onclick="changeNotificationsCounter(this)"></div>
                             </div>
                         </div>
                         <div class="message-time"></div>
@@ -104,12 +104,12 @@
             </div>
         </section>
         <section class="task-stats">
-            <section class="completed-tasks">
-                <div class="total-number"></div>
+            <section class="completed-tasks" onclick="changeTasksCounter()">
+                <div id="total-number">372</div>
                 <div class="label"></div>
             </section>
             <section class="open-tasks">
-                <div class="open-number"></div>
+                <div id="open-number">11</div>
                 <div class="label"></div>
             </section>
         </section>
@@ -123,11 +123,11 @@
             </li>
             <li class="aside-menu-notifications">
                 <span>Notifications</span>
-                <div class="notification-counter"></div>
+                <div id="notification-counter">3</div>
             </li>
         </ul>
     </section> <!-- left/upper part of the page ends here -->
 
-
+    <script src="js/main.js"></script>
 </body>
 </html>
