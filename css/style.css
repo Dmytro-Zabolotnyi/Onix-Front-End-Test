@@ -841,7 +841,7 @@ input[type="checkbox"]:checked ~ .right-column {
 .message1 .message-attachment div:hover {
     box-shadow: 0 0 5px #202020;
     border-bottom: 4px #ffc200 solid;
-    margin-bottom: -4px;
+    margin-bottom: 6px;
 }
 
 .message1 .attachment1::before {
@@ -1279,8 +1279,8 @@ input[type="checkbox"]:checked ~ .right-column {
 
     .message1 .message-attachment div:hover {
         box-shadow: 0 0 1.75vw #202020;
-        border-bottom: 0.5vh #ffc200 solid;
-        margin-bottom: -0.5vh;
+        border-bottom: 1vw #ffc200 solid;
+        margin-bottom: 1.18vw;
     }
 
     .message1 .attachment1::before, .message1 .attachment2::before, .message1 .attachment3::before, .message1 .attachment4::before {
