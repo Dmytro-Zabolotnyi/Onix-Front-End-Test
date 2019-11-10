@@ -833,7 +833,15 @@ input[type="checkbox"]:checked ~ .right-column {
     height: 100px;
     margin-right: 10px;
     margin-bottom: 10px;
+    border-radius: 8px;
     cursor: pointer;
+    background-color: #202020;
+}
+
+.message1 .message-attachment div:hover {
+    box-shadow: 0 0 5px #202020;
+    border-bottom: 4px #ffc200 solid;
+    margin-bottom: -4px;
 }
 
 .message1 .attachment1::before {
@@ -939,6 +947,10 @@ input[type="checkbox"]:checked ~ .right-column {
         height: 8.71vw;
     }
 
+    label:hover {
+        box-shadow: 0 0 1vw black;
+    }
+
     input[type="checkbox"]:checked ~ label {
         left: 55.4%;
     }
@@ -1028,6 +1040,15 @@ input[type="checkbox"]:checked ~ .right-column {
 
     .completed-tasks, .open-tasks {
         height: 5vh;
+        border-radius: 2vw;
+    }
+
+    .completed-tasks:hover {
+        padding: 1vw;
+        margin-right: -2vw;
+        margin-bottom: -3vw;
+        border-bottom: #ffc200 0.8vw solid;
+        background-color: #202020;
     }
 
     #total-number, #open-number {
@@ -1253,6 +1274,13 @@ input[type="checkbox"]:checked ~ .right-column {
         height: 21.79vw;
         margin-right: 2.18vw;
         margin-bottom: 2.18vw;
+        border-radius: 1.757vw;
+    }
+
+    .message1 .message-attachment div:hover {
+        box-shadow: 0 0 1.75vw #202020;
+        border-bottom: 0.5vh #ffc200 solid;
+        margin-bottom: -0.5vh;
     }
 
     .message1 .attachment1::before, .message1 .attachment2::before, .message1 .attachment3::before, .message1 .attachment4::before {
