@@ -133,7 +133,7 @@ body{
     height: 100%;
 }
 
-.right-column {
+#right-column {
     height: 100%;
     margin-left: 270px;
 }
@@ -178,8 +178,12 @@ input[type="checkbox"]:checked ~ .left-column {
     margin-left: 0px;
 }
 
-input[type="checkbox"]:checked ~ .right-column {
+input[type="checkbox"]:checked ~ #right-column {
     filter: blur(0.1vw);
+}
+
+input[type="checkbox"]:checked ~ #right-column * {
+    pointer-events: none;
 }
 
 /* ---------- left column ----------- */
@@ -434,7 +438,7 @@ input[type="checkbox"]:checked ~ .right-column {
 /* -------- left column ends here --------------- */
 
 /* ----------right column starts here -------------*/
-.right-column {
+#right-column {
     display: flex;
     flex-direction: column;
     transition: opacity 0.3s, margin-left 0.3s, filter 0.3s;
@@ -734,6 +738,7 @@ input[type="checkbox"]:checked ~ .right-column {
     position: relative;
     min-width: 55px;
     height: 20px;
+    user-select: none;
 }
 
 .message:nth-child(1) .message-icon {
@@ -878,7 +883,7 @@ input[type="checkbox"]:checked ~ .right-column {
         margin-left: -270px;
     }
 
-    .right-column {
+    #right-column {
         margin-left: 0;
         width: 100%;
     }
@@ -899,7 +904,7 @@ input[type="checkbox"]:checked ~ .right-column {
 /* -------------- */
 
 @media screen and (max-width: 460px), (max-aspect-ratio: 1/2) {
-    input[type="checkbox"]:checked ~ .right-column {
+    input[type="checkbox"]:checked ~ #right-column {
         filter: blur(0.1vh);
     }
 

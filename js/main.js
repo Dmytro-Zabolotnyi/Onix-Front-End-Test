@@ -62,3 +62,12 @@ window.addEventListener('resize', function(){
         document.getElementById("slide-menu-button").checked = false;
     }
 });
+
+/**
+ * Event listener which task is to close sliding menu when clicked outside it.
+ */
+document.getElementById('right-column').addEventListener('click', function () {
+    if (document.getElementById('slide-menu-button').checked === true) {
+        document.getElementById("slide-menu-button").checked = false;
+    }
+});
