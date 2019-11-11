@@ -865,7 +865,7 @@ input[type="checkbox"]:checked ~ #right-column * {
 /* --------- right column ends here --------- */
 
 /* =================== response behavior section starts here =============== */
-@media screen and (min-width: 1500px) {
+@media screen and (min-aspect-ratio: 1500/927) {
     .container {
         width: 60vw;
     }
@@ -873,7 +873,7 @@ input[type="checkbox"]:checked ~ #right-column * {
 
 /* --------------- */
 
-@media screen and (max-width: 980px), (max-aspect-ratio: 17/16){
+@media screen and (max-aspect-ratio: 980/927){
     #slide-menu-label {
         display: block;
         left: 30px;
@@ -895,7 +895,7 @@ input[type="checkbox"]:checked ~ #right-column * {
 }
 
 /* -------------------- */
-@media screen and (max-width: 710px) {
+@media screen and (max-aspect-ratio: 710/927) {
     .upper-part {
         margin-top: 15px;
         margin-bottom: 15px;
@@ -903,7 +903,7 @@ input[type="checkbox"]:checked ~ #right-column * {
 }
 /* -------------- */
 
-@media screen and (max-width: 460px), (max-aspect-ratio: 1/2) {
+@media screen and (max-aspect-ratio: 1/2) {
     input[type="checkbox"]:checked ~ #right-column {
         filter: blur(0.1vh);
     }

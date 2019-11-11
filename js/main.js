@@ -57,8 +57,7 @@ window.addEventListener('resize', function(){
     let windowWidth = window.innerWidth;
     let windowHeight = window.innerHeight;
 
-    if ((windowWidth > 981) ||
-        ((windowWidth / windowHeight) > (17 / 16))) {
+    if ((windowWidth / windowHeight) > (980/927)) {
         document.getElementById("slide-menu-button").checked = false;
     }
 });
