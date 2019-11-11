@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * function's task is to process clicks on completed tasks. function checks if there are any tasks available
  * to complete and if there are any, asks user if he really wants to mark task as completed.
@@ -8,14 +10,12 @@ function changeTasksCounter() {
 
     if (openTasksNumber.textContent > 0) {
         if (confirm("Are you sure you want to change the number of tasks?")) {
-            let completedTasksNumber = document.getElementById("total-number");
+            let completedTasksNumber = document.getElementById("completed-number");
             let newOpen = parseInt(openTasksNumber.textContent) - 1;
             let newCompleted = parseInt(completedTasksNumber.textContent) + 1;
             openTasksNumber.textContent = newOpen + '';
             completedTasksNumber.textContent = newCompleted + '';
         }
-    } else {
-        alert("There are currently no open tasks to mark as completed.")
     }
 }
 
