@@ -54,10 +54,7 @@ function changeNotificationsCounter(object) {
  * if window width or ratio is back to numbers when sliding menu function is disabled.
  */
 window.addEventListener('resize', function(){
-    let windowWidth = window.innerWidth;
-    let windowHeight = window.innerHeight;
-
-    if ((windowWidth / windowHeight) > (980/927)) {
+    if ((window.innerWidth / window.innerHeight) > (980/927)) {
         document.getElementById("slide-menu-button").checked = false;
     }
 });
