@@ -20,59 +20,59 @@ table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section, summary,
 time, mark, audio, video {
-    margin:0;
-    padding:0;
-    border:0;
-    outline:0;
-    font-size:100%;
-    vertical-align:baseline;
-    background:transparent;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
 }
 
 body {
-    line-height:1;
+    line-height: 1;
 }
 
-article,aside,details,figcaption,figure,
-footer,header,hgroup,menu,nav,section {
-    display:block;
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
 }
 
 nav ul {
-    list-style:none;
+    list-style: none;
 }
 
 blockquote, q {
-    quotes:none;
+    quotes: none;
 }
 
 blockquote:before, blockquote:after,
 q:before, q:after {
-    content:'';
-    content:none;
+    content: '';
+    content: none;
 }
 
 a {
-    margin:0;
-    padding:0;
-    font-size:100%;
-    vertical-align:baseline;
-    background:transparent;
+    margin: 0;
+    padding: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
 }
 
 /* change colours to suit your needs */
 ins {
-    background-color:#ff9;
-    color:#000;
-    text-decoration:none;
+    background-color: #ff9;
+    color: #000;
+    text-decoration: none;
 }
 
 /* change colours to suit your needs */
 mark {
-    background-color:#ff9;
-    color:#000;
-    font-style:italic;
-    font-weight:bold;
+    background-color: #ff9;
+    color: #000;
+    font-style: italic;
+    font-weight: bold;
 }
 
 del {
@@ -80,27 +80,27 @@ del {
 }
 
 abbr[title], dfn[title] {
-    border-bottom:1px dotted;
-    cursor:help;
+    border-bottom: 1px dotted;
+    cursor: help;
 }
 
 table {
-    border-collapse:collapse;
-    border-spacing:0;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 /* change border colour to suit your needs */
 hr {
-    display:block;
-    height:1px;
-    border:0;
-    border-top:1px solid #cccccc;
-    margin:1em 0;
-    padding:0;
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #cccccc;
+    margin: 1em 0;
+    padding: 0;
 }
 
 input, select {
-    vertical-align:middle;
+    vertical-align: middle;
 }
 
 li {
@@ -116,7 +116,7 @@ html {
     overflow: hidden;
 }
 
-body{
+body {
     font-family: Helvetica, sans-serif;
     font-weight: normal;
     background: #eeebe5;
@@ -148,7 +148,8 @@ body{
     border-radius: 50%;
     background: #FFC200;
     z-index: 1;
-    transition: left 0.3s, transform 0.3s, box-shadow 0.3s;
+    -webkit-transition: left 0.3s, box-shadow 0.3s, -webkit-transform 0.3s;
+    transition: left 0.3s, transform 0.3s, box-shadow 0.3s, -webkit-transform 0.3s;
 }
 
 #slide-menu-label::before {
@@ -164,12 +165,13 @@ body{
     box-shadow: 0 0 4px black;
 }
 
-input[type="checkbox"]{
+input[type="checkbox"] {
     display: none;
 }
 
 
 input[type="checkbox"]:checked ~ #slide-menu-label {
+    -webkit-transform: rotate(180deg);
     transform: rotate(180deg);
     left: 250px;
 }
@@ -179,6 +181,7 @@ input[type="checkbox"]:checked ~ .left-column {
 }
 
 input[type="checkbox"]:checked ~ #right-column {
+    -webkit-filter: blur(0.1vw);
     filter: blur(0.1vw);
 }
 
@@ -190,11 +193,15 @@ input[type="checkbox"]:checked ~ #right-column * {
 .left-column {
     background: #000000;
     color: #FFFFFF;
+    -webkit-transition: margin-left 0.3s, width 0.3s;
     transition: margin-left 0.3s, width 0.3s;
 }
 
 .header, .user-info, .task-stats, .menu {
+    display: -webkit-box;
     display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
     flex-direction: row;
 }
 
@@ -203,6 +210,7 @@ input[type="checkbox"]:checked ~ #right-column * {
 }
 
 .header {
+    -webkit-box-align: center;
     align-items: center;
     height: 84px;
 }
@@ -238,7 +246,7 @@ input[type="checkbox"]:checked ~ #right-column * {
     margin-right: 20px;
 }
 
-.search::before{
+.search::before {
     position: absolute;
     content: "";
     width: 16px;
@@ -248,10 +256,14 @@ input[type="checkbox"]:checked ~ #right-column * {
 }
 
 .user-info {
+    display: -webkit-box;
     display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
     flex-direction: row;
     height: 80px;
     background: #202020;
+    -webkit-box-align: center;
     align-items: center;
 }
 
@@ -273,7 +285,10 @@ input[type="checkbox"]:checked ~ #right-column * {
 }
 
 .user-name-and-status {
+    display: -webkit-box;
     display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
     flex-direction: column;
     align-content: center;
     width: 100px;
@@ -281,12 +296,15 @@ input[type="checkbox"]:checked ~ #right-column * {
 }
 
 .user-name, .user-status {
+    display: -webkit-box;
     display: flex;
     position: relative;
+    -webkit-box-align: center;
     align-items: center;
 }
 
 .user-name {
+    -webkit-box-align: end;
     align-items: flex-end;
     font-size: 14px;
     line-height: 17px;
@@ -318,6 +336,7 @@ input[type="checkbox"]:checked ~ #right-column * {
     height: 4px;
     top: 50%;
     left: 50%;
+    -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     background-color: #A5A5A5;
     border-radius: 50%;
@@ -325,14 +344,20 @@ input[type="checkbox"]:checked ~ #right-column * {
 }
 
 .task-stats {
+    display: -webkit-box;
     display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
     flex-direction: row;
     margin-top: 20px;
     margin-bottom: 31px;
 }
 
 .completed-tasks, .open-tasks {
+    display: -webkit-box;
     display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
     flex-direction: column;
     border-radius: 8px;
 }
@@ -343,6 +368,7 @@ input[type="checkbox"]:checked ~ #right-column * {
 
 .completed-tasks {
     cursor: pointer;
+    -webkit-transition: border 0.3s, background-color 0.3s, margin 0.3s, padding 0.3s;
     transition: border 0.3s, background-color 0.3s, margin 0.3s, padding 0.3s;
 }
 
@@ -359,6 +385,9 @@ input[type="checkbox"]:checked ~ #right-column * {
     font-size: 20px;
     line-height: 24px;
     color: #FFFFFF;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
 }
 
@@ -371,11 +400,17 @@ input[type="checkbox"]:checked ~ #right-column * {
     font-size: 12px;
     line-height: 14px;
     color: #878787;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
 }
 
 .aside-menu {
+    display: -webkit-box;
     display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
     flex-direction: column;
 }
 
@@ -407,6 +442,7 @@ input[type="checkbox"]:checked ~ #right-column * {
 .aside-menu-home span, .aside-menu-tasks span {
     position: absolute;
     top: 50%;
+    -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
     font-size: 14px;
     line-height: 22px;
@@ -414,8 +450,12 @@ input[type="checkbox"]:checked ~ #right-column * {
 }
 
 .aside-menu-notifications {
+    display: -webkit-box;
     display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
     flex-direction: row;
+    -webkit-box-align: center;
     align-items: center;
 }
 
@@ -424,8 +464,11 @@ input[type="checkbox"]:checked ~ #right-column * {
 }
 
 #notification-counter {
+    display: -webkit-box;
     display: flex;
+    -webkit-box-pack: center;
     justify-content: center;
+    -webkit-box-align: center;
     align-items: center;
     position: relative;
     min-height: 20px;
@@ -435,38 +478,58 @@ input[type="checkbox"]:checked ~ #right-column * {
     font-size: 13px;
     color: #131313;
 }
+
 /* -------- left column ends here --------------- */
 
 /* ----------right column starts here -------------*/
 #right-column {
+    display: -webkit-box;
     display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
     flex-direction: column;
-    transition: opacity 0.3s, margin-left 0.3s, filter 0.3s;
+    -webkit-transition: opacity 0.3s, margin-left 0.3s, -webkit-filter 0.3s;
+    transition: opacity 0.3s, margin-left 0.3s, filter 0.3s, -webkit-filter 0.3s;
 }
 
+/*noinspection CssInvalidPropertyValue*/
 .top-menu {
+    display: -webkit-box;
     display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
     flex-direction: column;
+    -webkit-box-pack: justify;
     justify-content: space-between;
     min-height: 136px;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
     height: fit-content;
     background: #FFFFFF;
 }
 
 .upper-part {
+    display: -webkit-box;
     display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
     flex-direction: row;
     flex-wrap: wrap;
     margin-left: 30px;
     margin-right: 30px;
     margin-top: 35px;
+    -webkit-box-pack: justify;
     justify-content: space-between;
 }
 
 .upper-left, .upper-right {
+    display: -webkit-box;
     display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
     flex-direction: row;
     flex-wrap: nowrap;
+    -webkit-box-flex: 1;
     flex: 1;
 }
 
@@ -475,6 +538,7 @@ input[type="checkbox"]:checked ~ #right-column * {
 }
 
 .upper-right {
+    -webkit-box-pack: end;
     justify-content: flex-end;
 }
 
@@ -486,7 +550,7 @@ input[type="checkbox"]:checked ~ #right-column * {
     background: #ffc200;
 }
 
-.logo::before{
+.logo::before {
     position: relative;
     display: block;
     content: "";
@@ -511,6 +575,7 @@ input[type="checkbox"]:checked ~ #right-column * {
     line-height: 38px;
     top: 50%;
     left: 50%;
+    -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     font-size: 32px;
     color: #131313;
@@ -547,7 +612,10 @@ input[type="checkbox"]:checked ~ #right-column * {
 }
 
 .users {
+    display: -webkit-box;
     display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
     flex-direction: row;
     margin-top: 9px;
 }
@@ -559,9 +627,11 @@ input[type="checkbox"]:checked ~ #right-column * {
 .users-pic:nth-child(1)::before {
     background: url(../assets/face2.png);
 }
+
 .users-pic:nth-child(2)::before {
     background: url(../assets/face3.png);
 }
+
 .users-pic:nth-child(3)::before {
     background: url(../assets/face4.png);
 }
@@ -610,6 +680,7 @@ input[type="checkbox"]:checked ~ #right-column * {
     height: 16px;
     left: 15px;
     top: 50%;
+    -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
     content: "";
     background: url("../assets/Combined Shape@1x.svg");
@@ -619,20 +690,28 @@ input[type="checkbox"]:checked ~ #right-column * {
     position: absolute;
     top: 50%;
     right: 14px;
+    -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
     font-size: 14px;
     color: #FFC200;
 }
 
+/*noinspection CssInvalidPropertyValue*/
 .tabs {
+    display: -webkit-box;
     display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
     flex-direction: row;
+    height: -webkit-min-content;
+    height: -moz-min-content;
     height: min-content;
     background: #FFFFFF;
 }
 
 .tabs li {
     font-size: 16px;
+    -webkit-box-align: center;
     align-items: center;
     line-height: 19px;
     padding-bottom: 14px;
@@ -663,16 +742,21 @@ input[type="checkbox"]:checked ~ #right-column * {
 }
 
 .tab-content {
+    display: -webkit-box;
     display: flex;
     height: 100%;
     background: #eeebe5;
+    -webkit-box-pack: center;
     justify-content: center;
     position: relative;
 }
 
 .container {
     background: #FFFFFF;
+    display: -webkit-box;
     display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
     flex-direction: column;
     width: 50.7vw;
     height: 67.4vh;
@@ -680,6 +764,7 @@ input[type="checkbox"]:checked ~ #right-column * {
     position: absolute;
     top: 30px;
     left: 50%;
+    -webkit-transform: translate(-50%);
     transform: translate(-50%);
     box-sizing: border-box;
     padding: 35px 30px;
@@ -698,15 +783,22 @@ input[type="checkbox"]:checked ~ #right-column * {
 }
 
 .messages {
+    display: -webkit-box;
     display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: reverse;
     flex-direction: column-reverse;
     align-content: flex-start;
 }
 
 .message {
+    display: -webkit-box;
     display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
     flex-direction: row;
     margin-top: 30px;
+    -webkit-box-pack: justify;
     justify-content: space-between;
 }
 
@@ -720,7 +812,10 @@ input[type="checkbox"]:checked ~ #right-column * {
 }
 
 .message-content {
+    display: -webkit-box;
     display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
     flex-direction: column;
     position: relative;
     width: 100%;
@@ -738,6 +833,9 @@ input[type="checkbox"]:checked ~ #right-column * {
     position: relative;
     min-width: 55px;
     height: 20px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
 }
 
@@ -756,9 +854,11 @@ input[type="checkbox"]:checked ~ #right-column * {
 .message:nth-child(1) .message-icon::before {
     background: url(../assets/toolbarButton-download1.svg);
 }
+
 .message:nth-child(2) .message-icon::before {
     background: url(../assets/square-speech-bubble-svgrepo-com.svg);
 }
+
 .message:nth-child(3) .message-icon::before {
     background: url(../assets/Icon@3x.svg);
 }
@@ -770,6 +870,7 @@ input[type="checkbox"]:checked ~ #right-column * {
     height: 12px;
     top: 50%;
     left: 50%;
+    -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
     background-size: 12px 12px;
 }
@@ -777,9 +878,11 @@ input[type="checkbox"]:checked ~ #right-column * {
 .message:nth-child(1) .message-text::before {
     content: "Darika Samak uploaded 4 files on An option to search in current projects or in all projects";
 }
+
 .message:nth-child(2) .message-text::before {
     content: "Emilee Simchenko commented on Account for teams and personal in bottom style";
 }
+
 .message:nth-child(3) .message-text::before {
     content: "Darika Samak mark as done Listing on Product Hunt so that we can reach as many potential users";
 }
@@ -798,8 +901,11 @@ input[type="checkbox"]:checked ~ #right-column * {
 }
 
 .message:nth-child(1) .message-attachment {
+    display: -webkit-box;
     display: flex;
     width: 100%;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
     flex-direction: row;
     flex-wrap: wrap;
     margin-top: 20px;
@@ -814,6 +920,7 @@ input[type="checkbox"]:checked ~ #right-column * {
     border-radius: 8px;
     cursor: pointer;
     background-color: #202020;
+    -webkit-transition: box-shadow 0.3s;
     transition: box-shadow 0.3s;
 }
 
@@ -826,12 +933,15 @@ input[type="checkbox"]:checked ~ #right-column * {
 .message:nth-child(1) .attachment:nth-child(1)::before {
     background: url(../assets/attached-pic1.jpg);
 }
+
 .message:nth-child(1) .attachment:nth-child(2)::before {
     background: url(../assets/attached-pic2.jpg);
 }
+
 .message:nth-child(1) .attachment:nth-child(3)::before {
     background: url(../assets/attached-pic3.jpg);
 }
+
 .message:nth-child(1) .attachment:nth-child(4)::before {
     background: url(../assets/attached-pic4.jpg);
 }
@@ -845,9 +955,9 @@ input[type="checkbox"]:checked ~ #right-column * {
 }
 
 .message:nth-child(2) .message-attachment {
+    display: -webkit-box;
     display: flex;
     width: 100%;
-    flex-direction: row;
     background: #F7F6F3;
     border-radius: 10px;
     box-sizing: border-box;
@@ -873,7 +983,7 @@ input[type="checkbox"]:checked ~ #right-column * {
 
 /* --------------- */
 
-@media screen and (max-aspect-ratio: 980/927){
+@media screen and (max-aspect-ratio: 980/927) {
     #slide-menu-label {
         display: block;
         left: 30px;
@@ -901,10 +1011,12 @@ input[type="checkbox"]:checked ~ #right-column * {
         margin-bottom: 15px;
     }
 }
+
 /* -------------- */
 
 @media screen and (max-aspect-ratio: 1/2) {
     input[type="checkbox"]:checked ~ #right-column {
+        -webkit-filter: blur(0.1vh);
         filter: blur(0.1vh);
     }
 
@@ -1070,13 +1182,19 @@ input[type="checkbox"]:checked ~ #right-column * {
         font-size: 3.1vw;
     }
 
+    /*noinspection CssInvalidPropertyValue*/
     .top-menu {
         height: auto;
+        max-height: -webkit-max-content;
+        max-height: -moz-max-content;
         max-height: max-content;
         min-height: unset;
     }
 
+    /*noinspection CssInvalidPropertyValue*/
     .upper-part {
+        height: -webkit-min-content;
+        height: -moz-min-content;
         height: min-content;
         margin: 1.3vh 6vw 2.5vw;
     }
@@ -1173,7 +1291,7 @@ input[type="checkbox"]:checked ~ #right-column * {
         margin-left: 5vw;
     }
 
-    #kanban, #activity, #calendar, #files  {
+    #kanban, #activity, #calendar, #files {
         margin-left: 7vw;
     }
 
@@ -1190,6 +1308,7 @@ input[type="checkbox"]:checked ~ #right-column * {
         position: relative;
         left: 0;
         top: 50%;
+        -webkit-transform: translateY(-50%);
         transform: translateY(-50%);
         border-radius: 1.75vw;
         width: 98%;
@@ -1219,8 +1338,13 @@ input[type="checkbox"]:checked ~ #right-column * {
         margin-right: 1.4vw;
     }
 
+    /*noinspection CssInvalidPropertyValue*/
     .message-time {
+        min-width: -webkit-min-content;
+        min-width: -moz-min-content;
         min-width: min-content;
+        height: -webkit-min-content;
+        height: -moz-min-content;
         height: min-content;
     }
 
@@ -1254,7 +1378,7 @@ input[type="checkbox"]:checked ~ #right-column * {
         margin-bottom: 1.18vw;
     }
 
-    .message:nth-child(1) .attachment:nth-child(n)::before{
+    .message:nth-child(1) .attachment:nth-child(n)::before {
         width: 21.79vw;
         height: 21.79vw;
         border-radius: 1.75vw;
@@ -1272,5 +1396,6 @@ input[type="checkbox"]:checked ~ #right-column * {
         font-size: 3.26vw;
         line-height: 4vw;
     }
-    /* ============ response behavior section ends here ============== */
+
 }
+    /* ============ response behavior section ends here ============== */
