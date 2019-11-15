@@ -20,32 +20,17 @@ function changeTasksCounter() {
 }
 
 /**
- * array containing attachments. used by function which task is to change the
- * notification counter value.
- */
-let attachmentsArray;
-
-/**
- * function forms an array for notification counter's value changing function.
- */
-function getAttachmentsArray() {
-    let messageAttachments = document.getElementsByClassName("message-attachment");
-    attachmentsArray = [...messageAttachments[0].getElementsByTagName("div")];
-}
-
-/**
- * function's task is to change the number of notifications according to the index of the image clicked
+ * function forms an array that contains attachments and adds an onclick function for each of them,
+ * which changes the number of notifications according to the index of the image clicked
  * in the preliminarily formed array.
- *
- * @param object - object containing counter which is changeable by this function.
  */
-function changeNotificationsCounter(object) {
+function changeNotificationsCounter() {
+    let attachmentsArray = [...document.getElementsByClassName("attachment")];
 
     for (let i = 0; i < attachmentsArray.length; i++) {
-        if (object === attachmentsArray[i]) {
+        attachmentsArray[i].onclick = function () {
             document.getElementById("notification-counter").textContent = i.toString();
-            break;
-        }
+        };
     }
 }
 
