@@ -20,7 +20,7 @@ function changeTasksCounter() {
 }
 
 /**
- * function forms an array that contains attachments and adds an onclick function for each of them,
+ * function forms an array that contains attachments and adds an onclick function to each of them,
  * which changes the number of notifications according to the index of the image clicked
  * in the preliminarily formed array.
  */
