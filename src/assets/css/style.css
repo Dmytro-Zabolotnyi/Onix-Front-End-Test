@@ -125,6 +125,12 @@ body {
     height: 100%;
 }
 
+#app {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
 .left-column {
     position: absolute;
     top: 0;
@@ -157,7 +163,7 @@ body {
     content: "";
     width: 40px;
     height: 40px;
-    background: url(../assets/chevron-right.svg);
+    background: url(../images/chevron-right.svg);
 }
 
 #slide-menu-label:hover {
@@ -165,27 +171,27 @@ body {
     box-shadow: 0 0 4px black;
 }
 
-input[type="checkbox"] {
+#slide-menu-checkbox {
     display: none;
 }
 
 
-input[type="checkbox"]:checked ~ #slide-menu-label {
+#slide-menu-checkbox:checked ~ #slide-menu-label {
     -webkit-transform: rotate(180deg);
     transform: rotate(180deg);
     left: 250px;
 }
 
-input[type="checkbox"]:checked ~ .left-column {
-    margin-left: 0px;
+#slide-menu-checkbox:checked ~ .left-column {
+    margin-left: 0;
 }
 
-input[type="checkbox"]:checked ~ #right-column {
+#slide-menu-checkbox:checked ~ #right-column {
     -webkit-filter: blur(0.1vw);
     filter: blur(0.1vw);
 }
 
-input[type="checkbox"]:checked ~ #right-column * {
+#slide-menu-checkbox:checked ~ #right-column * {
     pointer-events: none;
 }
 
@@ -228,7 +234,7 @@ input[type="checkbox"]:checked ~ #right-column * {
     width: 21.6px;
     height: 18.9px;
     background-size: 21.6px 18.9px;
-    background: url(../assets/Logo@3x.svg);
+    background: url(../images/Logo@3x.svg);
 }
 
 .company-name {
@@ -252,7 +258,7 @@ input[type="checkbox"]:checked ~ #right-column * {
     width: 16px;
     height: 16px;
     background-size: 16px 16px;
-    background: url(../assets/Search@3x.svg);
+    background: url(../images/Search@3x.svg);
 }
 
 .user-info {
@@ -280,7 +286,7 @@ input[type="checkbox"]:checked ~ #right-column * {
     height: 48px;
     width: 48px;
     border-radius: 50%;
-    background: url(../assets/user-pic.png);
+    background: url(../images/user-pic.png);
     background-size: 48px 48px;
 }
 
@@ -492,22 +498,6 @@ input[type="checkbox"]:checked ~ #right-column * {
     transition: opacity 0.3s, margin-left 0.3s, filter 0.3s, -webkit-filter 0.3s;
 }
 
-/*noinspection CssInvalidPropertyValue*/
-.top-menu {
-    display: -webkit-box;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    flex-direction: column;
-    -webkit-box-pack: justify;
-    justify-content: space-between;
-    min-height: 136px;
-    height: -webkit-fit-content;
-    height: -moz-fit-content;
-    height: fit-content;
-    background: #FFFFFF;
-}
-
 .upper-part {
     display: -webkit-box;
     display: flex;
@@ -515,11 +505,10 @@ input[type="checkbox"]:checked ~ #right-column * {
     -webkit-box-direction: normal;
     flex-direction: row;
     flex-wrap: wrap;
-    margin-left: 30px;
-    margin-right: 30px;
-    margin-top: 35px;
+    min-height: 83px;
     -webkit-box-pack: justify;
     justify-content: space-between;
+    background: #FFFFFF;
 }
 
 .upper-left, .upper-right {
@@ -537,9 +526,18 @@ input[type="checkbox"]:checked ~ #right-column * {
     margin-left: 12px;
 }
 
+.upper-left, .upper-right {
+    margin-top: 35px;
+}
+
+.upper-left {
+    margin-left: 30px;
+}
+
 .upper-right {
     -webkit-box-pack: end;
     justify-content: flex-end;
+    margin-right: 30px;
 }
 
 .logo {
@@ -556,7 +554,7 @@ input[type="checkbox"]:checked ~ #right-column * {
     content: "";
     width: inherit;
     height: inherit;
-    background-image: url(../assets/Shapes@2x.png);
+    background-image: url(../images/Shapes@2x.png);
     background-size: 40px 40px;
 }
 
@@ -586,7 +584,7 @@ input[type="checkbox"]:checked ~ #right-column * {
     margin-left: 11px;
 }
 
-.top-menu .menu {
+.upper-left .menu {
     position: relative;
     margin-top: 10px;
     width: 30px;
@@ -597,7 +595,7 @@ input[type="checkbox"]:checked ~ #right-column * {
     background: #EAEAEA;
 }
 
-.top-menu .menu::before {
+.upper-left .menu::before {
     content: '';
     position: absolute;
     left: 50%;
@@ -625,15 +623,15 @@ input[type="checkbox"]:checked ~ #right-column * {
 }
 
 .users-pic:nth-child(1)::before {
-    background: url(../assets/face2.png);
+    background: url(../images/face2.png);
 }
 
 .users-pic:nth-child(2)::before {
-    background: url(../assets/face3.png);
+    background: url(../images/face3.png);
 }
 
 .users-pic:nth-child(3)::before {
-    background: url(../assets/face4.png);
+    background: url(../images/face4.png);
 }
 
 .users-pic:nth-child(n)::before {
@@ -683,7 +681,7 @@ input[type="checkbox"]:checked ~ #right-column * {
     -webkit-transform: translateY(-50%);
     transform: translateY(-50%);
     content: "";
-    background: url("../assets/Combined Shape@1x.svg");
+    background: url("../images/Combined Shape@1x.svg");
 }
 
 .chat span {
@@ -696,55 +694,89 @@ input[type="checkbox"]:checked ~ #right-column * {
     color: #FFC200;
 }
 
-/*noinspection CssInvalidPropertyValue*/
 .tabs {
+    height: 100%;
+}
+
+.tabs input {
+    display: none;
+}
+
+#tasks-radio:checked ~ .tab-labels #tasks-radio-label,
+#activity-radio:checked ~ .tab-labels #activity-radio-label {
+    border-bottom: 2px #FFC200 solid;
+    padding-bottom: 12px;
+}
+
+#tasks-radio:checked ~ .tab-labels #tasks-radio-label span,
+#activity-radio:checked ~ .tab-labels #activity-radio-label span {
+    opacity: 1;
+}
+
+#tasks-radio:checked ~ .tab-content #tasks-container,
+#activity-radio:checked ~ .tab-content #activity-container {
+    display: -webkit-box;
+    display: flex;
+}
+
+/*noinspection CssInvalidPropertyValue*/
+.tab-labels {
     display: -webkit-box;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
     flex-direction: row;
-    height: -webkit-min-content;
-    height: -moz-min-content;
-    height: min-content;
     background: #FFFFFF;
+    padding-top: 18px;
+    min-height: 35px;
 }
 
-.tabs li {
+.tab-labels label {
+    display: block;
     font-size: 16px;
     -webkit-box-align: center;
     align-items: center;
     line-height: 19px;
     padding-bottom: 14px;
     color: #131313;
+    border-bottom: none;
+    user-select: none;
+}
+
+.tab-labels span {
     opacity: 0.7;
 }
 
-#tasks {
+#tasks-radio-label span:hover, #activity-radio-label span:hover {
+    cursor: pointer;
+    opacity: 1.0;
+}
+
+#tasks-radio-label {
     margin-left: 30px;
 }
 
-#kanban {
+#kanban-radio-label {
     margin-left: 32px;
 }
 
-#activity {
+#activity-radio-label {
     margin-left: 27px;
-    opacity: 1;
-    border-bottom: 2px #FFC200 solid;
 }
 
-#calendar {
+#calendar-radio-label {
     margin-left: 31px;
 }
 
-#files {
+#files-radio-label {
     margin-left: 27px;
 }
 
 .tab-content {
     display: -webkit-box;
     display: flex;
-    height: 100%;
+    height: 94%;
+    width: 100%;
     background: #eeebe5;
     -webkit-box-pack: center;
     justify-content: center;
@@ -752,9 +784,8 @@ input[type="checkbox"]:checked ~ #right-column * {
 }
 
 .container {
+    display: none;
     background: #FFFFFF;
-    display: -webkit-box;
-    display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     flex-direction: column;
@@ -852,15 +883,15 @@ input[type="checkbox"]:checked ~ #right-column * {
 }
 
 .message:nth-child(1) .message-icon::before {
-    background: url(../assets/toolbarButton-download1.svg);
+    background: url(../images/toolbarButton-download1.svg);
 }
 
 .message:nth-child(2) .message-icon::before {
-    background: url(../assets/square-speech-bubble-svgrepo-com.svg);
+    background: url(../images/square-speech-bubble-svgrepo-com.svg);
 }
 
 .message:nth-child(3) .message-icon::before {
-    background: url(../assets/Icon@3x.svg);
+    background: url(../images/Icon@3x.svg);
 }
 
 .message:nth-child(n) .message-icon::before {
@@ -875,19 +906,7 @@ input[type="checkbox"]:checked ~ #right-column * {
     background-size: 12px 12px;
 }
 
-.message:nth-child(1) .message-text::before {
-    content: "Darika Samak uploaded 4 files on An option to search in current projects or in all projects";
-}
-
-.message:nth-child(2) .message-text::before {
-    content: "Emilee Simchenko commented on Account for teams and personal in bottom style";
-}
-
-.message:nth-child(3) .message-text::before {
-    content: "Darika Samak mark as done Listing on Product Hunt so that we can reach as many potential users";
-}
-
-.message-text:nth-child(n)::before {
+.message-text:nth-child(n) {
     font-size: 16px;
     color: #131313;
     line-height: 20px;
@@ -900,7 +919,7 @@ input[type="checkbox"]:checked ~ #right-column * {
     line-height: 20px;
 }
 
-.message:nth-child(1) .message-attachment {
+.message:nth-child(1) .message-attachments {
     display: -webkit-box;
     display: flex;
     width: 100%;
@@ -911,7 +930,7 @@ input[type="checkbox"]:checked ~ #right-column * {
     margin-top: 20px;
 }
 
-.message:nth-child(1) .message-attachment div {
+.message:nth-child(1) .message-attachments div {
     display: block;
     width: 100px;
     height: 100px;
@@ -924,26 +943,26 @@ input[type="checkbox"]:checked ~ #right-column * {
     transition: box-shadow 0.3s;
 }
 
-.message:nth-child(1) .message-attachment div:hover {
+.message:nth-child(1) .message-attachments div:hover {
     box-shadow: 0 0 5px #202020;
     border-bottom: 4px #ffc200 solid;
     margin-bottom: 6px;
 }
 
 .message:nth-child(1) .attachment:nth-child(1)::before {
-    background: url(../assets/attached-pic1.jpg);
+    background: url(../images/attached-pic1.jpg);
 }
 
 .message:nth-child(1) .attachment:nth-child(2)::before {
-    background: url(../assets/attached-pic2.jpg);
+    background: url(../images/attached-pic2.jpg);
 }
 
 .message:nth-child(1) .attachment:nth-child(3)::before {
-    background: url(../assets/attached-pic3.jpg);
+    background: url(../images/attached-pic3.jpg);
 }
 
 .message:nth-child(1) .attachment:nth-child(4)::before {
-    background: url(../assets/attached-pic4.jpg);
+    background: url(../images/attached-pic4.jpg);
 }
 
 .message:nth-child(1) .attachment:nth-child(n)::before {
@@ -954,7 +973,7 @@ input[type="checkbox"]:checked ~ #right-column * {
     border-radius: 8px;
 }
 
-.message:nth-child(2) .message-attachment {
+.message:nth-child(2) .message-attachments {
     display: -webkit-box;
     display: flex;
     width: 100%;
@@ -965,7 +984,7 @@ input[type="checkbox"]:checked ~ #right-column * {
     margin-top: 20px;
 }
 
-.message:nth-child(2) .message-attachment::before {
+.message:nth-child(2) .message-attachments::before {
     font-size: 15px;
     line-height: 18px;
     color: #131313;
@@ -1005,22 +1024,31 @@ input[type="checkbox"]:checked ~ #right-column * {
 }
 
 /* -------------------- */
-@media screen and (max-aspect-ratio: 710/927) {
+@media screen and (max-width: 710px), (max-aspect-ratio: 710/927) {
     .upper-part {
+        min-height: unset;
+        height: 95px;
+    }
+
+    .upper-left {
         margin-top: 15px;
-        margin-bottom: 15px;
+    }
+
+    .upper-right {
+        margin-top: 0;
+        z-index: 1;
     }
 }
 
 /* -------------- */
 
 @media screen and (max-aspect-ratio: 1/2) {
-    input[type="checkbox"]:checked ~ #right-column {
+    #slide-menu-checkbox:checked ~ #right-column {
         -webkit-filter: blur(0.1vh);
         filter: blur(0.1vh);
     }
 
-    input[type="checkbox"]:checked ~ #slide-menu-label {
+    #slide-menu-checkbox:checked ~ #slide-menu-label {
         left: 55.4%;
     }
 
@@ -1183,20 +1211,20 @@ input[type="checkbox"]:checked ~ #right-column * {
     }
 
     /*noinspection CssInvalidPropertyValue*/
-    .top-menu {
-        height: auto;
-        max-height: -webkit-max-content;
-        max-height: -moz-max-content;
-        max-height: max-content;
-        min-height: unset;
-    }
-
-    /*noinspection CssInvalidPropertyValue*/
     .upper-part {
         height: -webkit-min-content;
         height: -moz-min-content;
         height: min-content;
-        margin: 1.3vh 6vw 2.5vw;
+        min-height: unset;
+    }
+
+    .upper-left {
+        margin-left: 6vw;
+        margin-top: 1.3vh;
+    }
+
+    .upper-right {
+        margin-right: 6vw;
     }
 
     .logo {
@@ -1221,7 +1249,7 @@ input[type="checkbox"]:checked ~ #right-column * {
         font-size: 7vw;
     }
 
-    .top-menu .menu {
+    .upper-left .menu {
         margin-top: 1vh;
         width: 7vw;
         height: 7vw;
@@ -1229,7 +1257,7 @@ input[type="checkbox"]:checked ~ #right-column * {
         min-height: 7vw;
     }
 
-    .top-menu .menu::before {
+    .upper-left .menu::before {
         width: 0.9vw;
         height: 0.9vw;
         margin-left: -0.45vw;
@@ -1278,30 +1306,42 @@ input[type="checkbox"]:checked ~ #right-column * {
         font-size: 3.1vw;
     }
 
-    .tabs {
-        height: 7vw;
+    .tab-labels {
+        height: min-content;
+        min-height: unset;
+        padding-top: 2.5vw;
     }
 
-    .tabs li {
+
+    .tab-labels label {
+        height: min-content;
+        padding-bottom: 2.5vw;
+    }
+
+    .tab-labels span {
         font-size: 3.5vw;
         line-height: 4.5vw;
     }
 
-    #tasks {
+    #tasks-radio-label {
         margin-left: 5vw;
     }
 
-    #kanban, #activity, #calendar, #files {
+    #kanban-radio-label, #activity-radio-label, #calendar-radio-label, #files-radio-label {
         margin-left: 7vw;
     }
 
-    #activity {
+    #tasks-radio:checked ~ .tab-labels #tasks-radio-label,
+    #activity-radio:checked ~ .tab-labels #activity-radio-label {
+        opacity: 1;
         border-bottom: 0.435vw #FFC200 solid;
+        padding-bottom: 2.065vw;
     }
 
     .tab-content {
         box-sizing: border-box;
         padding: 5vw 5vw;
+        height: 95%;
     }
 
     .container {
@@ -1354,7 +1394,7 @@ input[type="checkbox"]:checked ~ #right-column * {
         background-size: 2.62vw 1.96vw;
     }
 
-    .message:nth-child(1) .message-text::before, .message:nth-child(2) .message-text::before, .message:nth-child(3) .message-text::before {
+    .message:nth-child(n) .message-text {
         font-size: 3.5vw;
         line-height: 4.5vw;
     }
@@ -1364,7 +1404,7 @@ input[type="checkbox"]:checked ~ #right-column * {
         line-height: 4vw;
     }
 
-    .message:nth-child(1) .message-attachment div {
+    .message:nth-child(1) .message-attachments div {
         width: 21.79vw;
         height: 21.79vw;
         margin-right: 2.18vw;
@@ -1372,7 +1412,7 @@ input[type="checkbox"]:checked ~ #right-column * {
         border-radius: 1.757vw;
     }
 
-    .message:nth-child(1) .message-attachment div:hover {
+    .message:nth-child(1) .message-attachments div:hover {
         box-shadow: 0 0 1.75vw #202020;
         border-bottom: 1vw #ffc200 solid;
         margin-bottom: 1.18vw;
@@ -1386,13 +1426,13 @@ input[type="checkbox"]:checked ~ #right-column * {
         background-repeat: no-repeat;
     }
 
-    .message:nth-child(2) .message-attachment {
+    .message:nth-child(2) .message-attachments {
         border-radius: 2.175vw;
         padding: 4.35vw 4.35vw;
         margin-top: 4.35vw;
     }
 
-    .message:nth-child(2) .message-attachment::before {
+    .message:nth-child(2) .message-attachments::before {
         font-size: 3.26vw;
         line-height: 4vw;
     }
