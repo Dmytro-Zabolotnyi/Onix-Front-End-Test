@@ -1042,7 +1042,7 @@ body {
 
 /* -------------- */
 
-@media screen and (max-aspect-ratio: 1/2) {
+@media screen and (max-aspect-ratio: 1/2), (max-aspect-ratio: 2/3) and (max-width: 415px) {
     #slide-menu-checkbox:checked ~ #right-column {
         -webkit-filter: blur(0.1vh);
         filter: blur(0.1vh);
