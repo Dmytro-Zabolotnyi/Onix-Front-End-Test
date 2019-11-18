@@ -6,7 +6,7 @@
                 <div class="message-icon"></div>
                 <div class="message-content">
                     <span class="message-text"> {{ messageOne.text }} </span>
-                    <div class="message-attachments" @click="changeNotificationCounter">
+                    <div class="message-attachments">
                         <div class="attachment"></div>
                         <div class="attachment"></div>
                         <div class="attachment"></div>
@@ -54,8 +54,8 @@
                 }
             }
         },
-        methods: {
-            changeNotificationCounter: function () {
+        mounted: function () {
+            this.$nextTick(function () {
                 let attachmentsArray = [...document.getElementsByClassName("attachment")];
 
                 for (let i = 0; i < attachmentsArray.length; i++) {
@@ -63,7 +63,10 @@
                         document.getElementById("notification-counter").textContent = i.toString();
                     }
                 }
-            }
+            })
+        },
+        methods: {
+
         }
     }
 </script>
