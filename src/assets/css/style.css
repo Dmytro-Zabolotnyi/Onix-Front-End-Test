@@ -696,6 +696,8 @@ body {
 
 .tabs {
     height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .tabs input {
@@ -775,7 +777,7 @@ body {
 .tab-content {
     display: -webkit-box;
     display: flex;
-    height: 94%;
+    height: 100%;
     width: 100%;
     background: #eeebe5;
     -webkit-box-pack: center;
@@ -813,7 +815,7 @@ body {
     color: #131313;
 }
 
-.messages {
+.activities {
     display: -webkit-box;
     display: flex;
     -webkit-box-orient: vertical;
@@ -822,7 +824,7 @@ body {
     align-content: flex-start;
 }
 
-.message {
+.activity {
     display: -webkit-box;
     display: flex;
     -webkit-box-orient: horizontal;
@@ -833,7 +835,7 @@ body {
     justify-content: space-between;
 }
 
-.message-icon {
+.activity-icon {
     display: block;
     position: relative;
     min-width: 40px;
@@ -842,7 +844,7 @@ body {
     margin-right: 20px;
 }
 
-.message-content {
+.activity-content {
     display: -webkit-box;
     display: flex;
     -webkit-box-orient: vertical;
@@ -853,13 +855,13 @@ body {
     margin-right: 5px;
 }
 
-.message-text {
+.activity-text {
     display: block;
     position: relative;
     width: 85%;
 }
 
-.message-time {
+.activity-time {
     display: block;
     position: relative;
     min-width: 55px;
@@ -870,31 +872,31 @@ body {
     user-select: none;
 }
 
-.message:nth-child(1) .message-icon {
+.activity:nth-child(1) .activity-icon {
     background: #E3EFFF;
 }
 
-.message:nth-child(2) .message-icon {
+.activity:nth-child(2) .activity-icon {
     background: #FFF8DD;
 }
 
-.message:nth-child(3) .message-icon {
+.activity:nth-child(3) .activity-icon {
     background: #CEF9C6;
 }
 
-.message:nth-child(1) .message-icon::before {
+.activity:nth-child(1) .activity-icon::before {
     background: url(../images/toolbarButton-download1.svg);
 }
 
-.message:nth-child(2) .message-icon::before {
+.activity:nth-child(2) .activity-icon::before {
     background: url(../images/square-speech-bubble-svgrepo-com.svg);
 }
 
-.message:nth-child(3) .message-icon::before {
+.activity:nth-child(3) .activity-icon::before {
     background: url(../images/Icon@3x.svg);
 }
 
-.message:nth-child(n) .message-icon::before {
+.activity:nth-child(n) .activity-icon::before {
     position: absolute;
     content: "";
     width: 12px;
@@ -906,20 +908,20 @@ body {
     background-size: 12px 12px;
 }
 
-.message-text:nth-child(n) {
+.activity-text:nth-child(n) {
     font-size: 16px;
     color: #131313;
     line-height: 20px;
 }
 
-.message:nth-child(n) .message-time {
+.activity:nth-child(n) .activity-time {
     opacity: 0.7;
     font-size: 14px;
     color: #131313;
     line-height: 20px;
 }
 
-.message:nth-child(1) .message-attachments {
+.activity:nth-child(1) .activity-attachments {
     display: -webkit-box;
     display: flex;
     width: 100%;
@@ -930,7 +932,7 @@ body {
     margin-top: 20px;
 }
 
-.message:nth-child(1) .message-attachments div {
+.activity:nth-child(1) .activity-attachments div {
     display: block;
     width: 100px;
     height: 100px;
@@ -943,29 +945,29 @@ body {
     transition: box-shadow 0.3s;
 }
 
-.message:nth-child(1) .message-attachments div:hover {
+.activity:nth-child(1) .activity-attachments div:hover {
     box-shadow: 0 0 5px #202020;
     border-bottom: 4px #ffc200 solid;
     margin-bottom: 6px;
 }
 
-.message:nth-child(1) .attachment:nth-child(1)::before {
+.activity:nth-child(1) .image-attachment:nth-child(1)::before {
     background: url(../images/attached-pic1.jpg);
 }
 
-.message:nth-child(1) .attachment:nth-child(2)::before {
+.activity:nth-child(1) .image-attachment:nth-child(2)::before {
     background: url(../images/attached-pic2.jpg);
 }
 
-.message:nth-child(1) .attachment:nth-child(3)::before {
+.activity:nth-child(1) .image-attachment:nth-child(3)::before {
     background: url(../images/attached-pic3.jpg);
 }
 
-.message:nth-child(1) .attachment:nth-child(4)::before {
+.activity:nth-child(1) .image-attachment:nth-child(4)::before {
     background: url(../images/attached-pic4.jpg);
 }
 
-.message:nth-child(1) .attachment:nth-child(n)::before {
+.activity:nth-child(1) .image-attachment:nth-child(n)::before {
     display: block;
     content: "";
     width: 100px;
@@ -973,7 +975,7 @@ body {
     border-radius: 8px;
 }
 
-.message:nth-child(2) .message-attachments {
+.activity:nth-child(2) .activity-attachments {
     display: -webkit-box;
     display: flex;
     width: 100%;
@@ -982,13 +984,9 @@ body {
     box-sizing: border-box;
     padding: 20px 20px;
     margin-top: 20px;
-}
-
-.message:nth-child(2) .message-attachments::before {
     font-size: 15px;
     line-height: 18px;
     color: #131313;
-    content: "During a project build, it is necessary to evaluate the product design and development against project requirements and outcomes";
 }
 
 /* --------- right column ends here --------- */
@@ -1341,7 +1339,6 @@ body {
     .tab-content {
         box-sizing: border-box;
         padding: 5vw 5vw;
-        height: 95%;
     }
 
     .container {
@@ -1364,22 +1361,22 @@ body {
         font-size: 3vw;
     }
 
-    .message {
+    .activity {
         margin-top: 6.54vw;
     }
 
-    .message-icon {
+    .activity-icon {
         min-width: 8.71vw;
         height: 8.71vw;
         margin-right: 4.355vw;
     }
 
-    .message-content {
+    .activity-content {
         margin-right: 1.4vw;
     }
 
     /*noinspection CssInvalidPropertyValue*/
-    .message-time {
+    .activity-time {
         min-width: -webkit-min-content;
         min-width: -moz-min-content;
         min-width: min-content;
@@ -1388,23 +1385,23 @@ body {
         height: min-content;
     }
 
-    .message:nth-child(1) .message-icon::before, .message:nth-child(2) .message-icon::before, .message:nth-child(3) .message-icon::before {
+    .activity:nth-child(1) .activity-icon::before, .activity:nth-child(2) .activity-icon::before, .activity:nth-child(3) .activity-icon::before {
         width: 2.62vw;
         height: 1.96vw;
         background-size: 2.62vw 1.96vw;
     }
 
-    .message:nth-child(n) .message-text {
+    .activity:nth-child(n) .activity-text {
         font-size: 3.5vw;
         line-height: 4.5vw;
     }
 
-    .message:nth-child(n) .message-time {
+    .activity:nth-child(n) .activity-time {
         font-size: 3vw;
         line-height: 4vw;
     }
 
-    .message:nth-child(1) .message-attachments div {
+    .activity:nth-child(1) .activity-attachments div {
         width: 21.79vw;
         height: 21.79vw;
         margin-right: 2.18vw;
@@ -1412,13 +1409,13 @@ body {
         border-radius: 1.757vw;
     }
 
-    .message:nth-child(1) .message-attachments div:hover {
+    .activity:nth-child(1) .activity-attachments div:hover {
         box-shadow: 0 0 1.75vw #202020;
         border-bottom: 1vw #ffc200 solid;
         margin-bottom: 1.18vw;
     }
 
-    .message:nth-child(1) .attachment:nth-child(n)::before {
+    .activity:nth-child(1) .image-attachment:nth-child(n)::before {
         width: 21.79vw;
         height: 21.79vw;
         border-radius: 1.75vw;
@@ -1426,13 +1423,10 @@ body {
         background-repeat: no-repeat;
     }
 
-    .message:nth-child(2) .message-attachments {
+    .activity:nth-child(2) .activity-attachments {
         border-radius: 2.175vw;
         padding: 4.35vw 4.35vw;
         margin-top: 4.35vw;
-    }
-
-    .message:nth-child(2) .message-attachments::before {
         font-size: 3.26vw;
         line-height: 4vw;
     }

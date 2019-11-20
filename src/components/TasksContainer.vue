@@ -3,8 +3,8 @@
         <div class="tasks">
             <div class="day"></div>
             <ul>
-                <li v-for="task in tasks" v-bind:key="task">
-                    <span v-for="item in task" v-bind:key="item">{{ item }}</span>
+                <li v-for="(task, taskIndex) in tasks" v-bind:key="taskIndex">
+                    <span v-for="(item, itemIndex) in task" v-bind:key="itemIndex">{{ item }}</span>
                 </li>
             </ul>
         </div>
@@ -68,8 +68,12 @@
         line-height: 20px;
     }
 
+    span:nth-child(1) {
+        flex-basis: 70px;
+    }
+
     span:nth-child(2) {
-        flex: 4;
+        width: 100%;
         background: #F7F6F3;
         border-radius: 10px;
         box-sizing: border-box;
@@ -80,11 +84,12 @@
         align-self: flex-end;
         text-align: right;
         opacity: 0.7;
+        white-space: nowrap;
     }
 
     span:nth-child(1) + span:nth-child(2),
     span:nth-child(2) + span:nth-child(3) {
-        margin-left: 10px;
+        margin-left: 20px;
     }
 
     @media screen and (max-aspect-ratio: 1/2) {
@@ -101,6 +106,10 @@
             line-height: 4.5vw;
         }
 
+        span:nth-child(1) {
+            flex-basis: 10vw;
+        }
+
         span:nth-child(2) {
             border-radius: 2.175vw;
             padding: 4.35vw 4.35vw;
@@ -109,6 +118,15 @@
         span:nth-child(1), span:nth-child(3) {
             font-size: 3vw;
             line-height: 4vw;
+        }
+
+        span:nth-child(3) {
+            white-space: normal;
+        }
+
+        span:nth-child(1) + span:nth-child(2),
+        span:nth-child(2) + span:nth-child(3) {
+            margin-left: 4.35vw;
         }
     }
 </style>

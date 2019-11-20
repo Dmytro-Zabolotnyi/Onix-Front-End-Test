@@ -46,6 +46,11 @@
 <script>
     export default {
         name: "LeftColumn",
+        props: {
+            notificationCounter: {
+                type: Number
+            }
+        },
         data: function () {
             return {
                 companyName: 'PROJECTUS',
@@ -56,8 +61,7 @@
                 tasks: {
                     completedNumber: 372,
                     openNumber: 11
-                },
-                notificationCounter: 3
+                }
             }
         },
         methods: {

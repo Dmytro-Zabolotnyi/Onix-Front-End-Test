@@ -2,8 +2,8 @@
     <div id="app">
         <input type="checkbox" id="slide-menu-checkbox" v-model="checked">
         <label id="slide-menu-label" for="slide-menu-checkbox"></label>
-        <RightColumn/>
-        <LeftColumn/>
+        <RightColumn v-on:changeNotificationCounter="changeNotificationCounter($event)" v-on:uncheckCheckbox="uncheckCheckbox"/>
+        <LeftColumn v-bind:notificationCounter="notificationCounter"/>
     </div>
 </template>
 
@@ -13,34 +13,38 @@
 
     export default {
         name: 'app',
-        components: {LeftColumn, RightColumn},
+        components: {RightColumn, LeftColumn},
         data: function () {
             return {
-                checked: false
+                checked: false,
+                notificationCounter: 3
             }
         },
-        mounted: function () {
-            this.$nextTick(function () {
-                window.addEventListener('resize', this.uncheckCheckbox);
-                document.getElementById('right-column').addEventListener('click', this.uncheckCheckboxTwo);
-
-                this.uncheckCheckbox();
-                this.uncheckCheckboxTwo();
-            })
-        },
         methods: {
-            uncheckCheckbox: function () {
+            changeNotificationCounter: function (index) {
+                this.notificationCounter = index;
+            },
+            uncheckCheckboxOnResize: function () {
                 if ((window.innerWidth / window.innerHeight) > (980/927)) {
                     if (this.checked) {
                         this.checked = !this.checked;
                     }
                 }
             },
-            uncheckCheckboxTwo: function () {
+            uncheckCheckbox: function () {
                 if (this.checked) {
                     this.checked = !this.checked;
                 }
             }
+        },
+        mounted: function () {
+            this.$nextTick(function () {
+                window.addEventListener('resize', this.uncheckCheckboxOnResize);
+                this.uncheckCheckboxOnResize();
+            })
+        },
+        beforeDestroy: function () {
+            window.removeEventListener('resize', this.uncheckCheckboxOnResize)
         }
     }
 </script>

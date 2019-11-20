@@ -1,7 +1,7 @@
 <template>
     <!-- right part of the page, presumably containing information
         about currently chosen project -->
-    <div id="right-column">
+    <div id="right-column" @click="uncheckCheckbox">
             <header class="upper-part">
                 <div class="upper-left">
                     <div class="logo"></div>
@@ -39,7 +39,7 @@
                 <div class="tab-content">
                     <TasksContainer/>
                     <div id="kanban-container" class="container"></div>
-                    <ActivityContainer/>
+                    <ActivityContainer v-on:changeNotificationCounter="changeNotificationCounter($event)"></ActivityContainer>
                     <div id="calendar-container" class="container"></div>
                     <div id="files-container" class="container"></div>
                 </div>
@@ -56,19 +56,15 @@
         components: {TasksContainer, ActivityContainer},
         data: function () {
             return {
-                projectName: 'Website Redesign',
-                messageOne: {
-                    text: 'Darika Samak uploaded 4 files on An option to search in current projects or in all projects',
-                    time: '6:02 PM'
-                },
-                messageTwo: {
-                    text: 'Emilee Simchenko commented on Account for teams and personal in bottom style',
-                    time: '7:32 PM'
-                },
-                messageThree: {
-                    text: 'Darika Samak mark as done Listing on Product Hunt so that we can reach as many potential users',
-                    time: '8:40 PM'
-                }
+                projectName: 'Website Redesign'
+            }
+        },
+        methods: {
+            changeNotificationCounter: function (index) {
+                this.$emit('changeNotificationCounter', index);
+            },
+            uncheckCheckbox: function () {
+                this.$emit('uncheckCheckbox');
             }
         }
     }
