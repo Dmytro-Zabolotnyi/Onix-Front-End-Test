@@ -138,10 +138,6 @@ body {
     pointer-events: none;
 }
 
-.chat-icon::before {
-    background: url("../images/Combined Shape@1x.svg");
-}
-
 #tasks-radio:checked ~ .tab-content #tasks-container,
 #activity-radio:checked ~ .tab-content #activity-container {
     display: -webkit-box;

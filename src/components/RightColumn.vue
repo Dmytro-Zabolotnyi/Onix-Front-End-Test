@@ -15,13 +15,14 @@
             <div class="upper-right">
                 <div class="users">
                     <div class="users-pic"
-                         v-for="item of userPics"
-                         v-bind:style="{ backgroundImage: 'url(' + item.userPic + ')' }" v-bind:key="item.id">
+                         v-for="item of userPics" v-bind:key="item.id"
+                         v-bind:style="{ backgroundImage: 'url(' + item.userPic + ')' }">
                     </div>
                 </div>
+
                 <div class="share">Share</div>
                 <div class="chat">
-                    <div class="chat-icon"></div>
+                    <div class="chat-icon" v-bind:style="{ backgroundImage: 'url(' + chatIcon + ')' }"></div>
                     <span>Chat</span>
                 </div>
             </div>
@@ -80,7 +81,7 @@
             return {
                 projectLogo: "images/Shapes@2x.png",
                 projectName: 'Website Redesign',
-                chatIcon: "images/chat.svg",
+                chatIcon: "images/CombinedShape@1x.svg",
                 userPics: [
                     {userPic: "images/face2.png"},
                     {userPic: "images/face3.png"},
@@ -275,13 +276,9 @@
         top: 50%;
         -webkit-transform: translateY(-50%);
         transform: translateY(-50%);
-    }
-
-    .chat-icon::before {
-        position: absolute;
-        width: 16px;
-        height: 16px;
-        content: "";
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
     }
 
     .chat span {
@@ -516,14 +513,6 @@
             left: 3.3vw;
             width: 3.5vw;
             height: 3.5vw;
-
-        }
-
-        .chat-icon::before {
-            width: 3.5vw;
-            height: 3.5vw;
-            background-size: 3.5vw 3.5vw;
-            background-repeat: no-repeat;
         }
 
         .chat span {
