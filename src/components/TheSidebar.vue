@@ -1,8 +1,8 @@
 <template>
     <!-- left part of the page, contains header, user info, task info
         and menu -->
-    <div class="left-column">
-        <header class="header">
+    <div class="sidebar">
+        <header class="sidebar-header">
             <div class="header-logo" v-bind:style="{ backgroundImage: 'url(' + logoIcon + ')' }"></div>
             <div class="company-name">{{ companyName }}</div>
             <div class="search" v-bind:style="{ backgroundImage: 'url(' + searchIcon + ')' }"></div>
@@ -45,7 +45,7 @@
 
 <script>
     export default {
-        name: "LeftColumn",
+        name: "TheSidebar",
         props: {
             notificationCounter: {
                 type: Number
@@ -81,7 +81,7 @@
 </script>
 
 <style scoped>
-    .left-column {
+    .sidebar {
         position: absolute;
         top: 0;
         left: 0;
@@ -93,7 +93,7 @@
         transition: margin-left 0.3s, width 0.3s;
     }
 
-    .header, .user-info, .task-stats, .menu {
+    .sidebar-header, .user-info, .task-stats, .menu {
         display: -webkit-box;
         display: flex;
         -webkit-box-orient: horizontal;
@@ -105,7 +105,7 @@
         margin-left: 30px;
     }
 
-    .header {
+    .sidebar-header {
         -webkit-box-align: center;
         align-items: center;
         height: 84px;
@@ -358,13 +358,13 @@
     }
 
     @media screen and (max-aspect-ratio: 980/927) {
-        .left-column {
+        .sidebar {
             margin-left: -270px;
         }
     }
 
     @media screen and (max-aspect-ratio: 1/2), (max-aspect-ratio: 2/3) and (max-width: 415px) {
-        .left-column {
+        .sidebar {
             width: 59.5%;
             margin-left: -59.5%;
         }
@@ -379,7 +379,7 @@
             margin-right: 3vw;
         }
 
-        .header, .user-info {
+        .sidebar-header, .user-info {
             height: 9vh;
         }
 

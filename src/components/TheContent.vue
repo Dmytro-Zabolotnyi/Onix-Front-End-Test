@@ -1,46 +1,125 @@
 <template>
-    <div id="activity-container" class="container">
-        <div class="day"></div>
-        <div class="activities">
-            <div class="activity" v-for="activity of activities" v-bind:key="activity.id">
-                <div
-                        class="activity-icon"
-                        v-bind:style="{
-                        'background-color': activity.icon.backgroundColor,
-                        'background-image': 'url(' + activity.icon.imagePath + ')'
+
+    <div class="tab-content">
+        <div id="tasks-container" class="container">
+            <div class="tasks">
+                <div class="day"></div>
+                <ul>
+                    <li v-for="task in tasks" v-bind:key="task.id">
+                        <span>{{ task.name }}</span>
+                        <span>{{ task.description }}</span>
+                        <span>{{ task.deadline }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="kanban-container" class="container"></div>
+
+        <div id="activity-container" class="container">
+            <div class="day"></div>
+            <div class="activities">
+                <div class="activity" v-for="activity of activities" v-bind:key="activity.id">
+                    <div
+                            class="activity-icon"
+                            v-bind:style="{
+                            'background-color': activity.icon.backgroundColor,
+                            'background-image': 'url(' + activity.icon.imagePath + ')'
                         }">
-                </div>
-                <div class="activity-content">
-                    <span class="activity-text">{{ activity.content.text }}</span>
-                    <div class="activity-attachments">
-                        <div class="text-attachments" v-if="activity.content.attachments.textsAttached.length > 0">
+                    </div>
+                    <div class="activity-content">
+                        <span class="activity-text">{{ activity.content.text }}</span>
+                        <div class="activity-attachments">
+                            <div class="text-attachments" v-if="activity.content.attachments.textsAttached.length > 0">
                             <span
                                     class="text-attachment"
                                     v-for="(text) of activity.content.attachments.textsAttached" v-bind:key="text.id">
                                 {{ text.textAttached }}
                             </span>
-                        </div>
-                        <div class="image-attachments" v-if="activity.content.attachments.imagesAttached.length > 0">
-                            <div class="image-attachment"
-                                 v-bind:style="{ backgroundImage: 'url(' + image.imagePath + ')' }"
-                                 v-for="(image, index) of activity.content.attachments.imagesAttached"
-                                 v-bind:key="image.id"
-                                 @click="addOnClickEvent(index)">
+                            </div>
+                            <div class="image-attachments" v-if="activity.content.attachments.imagesAttached.length > 0">
+                                <div class="image-attachment"
+                                     v-bind:style="{ backgroundImage: 'url(' + image.imagePath + ')' }"
+                                     v-for="(image, index) of activity.content.attachments.imagesAttached"
+                                     v-bind:key="image.id"
+                                     @click="addOnClickEvent(index)">
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="activity-time">{{ activity.time }}</div>
                 </div>
-                <div class="activity-time">{{ activity.time }}</div>
             </div>
         </div>
+
+        <div id="calendar-container" class="container"></div>
+        <div id="files-container" class="container"></div>
     </div>
+
 </template>
 
 <script>
     export default {
-        name: "ActivityContainer",
+        name: "TheContent",
         data: function () {
             return {
+                tasks: [
+                    {
+                        name: 'Teeth',
+                        description: 'Take a toothbrush and make your breath fresh.',
+                        deadline: '6:35 AM'
+                    },
+                    {
+                        name: 'Dog',
+                        description: 'Pet your dog and take it for a morning jog.',
+                        deadline: '7:10 AM'
+                    },
+                    {
+                        name: 'Shower',
+                        description: 'Give yourself a pleasure of a morning shower.',
+                        deadline: '7:20 AM'
+                    },
+                    {
+                        name: 'Breakfast',
+                        description: 'Cook and eat some bacon and eggs.',
+                        deadline: '7:50 AM'
+                    },
+                    {
+                        name: 'Car',
+                        description: 'Grab your keys, head to the car and leave to work.',
+                        deadline: '8:20 AM'
+                    },
+                    {
+                        name: 'Work',
+                        description: 'Be a good pal and make something worthy today.',
+                        deadline: '6:00 PM'
+                    },
+                    {
+                        name: 'Date',
+                        description: 'Have a good time with a beautiful woman.',
+                        deadline: '9:00 PM'
+                    },
+                    {
+                        name: 'Home',
+                        description: "Bring yourself home. And take your beautiful woman with you. She's your wife, after all.",
+                        deadline: '9:45 PM'
+                    },
+                    {
+                        name: 'Evening',
+                        description: "You're a big boy, come up with something.",
+                        deadline: '11:30 PM'
+                    },
+                    {
+                        name: 'Teeth',
+                        description: "Your dentist told you to brush your teeth twice a day, didn't he?",
+                        deadline: '11:35 PM'
+                    },
+                    {
+                        name: 'Sleep',
+                        description: 'It was a good day, time to let it go and have some sleep.',
+                        deadline: '11:40 PM'
+                    }
+                ],
                 activities: [
                     {
                         icon: {
@@ -103,13 +182,43 @@
         },
         methods: {
             addOnClickEvent: function (index) {
-                this.$emit('changeNotificationCounter', index);
+                this.$emit('change-notification-counter', index);
             }
         }
     }
 </script>
 
 <style scoped>
+    .tab-content {
+        display: -webkit-box;
+        display: flex;
+        height: 100%;
+        width: 100%;
+        background: #eeebe5;
+        -webkit-box-pack: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .container {
+        display: none;
+        background: #FFFFFF;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        flex-direction: column;
+        width: 50.7vw;
+        height: 67.4vh;
+        border-radius: 8px;
+        position: absolute;
+        top: 30px;
+        left: 50%;
+        -webkit-transform: translate(-50%);
+        transform: translate(-50%);
+        box-sizing: border-box;
+        padding: 35px 30px;
+        overflow-y: auto;
+    }
+
     .day {
         margin-bottom: 2px;
     }
@@ -120,6 +229,56 @@
         font-size: 14px;
         color: #131313;
     }
+
+
+    .tasks ul li {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        height: min-content;
+        width: 100%;
+        margin: 5px 0;
+        border-radius: 8px;
+        box-sizing: border-box;
+    }
+
+    .tasks ul li:first-child {
+        margin-top: 30px;
+    }
+
+    .tasks ul li:last-child {
+        margin-bottom: 0;
+    }
+
+    .tasks span {
+        white-space: normal;
+        font-size: 15px;
+        line-height: 18px;
+        color: #131313;
+        width: 100%;
+    }
+
+    .tasks span:nth-child(1), .tasks span:nth-child(3) {
+        font-size: 14px;
+        color: #131313;
+        line-height: 20px;
+    }
+
+    .tasks span:nth-child(2) {
+        background: #F7F6F3;
+        border-radius: 10px;
+        box-sizing: border-box;
+        padding: 20px 20px;
+    }
+
+    .tasks span:nth-child(3) {
+        align-self: flex-end;
+        text-align: right;
+        opacity: 0.7;
+        white-space: nowrap;
+    }
+
 
     .activities {
         display: -webkit-box;
@@ -258,7 +417,37 @@
         margin-top: 10px;
     }
 
+    @media screen and (min-aspect-ratio: 1500/927) {
+        .container {
+            width: 60vw;
+        }
+    }
+
+    @media screen and (max-aspect-ratio: 980/927) {
+        .container {
+            width: 80%;
+            height: 90%;
+        }
+    }
+
     @media screen and (max-aspect-ratio: 1/2), (max-aspect-ratio: 2/3) and (max-width: 415px) {
+        .tab-content {
+            box-sizing: border-box;
+            padding: 5vw 5vw;
+        }
+
+        .container {
+            position: relative;
+            left: 0;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+            border-radius: 1.75vw;
+            width: 98%;
+            height: 98%;
+            padding: 5.62vw 4.54vw;
+        }
+
         .day {
             margin-bottom: 0.65vw;
         }
@@ -266,6 +455,35 @@
         .day::before {
             font-size: 3vw;
         }
+
+
+        .tasks ul li:first-child {
+            margin-top: 6.5vw;
+        }
+
+        .tasks span {
+            font-size: 3.5vw;
+            line-height: 4.5vw;
+        }
+
+        .tasks span:nth-child(1) {
+            flex-basis: 10vw;
+        }
+
+        .tasks span:nth-child(2) {
+            border-radius: 2.175vw;
+            padding: 4.35vw 4.35vw;
+        }
+
+        .tasks span:nth-child(1), .tasks span:nth-child(3) {
+            font-size: 3vw;
+            line-height: 4vw;
+        }
+
+        .tasks span:nth-child(3) {
+            white-space: normal;
+        }
+
 
         .activity {
             margin-top: 6.54vw;

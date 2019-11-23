@@ -10,21 +10,21 @@
                 for="slide-menu-checkbox"
                 v-bind:style="{ backgroundImage: 'url(' + slideMenuLabelIcon + ')' }">
         </label>
-        <RightColumn
-                v-on:changeNotificationCounter="changeNotificationCounter($event)"
+        <TheHeader
+                v-on:change-notification-counter="changeNotificationCounter($event)"
                 v-on:uncheckCheckbox="hideSlideMenu"
         />
-        <LeftColumn v-bind:notificationCounter="notificationCounter"/>
+        <TheSidebar v-bind:notificationCounter="notificationCounter"/>
     </div>
 </template>
 
 <script>
-    import RightColumn from "./components/RightColumn";
-    import LeftColumn from "./components/LeftColumn";
+    import TheHeader from "./components/TheHeader";
+    import TheSidebar from "./components/TheSidebar";
 
     export default {
         name: 'app',
-        components: {RightColumn, LeftColumn},
+        components: {TheHeader, TheSidebar},
         data: function () {
             return {
                 isSlideMenuActive: false,

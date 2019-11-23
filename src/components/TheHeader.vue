@@ -1,7 +1,7 @@
 <template>
     <!-- right part of the page, presumably containing information
         about currently chosen project -->
-    <div id="right-column" @click="hideSlideMenu">
+    <div id="header-component" @click="hideSlideMenu">
         <header class="upper-part">
             <div class="upper-left">
                 <div class="logo" v-bind:style="{ backgroundImage: 'url(' + projectLogo + ')' }"></div>
@@ -19,7 +19,6 @@
                          v-bind:style="{ backgroundImage: 'url(' + item.userPic + ')' }">
                     </div>
                 </div>
-
                 <div class="share">Share</div>
                 <div class="chat">
                     <div class="chat-icon" v-bind:style="{ backgroundImage: 'url(' + chatIcon + ')' }"></div>
@@ -59,24 +58,19 @@
                     <span>Files</span>
                 </label>
             </div>
-            <div class="tab-content">
-                <TasksContainer/>
-                <div id="kanban-container" class="container"></div>
-                <ActivityContainer v-on:changeNotificationCounter="changeNotificationCounter($event)"/>
-                <div id="calendar-container" class="container"></div>
-                <div id="files-container" class="container"></div>
-            </div>
+
+            <TheContent v-on:change-notification-counter="changeNotificationCounter($event)"/>
+
         </div>
     </div> <!-- right part of the page ends here. -->
 </template>
 
 <script>
-    import TasksContainer from "./TasksContainer";
-    import ActivityContainer from "./ActivityContainer";
+    import TheContent from "./TheContent";
 
     export default {
-        name: "RightColumn",
-        components: {TasksContainer, ActivityContainer},
+        name: "TheHeader",
+        components: {TheContent},
         data: function () {
             return {
                 projectLogo: "images/Shapes@2x.png",
@@ -91,7 +85,7 @@
         },
         methods: {
             changeNotificationCounter: function (index) {
-                this.$emit('changeNotificationCounter', index);
+                this.$emit('change-notification-counter', index);
             },
             hideSlideMenu: function () {
                 this.$emit('uncheckCheckbox');
@@ -103,7 +97,7 @@
 
 <style scoped>
 
-    #right-column {
+    #header-component {
         height: 100%;
         margin-left: 270px;
         display: -webkit-box;
@@ -365,51 +359,10 @@
         margin-left: 27px;
     }
 
-    .tab-content {
-        display: -webkit-box;
-        display: flex;
-        height: 100%;
-        width: 100%;
-        background: #eeebe5;
-        -webkit-box-pack: center;
-        justify-content: center;
-        position: relative;
-    }
-
-    .container {
-        display: none;
-        background: #FFFFFF;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        flex-direction: column;
-        width: 50.7vw;
-        height: 67.4vh;
-        border-radius: 8px;
-        position: absolute;
-        top: 30px;
-        left: 50%;
-        -webkit-transform: translate(-50%);
-        transform: translate(-50%);
-        box-sizing: border-box;
-        padding: 35px 30px;
-        overflow-y: auto;
-    }
-
-    @media screen and (min-aspect-ratio: 1500/927) {
-        .container {
-            width: 60vw;
-        }
-    }
-
     @media screen and (max-aspect-ratio: 980/927) {
-        #right-column {
+        #header-component {
             margin-left: 0;
             width: 100%;
-        }
-
-        .container {
-            width: 80%;
-            height: 90%;
         }
     }
 
@@ -513,6 +466,7 @@
             left: 3.3vw;
             width: 3.5vw;
             height: 3.5vw;
+
         }
 
         .chat span {
@@ -550,23 +504,6 @@
             opacity: 1;
             border-bottom: 0.435vw #FFC200 solid;
             padding-bottom: 2.065vw;
-        }
-
-        .tab-content {
-            box-sizing: border-box;
-            padding: 5vw 5vw;
-        }
-
-        .container {
-            position: relative;
-            left: 0;
-            top: 50%;
-            -webkit-transform: translateY(-50%);
-            transform: translateY(-50%);
-            border-radius: 1.75vw;
-            width: 98%;
-            height: 98%;
-            padding: 5.62vw 4.54vw;
         }
 
     }
