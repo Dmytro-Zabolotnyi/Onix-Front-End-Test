@@ -1,191 +1,174 @@
-<template>
+<template lang="pug">
+  .tab-content
+    #tasks-container.container
+      .tasks
+        .day
+        ul
+          li(v-for="task in tasks" v-bind:key="task.id")
+            span {{ task.name }}
+            span {{ task.description }}
+            span {{ task.deadline }}
 
-    <div class="tab-content">
-        <div id="tasks-container" class="container">
-            <div class="tasks">
-                <div class="day"></div>
-                <ul>
-                    <li v-for="task in tasks" v-bind:key="task.id">
-                        <span>{{ task.name }}</span>
-                        <span>{{ task.description }}</span>
-                        <span>{{ task.deadline }}</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
+    #kanban-container.container
 
-        <div id="kanban-container" class="container"></div>
+    #activity-container.container
+      .day
+      .activities
+        .activity(v-for="activity of activities" v-bind:key="activity.id")
+          .activity-icon(
+            v-bind:style="{'background-color': activity.icon.backgroundColor,\
+            'background-image': 'url(' + activity.icon.imagePath + ')'}"
+          )
+          .activity-content
+            span.activity-text {{ activity.content.text }}
+            .activity-attachments
+              .text-attachments(v-if="activity.content.attachments.textsAttached.length > 0")
+                span.text-attachment(
+                  v-for="(text) of activity.content.attachments.textsAttached" v-bind:key="text.id"
+                ) {{ text.textAttached }}
+              .image-attachments(v-if="activity.content.attachments.imagesAttached.length > 0")
+                .image-attachment(
+                  v-bind:style="{ backgroundImage: 'url(' + image.imagePath + ')' }"
+                  v-for="(image, index) of activity.content.attachments.imagesAttached"
+                  v-bind:key="image.id"
+                  @click="addOnClickEvent(index)")
+          .activity-time {{ activity.time }}
 
-        <div id="activity-container" class="container">
-            <div class="day"></div>
-            <div class="activities">
-                <div class="activity" v-for="activity of activities" v-bind:key="activity.id">
-                    <div
-                            class="activity-icon"
-                            v-bind:style="{
-                            'background-color': activity.icon.backgroundColor,
-                            'background-image': 'url(' + activity.icon.imagePath + ')'
-                        }">
-                    </div>
-                    <div class="activity-content">
-                        <span class="activity-text">{{ activity.content.text }}</span>
-                        <div class="activity-attachments">
-                            <div class="text-attachments" v-if="activity.content.attachments.textsAttached.length > 0">
-                            <span
-                                    class="text-attachment"
-                                    v-for="(text) of activity.content.attachments.textsAttached" v-bind:key="text.id">
-                                {{ text.textAttached }}
-                            </span>
-                            </div>
-                            <div class="image-attachments" v-if="activity.content.attachments.imagesAttached.length > 0">
-                                <div class="image-attachment"
-                                     v-bind:style="{ backgroundImage: 'url(' + image.imagePath + ')' }"
-                                     v-for="(image, index) of activity.content.attachments.imagesAttached"
-                                     v-bind:key="image.id"
-                                     @click="addOnClickEvent(index)">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="activity-time">{{ activity.time }}</div>
-                </div>
-            </div>
-        </div>
-
-        <div id="calendar-container" class="container"></div>
-        <div id="files-container" class="container"></div>
-    </div>
-
+    #calendar-container.container
+    #files-container.container
 </template>
 
-<script>
-    export default {
-        name: "TheContent",
-        data: function () {
-            return {
-                tasks: [
-                    {
-                        name: 'Teeth',
-                        description: 'Take a toothbrush and make your breath fresh.',
-                        deadline: '6:35 AM'
-                    },
-                    {
-                        name: 'Dog',
-                        description: 'Pet your dog and take it for a morning jog.',
-                        deadline: '7:10 AM'
-                    },
-                    {
-                        name: 'Shower',
-                        description: 'Give yourself a pleasure of a morning shower.',
-                        deadline: '7:20 AM'
-                    },
-                    {
-                        name: 'Breakfast',
-                        description: 'Cook and eat some bacon and eggs.',
-                        deadline: '7:50 AM'
-                    },
-                    {
-                        name: 'Car',
-                        description: 'Grab your keys, head to the car and leave to work.',
-                        deadline: '8:20 AM'
-                    },
-                    {
-                        name: 'Work',
-                        description: 'Be a good pal and make something worthy today.',
-                        deadline: '6:00 PM'
-                    },
-                    {
-                        name: 'Date',
-                        description: 'Have a good time with a beautiful woman.',
-                        deadline: '9:00 PM'
-                    },
-                    {
-                        name: 'Home',
-                        description: "Bring yourself home. And take your beautiful woman with you. She's your wife, after all.",
-                        deadline: '9:45 PM'
-                    },
-                    {
-                        name: 'Evening',
-                        description: "You're a big boy, come up with something.",
-                        deadline: '11:30 PM'
-                    },
-                    {
-                        name: 'Teeth',
-                        description: "Your dentist told you to brush your teeth twice a day, didn't he?",
-                        deadline: '11:35 PM'
-                    },
-                    {
-                        name: 'Sleep',
-                        description: 'It was a good day, time to let it go and have some sleep.',
-                        deadline: '11:40 PM'
-                    }
-                ],
-                activities: [
-                    {
-                        icon: {
-                            imagePath: "images/toolbarButton-download1.svg",
-                            backgroundColor: "#E3EFFF"
-                        },
-                        content: {
-                            text: "Darika Samak uploaded 4 files on An option to search in " +
-                                "current projects or in all projects",
-                            attachments: {
-                                imagesAttached: [
-                                    {imagePath: "images/attached-pic1.jpg"},
-                                    {imagePath: "images/attached-pic2.jpg"},
-                                    {imagePath: "images/attached-pic3.jpg"},
-                                    {imagePath: "images/attached-pic4.jpg"}
-                                ],
-                                textsAttached: []
-                            }
-                        },
-                        time: "6:02 PM"
-                    },
-                    {
-                        icon: {
-                            imagePath: "images/square-speech-bubble-svgrepo-com.svg",
-                            backgroundColor: "#FFF8DD"
-                        },
-                        content: {
-                            text: "Emilee Simchenko commented on Account for teams and " +
-                                "personal in bottom style",
-                            attachments: {
-                                imagesAttached: [],
-                                textsAttached: [
-                                    {
-                                        textAttached: "During a project build, it is necessary to evaluate " +
-                                            "the product design and development against project " +
-                                            "requirements and outcomes"
-                                    }
-                                ]
+<script lang="ts">
+import Vue from 'vue';
 
-                            }
-                        },
-                        time: "7:32 PM"
-                    },
-                    {
-                        icon: {
-                            imagePath: "images/Icon@3x.svg",
-                            backgroundColor: "#CEF9C6"
-                        },
-                        content: {
-                            text: "Darika Samak mark as done Listing on Product Hunt so that we can reach as many potential users",
-                            attachments: {
-                                imagesAttached: [],
-                                textsAttached: []
-                            }
-                        },
-                        time: "8:40 PM"
-                    }
-                ]
-            }
+interface TaskInterface {
+  name: string;
+  description: string;
+  deadline: string;
+}
+
+export default class TheContent extends Vue {
+  tasks: TaskInterface[] = [
+    {
+      name: 'Teeth',
+      description: 'Take a toothbrush and make your breath fresh.',
+      deadline: '6:35 AM',
+    },
+    {
+      name: 'Dog',
+      description: 'Pet your dog and take it for a morning jog.',
+      deadline: '7:10 AM',
+    },
+    {
+      name: 'Shower',
+      description: 'Give yourself a pleasure of a morning shower.',
+      deadline: '7:20 AM',
+    },
+    {
+      name: 'Breakfast',
+      description: 'Cook and eat some bacon and eggs.',
+      deadline: '7:50 AM',
+    },
+    {
+      name: 'Car',
+      description: 'Grab your keys, head to the car and leave to work.',
+      deadline: '8:20 AM',
+    },
+    {
+      name: 'Work',
+      description: 'Be a good pal and make something worthy today.',
+      deadline: '6:00 PM',
+    },
+    {
+      name: 'Date',
+      description: 'Have a good time with a beautiful woman.',
+      deadline: '9:00 PM',
+    },
+    {
+      name: 'Home',
+      description: "Bring yourself home. And take your beautiful woman with you. She's your wife, after all.",
+      deadline: '9:45 PM',
+    },
+    {
+      name: 'Evening',
+      description: "You're a big boy, come up with something.",
+      deadline: '11:30 PM',
+    },
+    {
+      name: 'Teeth',
+      description: "Your dentist told you to brush your teeth twice a day, didn't he?",
+      deadline: '11:35 PM',
+    },
+    {
+      name: 'Sleep',
+      description: 'It was a good day, time to let it go and have some sleep.',
+      deadline: '11:40 PM',
+    },
+  ];
+
+  activities = [
+    {
+      icon: {
+        imagePath: 'images/toolbarButton-download1.svg',
+        backgroundColor: '#E3EFFF',
+      },
+      content: {
+        text: 'Darika Samak uploaded 4 files on An option to search in '
+                            + 'current projects or in all projects',
+        attachments: {
+          imagesAttached: [
+            { imagePath: 'images/attached-pic1.jpg' },
+            { imagePath: 'images/attached-pic2.jpg' },
+            { imagePath: 'images/attached-pic3.jpg' },
+            { imagePath: 'images/attached-pic4.jpg' },
+          ],
+          textsAttached: [],
         },
-        methods: {
-            addOnClickEvent: function (index) {
-                this.$emit('change-notification-counter', index);
-            }
-        }
-    }
+      },
+      time: '6:02 PM',
+    },
+    {
+      icon: {
+        imagePath: 'images/square-speech-bubble-svgrepo-com.svg',
+        backgroundColor: '#FFF8DD',
+      },
+      content: {
+        text: 'Emilee Simchenko commented on Account for teams and '
+                            + 'personal in bottom style',
+        attachments: {
+          imagesAttached: [],
+          textsAttached: [
+            {
+              textAttached: 'During a project build, it is necessary to evaluate '
+                                        + 'the product design and development against project '
+                                        + 'requirements and outcomes',
+            },
+          ],
+
+        },
+      },
+      time: '7:32 PM',
+    },
+    {
+      icon: {
+        imagePath: 'images/Icon@3x.svg',
+        backgroundColor: '#CEF9C6',
+      },
+      content: {
+        text: 'Darika Samak mark as done Listing on Product Hunt so that we can reach as many potential users',
+        attachments: {
+          imagesAttached: [],
+          textsAttached: [],
+        },
+      },
+      time: '8:40 PM',
+    },
+  ];
+
+  addOnClickEvent(index: number) {
+    this.$emit('change-notification-counter', index);
+  }
+}
 </script>
 
 <style scoped>

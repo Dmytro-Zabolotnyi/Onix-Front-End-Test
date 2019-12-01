@@ -1,64 +1,67 @@
-<template>
-    <div id="app">
-        <input
-                type="checkbox"
-                id="slide-menu-checkbox"
-                v-model="isSlideMenuActive"
-        >
-        <label
-                id="slide-menu-label"
-                for="slide-menu-checkbox"
-                v-bind:style="{ backgroundImage: 'url(' + slideMenuLabelIcon + ')' }">
-        </label>
-        <TheHeader
-                v-on:change-notification-counter="changeNotificationCounter($event)"
-                v-on:uncheckCheckbox="hideSlideMenu"
-        />
-        <TheSidebar v-bind:notificationCounter="notificationCounter"/>
-    </div>
+<template lang="pug">
+  #app
+    input#slide-menu-checkbox(type="checkbox", v-model="isSlideMenuActive")
+    label#slide-menu-label(
+      for="slide-menu-checkbox"
+      v-bind:style="{ backgroundImage: 'url(' + slideMenuLabelIcon + ')' }"
+    )
+
+    TheHeader(
+      v-on:change-notification-counter="changeNotificationCounter($event)"
+      v-on:uncheckCheckbox="hideSlideMenu"
+    )
+
+    TheSidebar(v-bind:notificationCounter="notificationCounter")
 </template>
 
-<script>
-    import TheHeader from "./components/TheHeader";
-    import TheSidebar from "./components/TheSidebar";
+<script lang="ts">
+import Vue from 'vue';
+import Component from 'vue-class-component';
+import TheHeader from './components/TheHeader.vue';
+import TheSidebar from './components/TheSidebar.vue';
 
-    export default {
-        name: 'app',
-        components: {TheHeader, TheSidebar},
-        data: function () {
-            return {
-                isSlideMenuActive: false,
-                slideMenuLabelIcon: "images/chevron-right.svg",
-                notificationCounter: 3
-            }
-        },
-        methods: {
-            changeNotificationCounter: function (index) {
-                this.notificationCounter = index;
-            },
-            hideSlideMenuOnResize: function () {
-                if ((window.innerWidth / window.innerHeight) > (980 / 927)) {
-                    if (this.isSlideMenuActive) {
-                        this.isSlideMenuActive = !this.isSlideMenuActive;
-                    }
-                }
-            },
-            hideSlideMenu: function () {
-                if (this.isSlideMenuActive) {
-                    this.isSlideMenuActive = !this.isSlideMenuActive;
-                }
-            }
-        },
-        mounted: function () {
-            this.$nextTick(function () {
-                window.addEventListener('resize', this.hideSlideMenuOnResize);
-                this.hideSlideMenuOnResize();
-            })
-        },
-        beforeDestroy: function () {
-            window.removeEventListener('resize', this.hideSlideMenuOnResize)
-        }
+@Component({
+  components: { TheHeader, TheSidebar },
+})
+
+export default class TheLayout extends Vue {
+  isSlideMenuActive: boolean = false;
+
+  slideMenuLabelIcon: string = 'images/chevron-right.svg';
+
+  notificationCounter: number = 3;
+
+  changeNotificationCounter(index: number) {
+    this.notificationCounter = index;
+  }
+
+  hideSlideMenuOnResize() {
+    if ((window.innerWidth / window.innerHeight) > (980 / 927)) {
+      if (this.isSlideMenuActive) {
+        this.isSlideMenuActive = !this.isSlideMenuActive;
+      }
     }
+  }
+
+  hideSlideMenu() {
+    if (this.isSlideMenuActive) {
+      this.isSlideMenuActive = !this.isSlideMenuActive;
+    }
+  }
+
+  mounted() {
+    this.$nextTick(function listener() {
+      // noinspection JSPotentiallyInvalidUsageOfClassThis
+      window.addEventListener('resize', this.hideSlideMenuOnResize);
+      // noinspection JSPotentiallyInvalidUsageOfClassThis
+      this.hideSlideMenuOnResize();
+    });
+  }
+
+  beforeDestroy() {
+    window.removeEventListener('resize', this.hideSlideMenuOnResize);
+  }
+}
 </script>
 
 <style>
