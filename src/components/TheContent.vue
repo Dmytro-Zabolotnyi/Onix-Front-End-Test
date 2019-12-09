@@ -1,543 +1,145 @@
 <template lang="pug">
-  .tab-content
-    #tasks-container.container
-      .tasks
-        .day
-        ul
-          li(v-for="task in tasks" v-bind:key="task.id")
-            span {{ task.name }}
-            span {{ task.description }}
-            span {{ task.deadline }}
-
-    #kanban-container.container
-
-    #activity-container.container
-      .day
-      .activities
-        .activity(v-for="activity of activities" v-bind:key="activity.id")
-          .activity-icon(
-            v-bind:style="{'background-color': activity.icon.backgroundColor,\
-            'background-image': 'url(' + activity.icon.imagePath + ')'}"
-          )
-          .activity-content
-            span.activity-text {{ activity.content.text }}
-            .activity-attachments
-              .text-attachments(v-if="activity.content.attachments.textsAttached.length > 0")
-                span.text-attachment(
-                  v-for="(text) of activity.content.attachments.textsAttached" v-bind:key="text.id"
-                ) {{ text.textAttached }}
-              .image-attachments(v-if="activity.content.attachments.imagesAttached.length > 0")
-                .image-attachment(
-                  v-bind:style="{ backgroundImage: 'url(' + image.imagePath + ')' }"
-                  v-for="(image, index) of activity.content.attachments.imagesAttached"
-                  v-bind:key="image.id"
-                  @click="addOnClickEvent(index)")
-          .activity-time {{ activity.time }}
-
-    #calendar-container.container
-    #files-container.container
+  .tabs
+    .tab-labels
+      .label-container#tasks-label-container
+        router-link.link(to='/tasks') Tasks
+      .label-container#kanban-label-container
+        router-link.link(to='/kanban') Kanban
+      .label-container#activity-label-container
+        router-link.link(to='/activity') Activity
+      .label-container#calendar-label-container
+        router-link.link(to='/calendar') Calendar
+      .label-container#files-label-container
+        router-link.link(to='/files') Files
+    .tab-content
+      router-view(v-on:change-notification-counter="changeNotificationCounter($event)")
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import Component from 'vue-class-component';
 
-interface TaskInterface {
-  name: string;
-  description: string;
-  deadline: string;
-}
-
+@Component({
+  name: 'TheContent',
+})
 export default class TheContent extends Vue {
-  tasks: TaskInterface[] = [
-    {
-      name: 'Teeth',
-      description: 'Take a toothbrush and make your breath fresh.',
-      deadline: '6:35 AM',
-    },
-    {
-      name: 'Dog',
-      description: 'Pet your dog and take it for a morning jog.',
-      deadline: '7:10 AM',
-    },
-    {
-      name: 'Shower',
-      description: 'Give yourself a pleasure of a morning shower.',
-      deadline: '7:20 AM',
-    },
-    {
-      name: 'Breakfast',
-      description: 'Cook and eat some bacon and eggs.',
-      deadline: '7:50 AM',
-    },
-    {
-      name: 'Car',
-      description: 'Grab your keys, head to the car and leave to work.',
-      deadline: '8:20 AM',
-    },
-    {
-      name: 'Work',
-      description: 'Be a good pal and make something worthy today.',
-      deadline: '6:00 PM',
-    },
-    {
-      name: 'Date',
-      description: 'Have a good time with a beautiful woman.',
-      deadline: '9:00 PM',
-    },
-    {
-      name: 'Home',
-      description: "Bring yourself home. And take your beautiful woman with you. She's your wife, after all.",
-      deadline: '9:45 PM',
-    },
-    {
-      name: 'Evening',
-      description: "You're a big boy, come up with something.",
-      deadline: '11:30 PM',
-    },
-    {
-      name: 'Teeth',
-      description: "Your dentist told you to brush your teeth twice a day, didn't he?",
-      deadline: '11:35 PM',
-    },
-    {
-      name: 'Sleep',
-      description: 'It was a good day, time to let it go and have some sleep.',
-      deadline: '11:40 PM',
-    },
-  ];
-
-  activities = [
-    {
-      icon: {
-        imagePath: 'images/toolbarButton-download1.svg',
-        backgroundColor: '#E3EFFF',
-      },
-      content: {
-        text: 'Darika Samak uploaded 4 files on An option to search in '
-                            + 'current projects or in all projects',
-        attachments: {
-          imagesAttached: [
-            { imagePath: 'images/attached-pic1.jpg' },
-            { imagePath: 'images/attached-pic2.jpg' },
-            { imagePath: 'images/attached-pic3.jpg' },
-            { imagePath: 'images/attached-pic4.jpg' },
-          ],
-          textsAttached: [],
-        },
-      },
-      time: '6:02 PM',
-    },
-    {
-      icon: {
-        imagePath: 'images/square-speech-bubble-svgrepo-com.svg',
-        backgroundColor: '#FFF8DD',
-      },
-      content: {
-        text: 'Emilee Simchenko commented on Account for teams and '
-                            + 'personal in bottom style',
-        attachments: {
-          imagesAttached: [],
-          textsAttached: [
-            {
-              textAttached: 'During a project build, it is necessary to evaluate '
-                                        + 'the product design and development against project '
-                                        + 'requirements and outcomes',
-            },
-          ],
-
-        },
-      },
-      time: '7:32 PM',
-    },
-    {
-      icon: {
-        imagePath: 'images/Icon@3x.svg',
-        backgroundColor: '#CEF9C6',
-      },
-      content: {
-        text: 'Darika Samak mark as done Listing on Product Hunt so that we can reach as many potential users',
-        attachments: {
-          imagesAttached: [],
-          textsAttached: [],
-        },
-      },
-      time: '8:40 PM',
-    },
-  ];
-
-  addOnClickEvent(index: number) {
+  changeNotificationCounter(index: number) {
     this.$emit('change-notification-counter', index);
   }
 }
 </script>
 
 <style scoped>
+  .tab-content {
+    display: -webkit-box;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    background: #eeebe5;
+    -webkit-box-pack: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .tabs {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .label-container a {
+    display: block;
+    font-size: 16px;
+    line-height: 19px;
+    color: #131313;
+    opacity: 0.7;
+    box-sizing: border-box;
+    height: min-content;
+  }
+
+  .label-container a:hover {
+    cursor: pointer;
+    opacity: 1.0;
+  }
+
+  .label-container .router-link-active {
+    opacity: 1;
+    border-bottom: 2px #FFC200 solid;
+    height: 100%;
+  }
+
+  /*noinspection CssInvalidPropertyValue*/
+  .tab-labels {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    flex-direction: row;
+    background: #FFFFFF;
+    padding-top: 18px;
+    min-height: 35px;
+  }
+
+  .tab-labels .label-container {
+    display: block;
+    -webkit-box-align: center;
+    align-items: center;
+    height: 100%;
+    user-select: none;
+  }
+
+  #tasks-label-container {
+    margin-left: 30px;
+  }
+
+  #kanban-label-container {
+    margin-left: 32px;
+  }
+
+  #activity-label-container {
+    margin-left: 27px;
+  }
+
+  #calendar-label-container {
+    margin-left: 31px;
+  }
+
+  #files-label-container {
+    margin-left: 27px;
+  }
+
+  @media screen and (max-aspect-ratio: 1/2), (max-aspect-ratio: 2/3) and (max-width: 415px) {
     .tab-content {
-        display: -webkit-box;
-        display: flex;
-        height: 100%;
-        width: 100%;
-        background: #eeebe5;
-        -webkit-box-pack: center;
-        justify-content: center;
-        position: relative;
+      box-sizing: border-box;
+      padding: 5vw 5vw;
     }
 
-    .container {
-        display: none;
-        background: #FFFFFF;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        flex-direction: column;
-        width: 50.7vw;
-        height: 67.4vh;
-        border-radius: 8px;
-        position: absolute;
-        top: 30px;
-        left: 50%;
-        -webkit-transform: translate(-50%);
-        transform: translate(-50%);
-        box-sizing: border-box;
-        padding: 35px 30px;
-        overflow-y: auto;
+    .tab-labels {
+      height: min-content;
+      min-height: unset;
+      padding-top: 2.5vw;
     }
 
-    .day {
-        margin-bottom: 2px;
+    .tab-labels .label-container {
+      height: 7vw;
     }
 
-    .day::before {
-        content: "TODAY";
-        opacity: 0.5;
-        font-size: 14px;
-        color: #131313;
+    .label-container a {
+      font-size: 3.5vw;
+      line-height: 4.5vw;
     }
 
-
-    .tasks ul li {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        height: min-content;
-        width: 100%;
-        margin: 5px 0;
-        border-radius: 8px;
-        box-sizing: border-box;
+    #tasks-label-container {
+      margin-left: 5vw;
     }
 
-    .tasks ul li:first-child {
-        margin-top: 30px;
+    #kanban-label-container, #activity-label-container,
+    #calendar-label-container, #files-label-container {
+      margin-left: 7vw;
     }
 
-    .tasks ul li:last-child {
-        margin-bottom: 0;
+    .label-container .router-link-active {
+      border-bottom: 0.435vw #FFC200 solid;
     }
-
-    .tasks span {
-        white-space: normal;
-        font-size: 15px;
-        line-height: 18px;
-        color: #131313;
-        width: 100%;
-    }
-
-    .tasks span:nth-child(1), .tasks span:nth-child(3) {
-        font-size: 14px;
-        color: #131313;
-        line-height: 20px;
-    }
-
-    .tasks span:nth-child(2) {
-        background: #F7F6F3;
-        border-radius: 10px;
-        box-sizing: border-box;
-        padding: 20px 20px;
-    }
-
-    .tasks span:nth-child(3) {
-        align-self: flex-end;
-        text-align: right;
-        opacity: 0.7;
-        white-space: nowrap;
-    }
-
-
-    .activities {
-        display: -webkit-box;
-        display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: reverse;
-        flex-direction: column-reverse;
-        align-content: flex-start;
-    }
-
-    .activity {
-        display: -webkit-box;
-        display: flex;
-        -webkit-box-orient: horizontal;
-        -webkit-box-direction: normal;
-        flex-direction: row;
-        margin-top: 30px;
-        -webkit-box-pack: justify;
-        justify-content: space-between;
-    }
-
-    .activity-icon {
-        display: block;
-        min-width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        margin-right: 20px;
-        background-size: 12px 12px;
-        background-repeat: no-repeat;
-        background-position: center;
-    }
-
-    .activity-content {
-        display: -webkit-box;
-        display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
-        flex-direction: column;
-        position: relative;
-        width: 100%;
-        margin-right: 5px;
-    }
-
-    .activity-text {
-        display: block;
-        position: relative;
-        width: 85%;
-    }
-
-    .activity-time {
-        display: block;
-        position: relative;
-        min-width: 55px;
-        height: 20px;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
-
-    .activity-text:nth-child(n) {
-        font-size: 16px;
-        color: #131313;
-        line-height: 20px;
-    }
-
-    .activity:nth-child(n) .activity-time {
-        opacity: 0.7;
-        font-size: 14px;
-        color: #131313;
-        line-height: 20px;
-    }
-
-    .text-attachments {
-        display: -webkit-box;
-        display: flex;
-        width: 100%;
-        -webkit-box-orient: vertical;
-        flex-direction: column;
-        flex-wrap: wrap;
-        margin-top: 20px;
-    }
-
-    .image-attachments {
-        display: -webkit-box;
-        display: flex;
-        width: 100%;
-        -webkit-box-orient: horizontal;
-        -webkit-box-direction: normal;
-        flex-direction: row;
-        flex-wrap: wrap;
-        margin-top: 20px;
-    }
-
-    .image-attachment {
-        display: block;
-        width: 100px;
-        height: 100px;
-        border-radius: 8px;
-        cursor: pointer;
-        background-color: #202020;
-        background-size: 100%;
-        -webkit-transition: box-shadow 0.3s;
-        transition: box-shadow 0.3s;
-    }
-
-    .image-attachment:nth-child(n) {
-        margin-bottom: 10px;
-        margin-right: 10px;
-    }
-
-    .image-attachment:hover {
-        box-shadow: 0 0 5px #202020;
-        border-bottom: 4px #ffc200 solid;
-        margin-bottom: 6px;
-    }
-
-    .text-attachment {
-        display: -webkit-box;
-        display: flex;
-        width: 100%;
-        background: #F7F6F3;
-        border-radius: 10px;
-        box-sizing: border-box;
-        padding: 20px 20px;
-        font-size: 15px;
-        line-height: 18px;
-        color: #131313;
-    }
-
-    .text-attachment:nth-child(n+2) {
-        margin-top: 10px;
-    }
-
-    .text-attachments ~ .image-attachments {
-        margin-top: 10px;
-    }
-
-    @media screen and (min-aspect-ratio: 1500/927) {
-        .container {
-            width: 60vw;
-        }
-    }
-
-    @media screen and (max-aspect-ratio: 980/927) {
-        .container {
-            width: 80%;
-            height: 90%;
-        }
-    }
-
-    @media screen and (max-aspect-ratio: 1/2), (max-aspect-ratio: 2/3) and (max-width: 415px) {
-        .tab-content {
-            box-sizing: border-box;
-            padding: 5vw 5vw;
-        }
-
-        .container {
-            position: relative;
-            left: 0;
-            top: 50%;
-            -webkit-transform: translateY(-50%);
-            transform: translateY(-50%);
-            border-radius: 1.75vw;
-            width: 98%;
-            height: 98%;
-            padding: 5.62vw 4.54vw;
-        }
-
-        .day {
-            margin-bottom: 0.65vw;
-        }
-
-        .day::before {
-            font-size: 3vw;
-        }
-
-
-        .tasks ul li:first-child {
-            margin-top: 6.5vw;
-        }
-
-        .tasks span {
-            font-size: 3.5vw;
-            line-height: 4.5vw;
-        }
-
-        .tasks span:nth-child(1) {
-            flex-basis: 10vw;
-        }
-
-        .tasks span:nth-child(2) {
-            border-radius: 2.175vw;
-            padding: 4.35vw 4.35vw;
-        }
-
-        .tasks span:nth-child(1), .tasks span:nth-child(3) {
-            font-size: 3vw;
-            line-height: 4vw;
-        }
-
-        .tasks span:nth-child(3) {
-            white-space: normal;
-        }
-
-
-        .activity {
-            margin-top: 6.54vw;
-        }
-
-        .activity-icon {
-            min-width: 8.71vw;
-            height: 8.71vw;
-            margin-right: 4.355vw;
-            background-size: 2.59vw 2.59vw;
-        }
-
-        .activity-content {
-            margin-right: 1.4vw;
-        }
-
-        /*noinspection CssInvalidPropertyValue*/
-        .activity-time {
-            min-width: -webkit-min-content;
-            min-width: -moz-min-content;
-            min-width: min-content;
-            height: -webkit-min-content;
-            height: -moz-min-content;
-            height: min-content;
-        }
-
-        .text-attachments, .image-attachments {
-            margin-top: 4.35vw;
-        }
-
-        .text-attachments ~ .image-attachments {
-            margin-top: 4.35vw;
-        }
-
-        .activity-text:nth-child(n) {
-            font-size: 3.5vw;
-            line-height: 4.5vw;
-        }
-
-        .activity:nth-child(n) .activity-time {
-            font-size: 3vw;
-            line-height: 4vw;
-        }
-
-        .image-attachment {
-            width: 21.79vw;
-            height: 21.79vw;
-            border-radius: 1.757vw;
-        }
-
-        .image-attachment:hover {
-            box-shadow: 0 0 1.75vw #202020;
-            border-bottom: 1vw #ffc200 solid;
-            margin-bottom: 1.18vw;
-        }
-
-        .image-attachment:nth-child(n) {
-            margin-bottom: 2.18vw;
-            margin-right: 2.18vw;
-        }
-
-        .text-attachment:nth-child(n) {
-            border-radius: 2.175vw;
-            padding: 4.35vw 4.35vw;
-            font-size: 3.26vw;
-            line-height: 4vw;
-        }
-
-        .text-attachment:nth-child(n+2) {
-            margin-top: 4.35vw;
-        }
-    }
-
+  }
 </style>

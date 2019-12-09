@@ -105,6 +105,10 @@ li {
     list-style: none;
 }
 
+a {
+    text-decoration: none;
+}
+
 /* ======================= end of reset ======================== */
 /* ============================================================= */
 /* ================= page styling starts here ================== */
@@ -136,10 +140,37 @@ body {
     pointer-events: none;
 }
 
-#tasks-radio:checked ~ .tab-content #tasks-container,
-#activity-radio:checked ~ .tab-content #activity-container {
+.container {
     display: -webkit-box;
     display: flex;
+    background: #FFFFFF;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    flex-direction: column;
+    width: 50.7vw;
+    height: 67.4vh;
+    border-radius: 8px;
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    -webkit-transform: translate(-50%);
+    transform: translate(-50%);
+    box-sizing: border-box;
+    padding: 35px 30px;
+    overflow-y: auto;
+}
+
+@media screen and (min-aspect-ratio: 1500/927) {
+    .container {
+        width: 60vw;
+    }
+}
+
+@media screen and (max-aspect-ratio: 980/927) {
+    .container {
+        width: 80%;
+        height: 90%;
+    }
 }
 
 @media screen and (max-aspect-ratio: 1/2), (max-aspect-ratio: 2/3) and (max-width: 415px) {
@@ -150,5 +181,17 @@ body {
 
     #slide-menu-checkbox:checked ~ #slide-menu-label {
         left: 55.4%;
+    }
+
+    .container {
+        position: relative;
+        left: 0;
+        top: 50%;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        border-radius: 1.75vw;
+        width: 98%;
+        height: 98%;
+        padding: 5.62vw 4.54vw;
     }
 }

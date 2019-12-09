@@ -6,10 +6,8 @@
       v-bind:style="{ backgroundImage: 'url(' + slideMenuLabelIcon + ')' }"
     )
 
-    TheHeader(
-      v-on:change-notification-counter="changeNotificationCounter($event)"
-      v-on:uncheckCheckbox="hideSlideMenu"
-    )
+    TheHeader(v-on:change-notification-counter="changeNotificationCounter($event)"
+      v-on:uncheckCheckbox="hideSlideMenu")
 
     TheSidebar(v-bind:notificationCounter="notificationCounter")
 </template>
@@ -21,6 +19,7 @@ import TheHeader from './components/TheHeader.vue';
 import TheSidebar from './components/TheSidebar.vue';
 
 @Component({
+  name: 'App',
   components: { TheHeader, TheSidebar },
 })
 

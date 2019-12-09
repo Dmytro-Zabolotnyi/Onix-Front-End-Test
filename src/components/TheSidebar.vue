@@ -16,7 +16,7 @@
         #completed-number {{ tasks.completedNumber }}
         .tasks-label
           span Completed Tasks
-      .open-tasks
+      .open-tasks(@click="openTasksTab()")
         #open-number {{ tasks.openNumber }}
         .tasks-label
           span Open Tasks
@@ -36,6 +36,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 
 @Component({
+  name: 'TheSidebar',
   props: {
     notificationCounter: {
       type: Number,
@@ -67,6 +68,12 @@ export default class TheSidebar extends Vue {
         this.tasks.openNumber -= 1;
         this.tasks.completedNumber += 1;
       }
+    }
+  }
+
+  openTasksTab() {
+    if (this.tasks.openNumber > 0) {
+      this.$router.push('/tasks').catch((error) => {});
     }
   }
 }
@@ -236,13 +243,13 @@ export default class TheSidebar extends Vue {
     margin-left: 19px;
   }
 
-  .completed-tasks {
+  .completed-tasks, .open-tasks {
     cursor: pointer;
     -webkit-transition: border 0.3s, background-color 0.3s, margin 0.3s, padding 0.3s;
     transition: border 0.3s, background-color 0.3s, margin 0.3s, padding 0.3s;
   }
 
-  .completed-tasks:hover {
+  .completed-tasks:hover, .open-tasks:hover {
     padding: 3px;
     margin-right: -6px;
     margin-bottom: -12px;
@@ -349,7 +356,7 @@ export default class TheSidebar extends Vue {
     color: #131313;
   }
 
-  @media screen and (max-aspect-ratio: 980/927) {
+  @media screen and (max-aspect-ratio: 980/927), (max-width: 980px)  {
     .sidebar {
       margin-left: -270px;
     }
@@ -433,7 +440,7 @@ export default class TheSidebar extends Vue {
       border-radius: 2vw;
     }
 
-    .completed-tasks:hover {
+    .completed-tasks:hover, .open-tasks:hover {
       padding: 1vw;
       margin-right: -2vw;
       margin-bottom: -3vw;

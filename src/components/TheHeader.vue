@@ -17,22 +17,8 @@
         .chat
           .chat-icon(v-bind:style="{ backgroundImage: 'url(' + chatIcon + ')' }")
           span Chat
-    .tabs
-      input#tasks-radio(type="radio" name="radio-button")
-      input#activity-radio(type="radio" name="radio-button" checked)
-      .tab-labels
-        .label-container#tasks-label-container
-          label.tab-label#tasks-radio-label(for="tasks-radio") Tasks
-        .label-container#kanban-label-container
-          label.tab-label#kanban-radio-label Kanban
-        .label-container#activity-label-container
-          label.tab-label#activity-radio-label(for="activity-radio") Activity
-        .label-container#calendar-label-container
-          label.tab-label#calendar-radio-label Calendar
-        .label-container#files-label-container
-          label.tab-label#files-radio-label Files
 
-      TheContent(v-on:change-notification-counter="changeNotificationCounter($event)")
+    TheContent(v-on:change-notification-counter="changeNotificationCounter($event)")
 </template>
 
 <script lang="ts">
@@ -41,6 +27,7 @@ import Component from 'vue-class-component';
 import TheContent from './TheContent.vue';
 
 @Component({
+  name: 'TheHeader',
   components: { TheContent },
 })
 export default class TheHeader extends Vue {
@@ -255,88 +242,14 @@ export default class TheHeader extends Vue {
     color: #FFC200;
   }
 
-  .tabs {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .tabs input {
-    display: none;
-  }
-
-  #tasks-radio:checked ~ .tab-labels #tasks-label-container,
-  #activity-radio:checked ~ .tab-labels #activity-label-container {
-    border-bottom: 2px #FFC200 solid;
-    padding-bottom: 12px;
-  }
-
-  #tasks-radio:checked ~ .tab-labels #tasks-radio-label,
-  #activity-radio:checked ~ .tab-labels #activity-radio-label {
-    opacity: 1;
-  }
-
-  /*noinspection CssInvalidPropertyValue*/
-  .tab-labels {
-    display: -webkit-box;
-    display: flex;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    flex-direction: row;
-    background: #FFFFFF;
-    padding-top: 18px;
-    min-height: 35px;
-  }
-
-  .tab-labels .label-container {
-    display: block;
-    font-size: 16px;
-    -webkit-box-align: center;
-    align-items: center;
-    line-height: 19px;
-    padding-bottom: 14px;
-    color: #131313;
-    border-bottom: none;
-    user-select: none;
-  }
-
-  .tab-labels label {
-    opacity: 0.7;
-  }
-
-  #tasks-radio-label:hover, #activity-radio-label:hover {
-    cursor: pointer;
-    opacity: 1.0;
-  }
-
-  #tasks-label-container {
-    margin-left: 30px;
-  }
-
-  #kanban-label-container {
-    margin-left: 32px;
-  }
-
-  #activity-label-container {
-    margin-left: 27px;
-  }
-
-  #calendar-label-container {
-    margin-left: 31px;
-  }
-
-  #files-label-container {
-    margin-left: 27px;
-  }
-
-  @media screen and (max-aspect-ratio: 980/927) {
+  @media screen and (max-aspect-ratio: 980/927), (max-width: 980px) {
     #header-component {
       margin-left: 0;
       width: 100%;
     }
   }
 
-  @media screen and (max-width: 710px), (max-aspect-ratio: 710/927) {
+  @media screen and (max-width: 710px), (max-aspect-ratio: 710/959) and (max-width: 710px) {
     .upper-part {
       min-height: unset;
       height: 95px;
@@ -443,39 +356,5 @@ export default class TheHeader extends Vue {
       right: 3.1vw;
       font-size: 3.1vw;
     }
-
-    .tab-labels {
-      height: min-content;
-      min-height: unset;
-      padding-top: 2.5vw;
-    }
-
-
-    .tab-labels .label-container {
-      height: min-content;
-      padding-bottom: 2.5vw;
-    }
-
-    .tab-labels label {
-      font-size: 3.5vw;
-      line-height: 4.5vw;
-    }
-
-    #tasks-label-container {
-      margin-left: 5vw;
-    }
-
-    #kanban-label-container, #activity-label-container,
-    #calendar-label-container, #files-label-container {
-      margin-left: 7vw;
-    }
-
-    #tasks-radio:checked ~ .tab-labels #tasks-label-container,
-    #activity-radio:checked ~ .tab-labels #activity-label-container {
-      opacity: 1;
-      border-bottom: 0.435vw #FFC200 solid;
-      padding-bottom: 2.065vw;
-    }
-
   }
 </style>
