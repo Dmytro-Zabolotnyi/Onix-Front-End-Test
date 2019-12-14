@@ -2,8 +2,8 @@
   #tasks-container.container
     .tasks
       form#new-task-container
+        span#header-span Enter new task and description:
         #new-task-name-container
-          span Enter new task and description:
           input#new-task-name(type="text", required="", placeholder='enter name...',
             v-model='newTask.name')
         #new-task-description-container
@@ -119,6 +119,13 @@ export default class TheTasksTab extends Vue {
     justify-content: space-between;
     height: min-content;
     width: 100%;
+  }
+
+  #header-span {
+    font-size: 14px;
+    color: #131313;
+    line-height: 20px;
+    margin-bottom: 5px;
   }
 
   #new-task-container input, #new-task-container textarea {
@@ -265,6 +272,12 @@ export default class TheTasksTab extends Vue {
       font-size: 3.1vw;
       line-height: 7vw;
       padding: 0 3.25vw;
+    }
+
+    #header-span {
+      font-size: 3.5vw;
+      line-height: 4.5vw;
+      margin-bottom: 1vw;
     }
 
     .tasks ul li:first-child {
