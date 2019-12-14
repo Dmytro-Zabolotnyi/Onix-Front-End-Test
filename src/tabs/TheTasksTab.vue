@@ -1,7 +1,7 @@
 <template lang="pug">
   #tasks-container.container
     .tasks
-      form#new-task-container
+      form#new-task-container(@submit.prevent="addNewTask")
         span#header-span Enter new task and description:
         #new-task-name-container
           input#new-task-name(type="text", required="", placeholder='enter name...',
@@ -9,7 +9,7 @@
         #new-task-description-container
           textarea#new-task-description(rows='3', required="", placeholder='enter description...',
             v-model="newTask.description")
-        button#new-task-add-button(type="submit", @click="addNewTask()") &#10003 Add
+        button#new-task-add-button(type="submit") &#10003 Add
       ul
         li(v-for="(task, index) in tasks" v-bind:key="task.id")
           .task-upper-row
@@ -65,16 +65,17 @@ export default class TheTasksTab extends Vue {
     },
   ];
 
-  addNewTask() {
-    if (this.newTask.name.length > 0 && this.newTask.description.length > 0) {
-      this.tasks.push({
-        name: this.newTask.name,
-        description: this.newTask.description,
-        deadline: TheTasksTab.getRandomTime(),
-      });
-      this.newTask.name = '';
-      this.newTask.description = '';
-    }
+  addNewTask(event: { target: { reset: () => void; }; }) {
+    this.tasks.push({
+      name: this.newTask.name,
+      description: this.newTask.description,
+      deadline: TheTasksTab.getRandomTime(),
+    });
+
+    this.newTask.name = '';
+    this.newTask.description = '';
+
+    event.target.reset();
   }
 
   deleteTask(index: number) {
