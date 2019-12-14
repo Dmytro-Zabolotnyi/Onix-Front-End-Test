@@ -127,6 +127,11 @@ body {
     height: 100%;
 }
 
+input, textarea {
+    font-family: Helvetica, sans-serif;
+    font-weight: normal;
+}
+
 #slide-menu-checkbox:checked ~ .sidebar {
     margin-left: 0;
 }

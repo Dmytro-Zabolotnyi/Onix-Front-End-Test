@@ -12,7 +12,8 @@
       .label-container#files-label-container
         router-link.link(to='/files') Files
     .tab-content
-      router-view(v-on:change-notification-counter="changeNotificationCounter($event)")
+      router-view(v-on:change-notification-counter="changeNotificationCounter($event)",
+      v-on:change-open-tasks-number="changeOpenTasksNumber($event)")
 </template>
 
 <script lang="ts">
@@ -25,6 +26,10 @@ import Component from 'vue-class-component';
 export default class TheContent extends Vue {
   changeNotificationCounter(index: number) {
     this.$emit('change-notification-counter', index);
+  }
+
+  changeOpenTasksNumber(openTasksNumber: number) {
+    this.$emit('change-open-tasks-number', openTasksNumber);
   }
 }
 </script>

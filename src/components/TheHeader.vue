@@ -18,7 +18,8 @@
           .chat-icon(v-bind:style="{ backgroundImage: 'url(' + chatIcon + ')' }")
           span Chat
 
-    TheContent(v-on:change-notification-counter="changeNotificationCounter($event)")
+    TheContent(v-on:change-notification-counter="changeNotificationCounter($event)"
+      v-on:change-open-tasks-number="changeOpenTasksNumber($event)")
 </template>
 
 <script lang="ts">
@@ -49,6 +50,10 @@ export default class TheHeader extends Vue {
 
   hideSlideMenu() {
     this.$emit('uncheckCheckbox');
+  }
+
+  changeOpenTasksNumber(openTasksNumber: number) {
+    this.$emit('change-open-tasks-number', openTasksNumber);
   }
 }
 </script>

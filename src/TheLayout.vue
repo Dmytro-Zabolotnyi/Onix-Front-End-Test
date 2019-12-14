@@ -7,9 +7,11 @@
     )
 
     TheHeader(v-on:change-notification-counter="changeNotificationCounter($event)"
-      v-on:uncheckCheckbox="hideSlideMenu")
+      v-on:uncheckCheckbox="hideSlideMenu",
+      v-on:change-open-tasks-number="changeOpenTasksNumber($event)")
 
-    TheSidebar(v-bind:notificationCounter="notificationCounter")
+    TheSidebar(v-bind:notificationCounter="notificationCounter",
+    v-bind:openTasksNumber="openTasksNumber")
 </template>
 
 <script lang="ts">
@@ -30,6 +32,8 @@ export default class TheLayout extends Vue {
 
   notificationCounter: number = 3;
 
+  openTasksNumber: number = 0;
+
   changeNotificationCounter(index: number) {
     this.notificationCounter = index;
   }
@@ -46,6 +50,10 @@ export default class TheLayout extends Vue {
     if (this.isSlideMenuActive) {
       this.isSlideMenuActive = !this.isSlideMenuActive;
     }
+  }
+
+  changeOpenTasksNumber(openTasksNumber: number) {
+    this.openTasksNumber = openTasksNumber;
   }
 
   mounted() {

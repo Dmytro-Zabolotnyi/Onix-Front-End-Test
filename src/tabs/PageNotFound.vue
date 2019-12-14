@@ -15,5 +15,9 @@ export default class PageNotFound extends Vue {
 </script>
 
 <style scoped>
-
+  @media screen and (max-aspect-ratio: 1/2), (max-aspect-ratio: 2/3) and (max-width: 415px) {
+    .container {
+      font-size: 3.5vw;
+    }
+  }
 </style>

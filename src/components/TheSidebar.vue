@@ -17,7 +17,7 @@
         .tasks-label
           span Completed Tasks
       .open-tasks(@click="openTasksTab()")
-        #open-number {{ tasks.openNumber }}
+        #open-number {{ openTasksNumber }}
         .tasks-label
           span Open Tasks
     .aside-menu
@@ -39,6 +39,9 @@ import Component from 'vue-class-component';
   name: 'TheSidebar',
   props: {
     notificationCounter: {
+      type: Number,
+    },
+    openTasksNumber: {
       type: Number,
     },
   },
