@@ -1,15 +1,15 @@
 <template lang="pug">
   #tasks-container.container
     .tasks
-      #new-task-container
+      form#new-task-container
         #new-task-name-container
           span Enter new task and description:
-          input#new-task-name(type="text", placeholder='enter name...',
+          input#new-task-name(type="text", required="", placeholder='enter name...',
             v-model='newTask.name')
         #new-task-description-container
-          textarea#new-task-description(rows='3', placeholder='enter description...',
+          textarea#new-task-description(rows='3', required="", placeholder='enter description...',
             v-model="newTask.description")
-      #new-task-add-button(@click="addNewTask()") &#10003 Add
+        button#new-task-add-button(type="submit", @click="addNewTask()") &#10003 Add
       ul
         li(v-for="(task, index) in tasks" v-bind:key="task.id")
           .task-upper-row
@@ -66,13 +66,15 @@ export default class TheTasksTab extends Vue {
   ];
 
   addNewTask() {
-    this.tasks.push({
-      name: this.newTask.name,
-      description: this.newTask.description,
-      deadline: TheTasksTab.getRandomTime(),
-    });
-    this.newTask.name = '';
-    this.newTask.description = '';
+    if (this.newTask.name.length > 0 && this.newTask.description.length > 0) {
+      this.tasks.push({
+        name: this.newTask.name,
+        description: this.newTask.description,
+        deadline: TheTasksTab.getRandomTime(),
+      });
+      this.newTask.name = '';
+      this.newTask.description = '';
+    }
   }
 
   deleteTask(index: number) {
@@ -117,7 +119,6 @@ export default class TheTasksTab extends Vue {
     justify-content: space-between;
     height: min-content;
     width: 100%;
-    margin-bottom: 10px;
   }
 
   #new-task-container input, #new-task-container textarea {
@@ -129,6 +130,7 @@ export default class TheTasksTab extends Vue {
 
   #new-task-container textarea {
     resize: none;
+    margin-bottom: 10px;
   }
 
   #new-task-add-button {
@@ -137,6 +139,7 @@ export default class TheTasksTab extends Vue {
     height: 30px;
     box-sizing: border-box;
     padding: 0 15px;
+    border: none;
     border-radius: 15px;
     background: #bcffa3;
     color: #108e1c;
