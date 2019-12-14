@@ -81,22 +81,15 @@ export default class TheTasksTab extends Vue {
 
   static getRandomTime() {
     const randomMinutes = Math.floor(Math.random() * 1440);
-    let hours: any = (Math.floor(randomMinutes / 60) % 12) + 1;
+    const hours: any = (Math.floor(randomMinutes / 60) % 12) + 1;
     let minutes: any = Math.floor(randomMinutes % 60);
     const ampm = (randomMinutes < 720) ? 'AM' : 'PM';
 
-    hours = TheTasksTab.formatNumber(hours);
-    minutes = TheTasksTab.formatNumber(minutes);
+    if (minutes < 10) {
+      minutes = `0${minutes}`;
+    }
 
     return (`${hours}:${minutes} ${ampm}`);
-  }
-
-  static formatNumber(number: any) {
-    if (number < 10) {
-      // eslint-disable-next-line no-param-reassign
-      number = `0${number}`;
-    }
-    return number;
   }
 
   get numberOfTasks() {
@@ -208,15 +201,20 @@ export default class TheTasksTab extends Vue {
   }
 
   #task-description, #task-deadline {
-    white-space: normal;
-    font-size: 15px;
-    line-height: 18px;
     color: #131313;
     width: 100%;
   }
 
+  #task-deadline {
+    white-space: normal;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
   #task-description {
     white-space: pre-wrap;
+    font-size: 15px;
+    line-height: 18px;
   }
 
   .tasks .task-delete-button {
