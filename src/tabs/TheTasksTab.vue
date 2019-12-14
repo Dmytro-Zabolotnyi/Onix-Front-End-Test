@@ -44,7 +44,7 @@ export default class TheTasksTab extends Vue {
   newTask: TaskInterface = {
     name: '',
     description: '',
-    deadline: '11:11 PM',
+    deadline: '',
   };
 
   tasks: TaskInterface[] = [
