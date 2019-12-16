@@ -2,12 +2,12 @@
   #tasks-container.container
     .tasks
       form#new-task-container(@submit.prevent="addNewTask")
-        span#header-span Enter new task and description:
         #new-task-name-container
-          input#new-task-name(type="text", required="", placeholder='enter name...',
+          input#new-task-name(type="text", required="", placeholder='enter new task name...',
             v-model='newTask.name')
         #new-task-description-container
-          textarea#new-task-description(rows='3', required="", placeholder='enter description...',
+          textarea#new-task-description(rows='3', required="",
+            placeholder='enter new task description...',
             v-model="newTask.description")
         button#new-task-add-button(type="submit") &#10003 Add
       ul
@@ -128,13 +128,6 @@ export default class TheTasksTab extends Vue {
     justify-content: space-between;
     height: min-content;
     width: 100%;
-  }
-
-  #header-span {
-    font-size: 14px;
-    color: #131313;
-    line-height: 20px;
-    margin-bottom: 5px;
   }
 
   #new-task-container input, #new-task-container textarea {
@@ -281,12 +274,6 @@ export default class TheTasksTab extends Vue {
       font-size: 3.1vw;
       line-height: 7vw;
       padding: 0 3.25vw;
-    }
-
-    #header-span {
-      font-size: 3.5vw;
-      line-height: 4.5vw;
-      margin-bottom: 1vw;
     }
 
     .tasks ul li:first-child {
