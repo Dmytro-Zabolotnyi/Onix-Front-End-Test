@@ -12,24 +12,34 @@
       .label-container#files-label-container
         router-link.link(to='/files') Files
     .tab-content
-      router-view(v-on:change-notification-counter="changeNotificationCounter($event)",
-      v-on:change-open-tasks-number="changeOpenTasksNumber($event)")
+      keep-alive
+        router-view(v-bind:isTaskClosed="isTaskClosed",
+          v-on:change-notification-counter="changeNotificationCounter($event)",
+          v-on:change-open-tasks-number="changeOpenTasksNumber($event)",
+          v-on:task-closed="taskClosed($event)")
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import {
+  Vue, Component, Prop,
+} from 'vue-property-decorator';
 
 @Component({
   name: 'TheContent',
 })
 export default class TheContent extends Vue {
+  @Prop(Boolean) isTaskClosed!:boolean;
+
   changeNotificationCounter(index: number) {
     this.$emit('change-notification-counter', index);
   }
 
   changeOpenTasksNumber(openTasksNumber: number) {
     this.$emit('change-open-tasks-number', openTasksNumber);
+  }
+
+  taskClosed() {
+    this.$emit('task-closed');
   }
 }
 </script>

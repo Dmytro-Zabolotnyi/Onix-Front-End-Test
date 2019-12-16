@@ -13,11 +13,11 @@
         .user-menu-shapes
     .task-stats
       .completed-tasks(@click="changeTasksCounter()")
-        #completed-number {{ tasks.completedNumber }}
+        #completed-number {{ this.completedTasksNumber }}
         .tasks-label
           span Completed Tasks
       .open-tasks(@click="openTasksTab()")
-        #open-number {{ openTasksNumber }}
+        #open-number {{ this.openTasksNumber }}
         .tasks-label
           span Open Tasks
     .aside-menu
@@ -32,26 +32,25 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import {
+  Vue, Component, Prop,
+} from 'vue-property-decorator';
 
 @Component({
   name: 'TheSidebar',
-  props: {
-    notificationCounter: {
-      type: Number,
-    },
-    openTasksNumber: {
-      type: Number,
-    },
-  },
 })
 export default class TheSidebar extends Vue {
+  @Prop(Number) openTasksNumber!: number;
+
+  @Prop(Number) notificationCounter !: number;
+
   logoIcon: string = 'images/Logo@3x.svg';
 
   companyName: string = 'PROJECTUS';
 
   searchIcon: string = 'images/Search@3x.svg';
+
+  completedTasksNumber: number = 372;
 
   user = {
     name: 'Jean Gonzales',
@@ -59,23 +58,19 @@ export default class TheSidebar extends Vue {
     picture: 'images/user-pic.png',
   };
 
-  tasks = {
-    completedNumber: 372,
-    openNumber: 11,
-  };
-
   changeTasksCounter() {
-    if (this.tasks.openNumber > 0) {
+    if (this.openTasksNumber > 0) {
+      this.$router.push('/tasks').catch((error) => {});
+
       // eslint-disable-next-line no-alert
       if (window.confirm('Are you sure you want to change the number of tasks?')) {
-        this.tasks.openNumber -= 1;
-        this.tasks.completedNumber += 1;
+        this.$emit('close-task');
       }
     }
   }
 
   openTasksTab() {
-    if (this.tasks.openNumber > 0) {
+    if (this.openTasksNumber > 0) {
       this.$router.push('/tasks').catch((error) => {});
     }
   }

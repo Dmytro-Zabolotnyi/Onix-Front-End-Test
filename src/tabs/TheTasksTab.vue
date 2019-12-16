@@ -20,8 +20,9 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import {
+  Vue, Component, Prop, Watch,
+} from 'vue-property-decorator';
 
 interface TaskInterface {
   name: string;
@@ -31,16 +32,23 @@ interface TaskInterface {
 
 @Component({
   name: 'TheTasksTab',
-  watch: {
-    numberOfTasks: {
-      handler(val) {
-        this.$emit('change-open-tasks-number', val);
-      },
-      deep: true,
-    },
-  },
 })
 export default class TheTasksTab extends Vue {
+  @Prop(Boolean) isTaskClosed!:boolean;
+
+  @Watch('tasks.length', { deep: true })
+  onTasksLengthChange() {
+    this.$emit('change-open-tasks-number', this.tasks.length);
+  }
+
+  @Watch('isTaskClosed', { immediate: true, deep: true })
+  taskCompletionInitiated() {
+    if (this.isTaskClosed) {
+      this.tasks.splice(0, 1);
+      this.$emit('task-closed');
+    }
+  }
+
   newTask: TaskInterface = {
     name: '',
     description: '',
