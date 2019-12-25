@@ -11,7 +11,7 @@
             v-model="newTask.description")
         button#new-task-add-button(type="submit") &#10003 Add
       ul
-        li(v-for="(task, index) in tasks" v-bind:key="task.id")
+        li(v-for="(task, index) in tasks", v-bind:key="index", v-bind:class="task.animationClass")
           .task-upper-row
             span#task-name {{ task.name }}
             .task-delete-button(@click="deleteTask(index)") &#215
@@ -28,6 +28,7 @@ interface TaskInterface {
   name: string;
   description: string;
   deadline: string;
+  animationClass: string;
 }
 
 @Component({
@@ -49,45 +50,95 @@ export default class TheTasksTab extends Vue {
     }
   }
 
+  @Watch('$route', { immediate: true, deep: true })
+  onUrlChange() {
+    this.tasks.forEach((task) => {
+      // eslint-disable-next-line no-param-reassign
+      task.animationClass = 'task';
+    });
+  }
+
   newTask: TaskInterface = {
     name: '',
     description: '',
     deadline: '',
+    animationClass: '',
   };
 
-  tasks: TaskInterface[] = [
-    {
-      name: 'Evening',
-      description: "You're a big boy, come up with something.",
-      deadline: '11:30 PM',
-    },
-    {
-      name: 'Teeth',
-      description: "Your dentist told you to brush your teeth twice a day, didn't he?",
-      deadline: '11:35 PM',
-    },
-    {
-      name: 'Sleep',
-      description: 'It was a good day, time to let it go and have some sleep.',
-      deadline: '11:40 PM',
-    },
-  ];
+  tasks: TaskInterface[] = [];
+
+  created() {
+    this.tasks = [
+      {
+        name: 'Evening',
+        description: "You're a big boy, come up with something.",
+        deadline: '11:30 PM',
+        animationClass: '',
+      },
+      {
+        name: 'Teeth',
+        description: "Your dentist told you to brush your teeth twice a day, didn't he?",
+        deadline: '11:35 PM',
+        animationClass: '',
+      },
+      {
+        name: 'Sleep',
+        description: 'It was a good day, time to let it go and have some sleep.',
+        deadline: '11:40 PM',
+        animationClass: '',
+      },
+    ];
+  }
+
+  mounted() {
+    this.$emit('change-open-tasks-number', this.tasks.length);
+    const sleep = (m: number | undefined) => new Promise(r => setTimeout(r, m));
+
+    // eslint-disable-next-line no-loop-func
+    (async () => {
+      for (let i = 0; i < this.tasks.length; i += 1) {
+        this.tasks[i].animationClass = 'task-list-item';
+        // eslint-disable-next-line no-await-in-loop
+        await sleep(200);
+      }
+    })();
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  updated() {
+    if (this.tasks[this.tasks.length - 1].animationClass === '') {
+      this.tasks[this.tasks.length - 1].animationClass = 'added-task-list-item';
+    }
+  }
 
   addNewTask(event: { target: { reset: () => void; }; }) {
-    this.tasks.push({
-      name: this.newTask.name,
-      description: this.newTask.description,
-      deadline: TheTasksTab.getRandomTime(),
-    });
+    if (this.newTask.name !== '' && this.newTask.description !== '') {
+      this.tasks.push({
+        name: this.newTask.name,
+        description: this.newTask.description,
+        deadline: TheTasksTab.getRandomTime(),
+        animationClass: '',
+      });
 
-    this.newTask.name = '';
-    this.newTask.description = '';
+      this.newTask.name = '';
+      this.newTask.description = '';
 
-    event.target.reset();
+      event.target.reset();
+
+      (async () => {
+        await this.$nextTick();
+        this.tasks[this.tasks.length - 1].animationClass = 'added-task-list-item';
+      })();
+    } else {
+      // eslint-disable-next-line no-alert
+      alert('Please fill both name and description fields to add the task...');
+    }
   }
 
   deleteTask(index: number) {
-    this.tasks.splice(index, 1);
+    if (this.tasks.length > 0) {
+      this.tasks.splice(index, 1);
+    }
   }
 
   static getRandomTime() {
@@ -102,14 +153,6 @@ export default class TheTasksTab extends Vue {
 
     return (`${hours}:${minutes} ${ampm}`);
   }
-
-  get numberOfTasks() {
-    return this.tasks.length;
-  }
-
-  mounted() {
-    this.$emit('change-open-tasks-number', this.tasks.length);
-  }
 }
 </script>
 
@@ -119,6 +162,50 @@ export default class TheTasksTab extends Vue {
     flex-direction: column;
     justify-content: center;
     flex-wrap: nowrap;
+  }
+
+  .task-list-item #task-name {
+    animation: initiation-name 0.7s 2 ease-in-out alternate;
+  }
+  .task-list-item #task-description {
+    animation: initiation-description 0.7s 2 ease-in-out alternate;
+  }
+  .task-list-item #task-deadline {
+    animation: initiation-deadline 0.7s 2 ease-in-out alternate;
+  }
+  .task-list-item .task-delete-button {
+    animation: initiation-delete 0.7s 2 ease-in-out alternate;
+  }
+
+  @keyframes initiation-name {
+    to {
+      font-size: 18px;
+    }
+  }
+  @keyframes initiation-description {
+    to {
+      font-size: 18px;
+    }
+  }
+  @keyframes initiation-deadline {
+    to {
+      font-size: 17px;
+    }
+  }
+  @keyframes initiation-delete {
+    to {
+      font-size: 24px;
+    }
+  }
+
+  .added-task-list-item {
+    animation: addition 0.5s 6 ease-in-out alternate;
+  }
+
+  @keyframes addition {
+    to {
+      opacity: 0.5;
+    }
   }
 
   #new-task-container {
@@ -210,6 +297,7 @@ export default class TheTasksTab extends Vue {
     font-size: 15px;
     line-height: 15px;
     color: #131313;
+    z-index: 1;
   }
 
   #task-description, #task-deadline {
@@ -217,16 +305,16 @@ export default class TheTasksTab extends Vue {
     width: 100%;
   }
 
-  #task-deadline {
-    white-space: normal;
-    font-size: 14px;
-    line-height: 20px;
-  }
-
   #task-description {
     white-space: pre-wrap;
     font-size: 15px;
     line-height: 18px;
+  }
+
+  #task-deadline {
+    white-space: normal;
+    font-size: 14px;
+    line-height: 20px;
   }
 
   .tasks .task-delete-button {
@@ -304,6 +392,27 @@ export default class TheTasksTab extends Vue {
 
     .tasks span:nth-child(3) {
       white-space: normal;
+    }
+
+    @keyframes initiation-name {
+      to {
+        font-size: 3.6vw;
+      }
+    }
+    @keyframes initiation-description {
+      to {
+        font-size: 4.1vw;
+      }
+    }
+    @keyframes initiation-deadline {
+      to {
+        font-size: 3.6vw;
+      }
+    }
+    @keyframes initiation-delete {
+      to {
+        font-size: 5.22vw;
+      }
     }
   }
 </style>
