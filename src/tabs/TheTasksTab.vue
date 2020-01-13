@@ -23,13 +23,8 @@
 import {
   Vue, Component, Prop, Watch,
 } from 'vue-property-decorator';
-
-interface TaskInterface {
-  name: string;
-  description: string;
-  deadline: string;
-  animationClass: string;
-}
+// @ts-ignore
+import { TaskInterface, Status } from '@/components/TheContent.vue';
 
 @Component({
   name: 'TheTasksTab',
@@ -37,15 +32,11 @@ interface TaskInterface {
 export default class TheTasksTab extends Vue {
   @Prop(Boolean) isTaskClosed!:boolean;
 
-  @Watch('tasks.length', { deep: true })
-  onTasksLengthChange() {
-    this.$emit('change-open-tasks-number', this.tasks.length);
-  }
+  @Prop() tasks!:TaskInterface[];
 
   @Watch('isTaskClosed', { immediate: true, deep: true })
   taskCompletionInitiated() {
     if (this.isTaskClosed) {
-      this.tasks.splice(0, 1);
       this.$emit('task-closed');
     }
   }
@@ -60,51 +51,45 @@ export default class TheTasksTab extends Vue {
 
   newTask: TaskInterface = {
     name: '',
+    status: Status.toDo,
     description: '',
     deadline: '',
     animationClass: '',
   };
 
-  tasks: TaskInterface[] = [];
+  initialTasks: TaskInterface[] = [];
 
   created() {
-    this.tasks = [
+    this.initialTasks = [
       {
         name: 'Evening',
+        status: Status.inProgress,
         description: "You're a big boy, come up with something.",
         deadline: '11:30 PM',
         animationClass: '',
       },
       {
         name: 'Teeth',
+        status: Status.done,
         description: "Your dentist told you to brush your teeth twice a day, didn't he?",
         deadline: '11:35 PM',
         animationClass: '',
       },
       {
         name: 'Sleep',
+        status: Status.toDo,
         description: 'It was a good day, time to let it go and have some sleep.',
         deadline: '11:40 PM',
         animationClass: '',
       },
     ];
+    this.$emit('initialize-tasks', this.initialTasks);
   }
 
   mounted() {
     this.$emit('change-open-tasks-number', this.tasks.length);
-    const sleep = (m: number | undefined) => new Promise(r => setTimeout(r, m));
-
-    // eslint-disable-next-line no-loop-func
-    (async () => {
-      for (let i = 0; i < this.tasks.length; i += 1) {
-        this.tasks[i].animationClass = 'task-list-item';
-        // eslint-disable-next-line no-await-in-loop
-        await sleep(200);
-      }
-    })();
   }
 
-  // eslint-disable-next-line class-methods-use-this
   updated() {
     if (this.tasks[this.tasks.length - 1].animationClass === '') {
       this.tasks[this.tasks.length - 1].animationClass = 'added-task-list-item';
@@ -115,6 +100,7 @@ export default class TheTasksTab extends Vue {
     if (this.newTask.name !== '' && this.newTask.description !== '') {
       this.tasks.push({
         name: this.newTask.name,
+        status: this.newTask.status,
         description: this.newTask.description,
         deadline: TheTasksTab.getRandomTime(),
         animationClass: '',

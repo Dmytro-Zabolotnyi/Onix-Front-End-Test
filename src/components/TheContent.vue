@@ -14,21 +14,43 @@
     .tab-content
       keep-alive
         router-view(v-bind:isTaskClosed="isTaskClosed",
+          v-bind:tasks="tasks",
           v-on:change-notification-counter="changeNotificationCounter($event)",
-          v-on:change-open-tasks-number="changeOpenTasksNumber($event)",
-          v-on:task-closed="taskClosed($event)")
+          v-on:task-closed="taskClosed($event)",
+          v-on:initialize-tasks="initializeTasks($event)")
 </template>
 
 <script lang="ts">
 import {
-  Vue, Component, Prop,
+  Vue, Component, Prop, Watch,
 } from 'vue-property-decorator';
+
+export interface TaskInterface {
+  name: string;
+  status: Status;
+  description: string;
+  deadline: string;
+  animationClass: string;
+}
+
+export enum Status {
+  toDo = 'To Do',
+  inProgress = 'In Progress',
+  done = 'Done'
+}
 
 @Component({
   name: 'TheContent',
 })
 export default class TheContent extends Vue {
   @Prop(Boolean) isTaskClosed!:boolean;
+
+  @Watch('tasks.length', { deep: true })
+  onTasksLengthChange() {
+    this.$emit('change-open-tasks-number', this.tasks.length);
+  }
+
+  tasks: TaskInterface[] = [];
 
   changeNotificationCounter(index: number) {
     this.$emit('change-notification-counter', index);
@@ -39,7 +61,23 @@ export default class TheContent extends Vue {
   }
 
   taskClosed() {
+    this.tasks.splice(0, 1);
     this.$emit('task-closed');
+  }
+
+  initializeTasks(initialTasks: TaskInterface[]) {
+    this.tasks = initialTasks;
+
+    const sleep = (m: number | undefined) => new Promise(r => setTimeout(r, m));
+
+    // eslint-disable-next-line no-loop-func
+    (async () => {
+      for (let i = 0; i < this.tasks.length; i += 1) {
+        this.tasks[i].animationClass = 'task-list-item';
+        // eslint-disable-next-line no-await-in-loop
+        await sleep(200);
+      }
+    })();
   }
 }
 </script>

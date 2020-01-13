@@ -226,6 +226,7 @@ export default class TheSidebar extends Vue {
     flex-direction: row;
     margin-top: 20px;
     margin-bottom: 31px;
+    height: 44px;
   }
 
   .completed-tasks, .open-tasks {
