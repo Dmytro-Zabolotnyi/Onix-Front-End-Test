@@ -13,11 +13,11 @@
         .user-menu-shapes
     .task-stats
       .completed-tasks(@click="changeTasksCounter()")
-        #completed-number {{ this.completedTasksNumber }}
+        .completed-number {{ this.completedTasksNumber }}
         .tasks-label
           span Completed Tasks
       .open-tasks(@click="openTasksTab()")
-        #open-number {{ this.openTasksNumber }}
+        .open-number {{ this.openTasksNumber }}
         .tasks-label
           span Open Tasks
     .aside-menu
@@ -28,7 +28,7 @@
         span My Tasks
       li.aside-menu-notifications
         span Notifications
-        #notification-counter {{ notificationCounter }}
+        .notification-counter {{ notificationCounter }}
 </template>
 
 <script lang="ts">
@@ -62,10 +62,12 @@ export default class TheSidebar extends Vue {
     if (this.openTasksNumber > 0) {
       this.$router.push('/tasks').catch((error) => {});
 
-      // eslint-disable-next-line no-alert
-      if (window.confirm('Are you sure you want to change the number of tasks?')) {
-        this.$emit('close-task');
-      }
+      setTimeout(() => {
+        // eslint-disable-next-line no-alert
+        if (window.confirm('Are you sure you want to change the number of tasks?')) {
+          this.$emit('close-task');
+        }
+      }, 1);
     }
   }
 
@@ -256,7 +258,7 @@ export default class TheSidebar extends Vue {
     background-color: #202020;
   }
 
-  #completed-number, #open-number {
+  .completed-number, .open-number {
     height: 27px;
     font-size: 20px;
     line-height: 24px;
@@ -335,11 +337,11 @@ export default class TheSidebar extends Vue {
     align-items: center;
   }
 
-  .aside-menu-notifications span + #notification-counter {
+  .aside-menu-notifications span + .notification-counter {
     margin-left: 10px;
   }
 
-  #notification-counter {
+  .notification-counter {
     display: -webkit-box;
     display: flex;
     -webkit-box-pack: center;
@@ -447,7 +449,7 @@ export default class TheSidebar extends Vue {
       background-color: #202020;
     }
 
-    #completed-number, #open-number {
+    .completed-number, .open-number {
       height: 2.8vh;
       font-size: 4.7vw;
       line-height: 5vw;
@@ -474,7 +476,7 @@ export default class TheSidebar extends Vue {
       padding-left: 6vw;
     }
 
-    .aside-menu-notifications span + #notification-counter {
+    .aside-menu-notifications span + .notification-counter {
       margin-left: 2vw;
     }
 
@@ -487,7 +489,7 @@ export default class TheSidebar extends Vue {
       line-height: 3.3vw;
     }
 
-    #notification-counter {
+    .notification-counter {
       min-height: 4.2vw;
       min-width: 4.2vw;
       font-size: 3.1vw;

@@ -1,15 +1,15 @@
 <template lang="pug">
   .tabs
     .tab-labels
-      .label-container#tasks-label-container
+      .label-container.tasks-label-container
         router-link.link(to='/tasks') Tasks
-      .label-container#kanban-label-container
+      .label-container.kanban-label-container
         router-link.link(to='/kanban') Kanban
-      .label-container#activity-label-container
+      .label-container.activity-label-container
         router-link.link(to='/activity') Activity
-      .label-container#calendar-label-container
+      .label-container.calendar-label-container
         router-link.link(to='/calendar') Calendar
-      .label-container#files-label-container
+      .label-container.files-label-container
         router-link.link(to='/files') Files
     .tab-content
       keep-alive
@@ -17,13 +17,25 @@
           v-bind:tasks="tasks",
           v-on:change-notification-counter="changeNotificationCounter($event)",
           v-on:task-closed="taskClosed($event)",
-          v-on:initialize-tasks="initializeTasks($event)")
+          v-on:task-deleted="deleteTask($event)",
+          v-on:show-new-task-modal="showNewTaskModal = true",
+          v-on:show-task-description="showTaskDescription($event)",
+          v-on:change-task-status="(...args)=>changeTaskStatus(args)")
+      TheNewTaskModal(v-if="showNewTaskModal",
+        v-on:new-task-added="(...args)=>addNewTask(args)",
+        v-on:close-new-task-modal="showNewTaskModal = false")
+      TheTaskDescriptionModal(v-if="showTaskDescriptionModal",
+        v-bind:descriptionTask="descriptionTask",
+        v-on:close-task-description-modal="showTaskDescriptionModal = false",
+        v-on:description-updated="(...args)=>saveUpdatedDescription(args)")
 </template>
 
 <script lang="ts">
 import {
   Vue, Component, Prop, Watch,
 } from 'vue-property-decorator';
+import TheNewTaskModal from '@/modals/TheNewTaskModal.vue';
+import TheTaskDescriptionModal from '@/modals/TheTaskDescriptionModal.vue';
 
 export interface TaskInterface {
   name: string;
@@ -41,6 +53,7 @@ export enum Status {
 
 @Component({
   name: 'TheContent',
+  components: { TheNewTaskModal, TheTaskDescriptionModal },
 })
 export default class TheContent extends Vue {
   @Prop(Boolean) isTaskClosed!:boolean;
@@ -51,6 +64,179 @@ export default class TheContent extends Vue {
   }
 
   tasks: TaskInterface[] = [];
+
+  descriptionTask: TaskInterface = {
+    name: '',
+    status: Status.toDo,
+    description: '',
+    deadline: TheContent.getRandomTime(),
+    animationClass: '',
+  };
+
+  showNewTaskModal: boolean = false;
+
+  showTaskDescriptionModal: boolean = false;
+
+  created() {
+    this.tasks = [
+      {
+        name: 'Evening',
+        status: Status.inProgress,
+        description: "You're a big boy, come up with something.",
+        deadline: '11:30 PM',
+        animationClass: '',
+      },
+      {
+        name: 'Morning',
+        status: Status.inProgress,
+        description: 'Wake up!',
+        deadline: '11:30 PM',
+        animationClass: '',
+      },
+      {
+        name: 'Noon',
+        status: Status.inProgress,
+        description: 'Work till dusk!',
+        deadline: '11:30 PM',
+        animationClass: '',
+      },
+      {
+        name: 'Teeth',
+        status: Status.done,
+        description: "Your dentist told you to brush your teeth twice a day, didn't he?",
+        deadline: '11:35 PM',
+        animationClass: '',
+      },
+      {
+        name: 'Hair',
+        status: Status.done,
+        description: 'Make a creative mess today!',
+        deadline: '11:35 PM',
+        animationClass: '',
+      },
+      {
+        name: 'Shoes',
+        status: Status.done,
+        description: 'Clean them as if your life depends on it!',
+        deadline: '11:35 PM',
+        animationClass: '',
+      },
+      {
+        name: 'Eat',
+        status: Status.toDo,
+        description: 'More powah!',
+        deadline: '11:40 PM',
+        animationClass: '',
+      },
+      {
+        name: 'Sleep',
+        status: Status.toDo,
+        description: 'It was a good day, time to let it go and have some sleep.',
+        deadline: '11:40 PM',
+        animationClass: '',
+      },
+      {
+        name: 'Rave',
+        status: Status.toDo,
+        description: 'No time to sleep!',
+        deadline: '11:40 PM',
+        animationClass: '',
+      },
+      {
+        name: 'Repeat',
+        status: Status.toDo,
+        description: 'Again and again!',
+        deadline: '11:40 PM',
+        animationClass: '',
+      },
+    ];
+
+    let i = 0;
+    const timer = setInterval(() => {
+      if (i < this.tasks.length) {
+        this.tasks[i].animationClass = 'task-list-item';
+        i += 1;
+      } else {
+        clearInterval(timer);
+      }
+    }, 200);
+  }
+
+  mounted() {
+    this.$emit('change-open-tasks-number', this.tasks.length);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  addNewTask(args: string[]) {
+    this.tasks.push({
+      name: args[0],
+      status: Status.toDo,
+      description: args[1],
+      deadline: TheContent.getRandomTime(),
+      animationClass: '',
+    });
+    this.showNewTaskModal = false;
+  }
+
+  showTaskDescription(task: any) {
+    if (typeof task === 'number') {
+      this.descriptionTask = this.tasks[task];
+      this.showTaskDescriptionModal = true;
+    } else {
+      for (let i = 0; i < this.tasks.length; i += 1) {
+        if (Object.is(task, this.tasks[i])) {
+          this.descriptionTask = this.tasks[i];
+          this.showTaskDescriptionModal = true;
+          break;
+        }
+      }
+    }
+  }
+
+  saveUpdatedDescription(args: [TaskInterface, string]) {
+    let descriptionUpdated: boolean = false;
+    for (let i = 0; i < this.tasks.length; i += 1) {
+      if (Object.is(args[0], this.tasks[i])) {
+        // eslint-disable-next-line prefer-destructuring
+        this.tasks[i].description = args[1];
+        this.tasks[i].animationClass = 'added-task-list-item';
+        descriptionUpdated = true;
+        this.showTaskDescriptionModal = false;
+        break;
+      }
+    }
+    if (!descriptionUpdated) {
+      // eslint-disable-next-line no-alert
+      alert('Cannot save changes due to task already changed or deleted.');
+    }
+  }
+
+  changeTaskStatus(args: [TaskInterface, string]) {
+    let statusUpdated: number = 1;
+
+    for (let i = 0; i < this.tasks.length; i += 1) {
+      if (Object.is(args[0], this.tasks[i])) {
+        if (args[1] === 'to-do-tasks') {
+          this.tasks[i].status = Status.toDo;
+          statusUpdated = 0;
+        } else if (args[1] === 'in-progress-tasks') {
+          this.tasks[i].status = Status.inProgress;
+          statusUpdated = 0;
+        } else if (args[1] === 'done-tasks') {
+          this.tasks[i].status = Status.done;
+          statusUpdated = 0;
+        } else statusUpdated = -1;
+        break;
+      }
+    }
+    if (statusUpdated > 0) {
+      // eslint-disable-next-line no-alert
+      alert('Cannot save changes due to task already changed or deleted.');
+    } else if (statusUpdated < 0) {
+      // eslint-disable-next-line no-alert
+      alert('Cannot save changes due to unknown parameter passed.');
+    }
+  }
 
   changeNotificationCounter(index: number) {
     this.$emit('change-notification-counter', index);
@@ -65,19 +251,21 @@ export default class TheContent extends Vue {
     this.$emit('task-closed');
   }
 
-  initializeTasks(initialTasks: TaskInterface[]) {
-    this.tasks = initialTasks;
+  deleteTask(index: number) {
+    this.tasks.splice(index, 1);
+  }
 
-    const sleep = (m: number | undefined) => new Promise(r => setTimeout(r, m));
+  static getRandomTime() {
+    const randomMinutes = Math.floor(Math.random() * 1440);
+    const hours: any = (Math.floor(randomMinutes / 60) % 12) + 1;
+    let minutes: any = Math.floor(randomMinutes % 60);
+    const ampm = (randomMinutes < 720) ? 'AM' : 'PM';
 
-    // eslint-disable-next-line no-loop-func
-    (async () => {
-      for (let i = 0; i < this.tasks.length; i += 1) {
-        this.tasks[i].animationClass = 'task-list-item';
-        // eslint-disable-next-line no-await-in-loop
-        await sleep(200);
-      }
-    })();
+    if (minutes < 10) {
+      minutes = `0${minutes}`;
+    }
+
+    return (`${hours}:${minutes} ${ampm}`);
   }
 }
 </script>
@@ -141,23 +329,23 @@ export default class TheContent extends Vue {
     user-select: none;
   }
 
-  #tasks-label-container {
+  .tasks-label-container {
     margin-left: 30px;
   }
 
-  #kanban-label-container {
+  .kanban-label-container {
     margin-left: 32px;
   }
 
-  #activity-label-container {
+  .activity-label-container {
     margin-left: 27px;
   }
 
-  #calendar-label-container {
+  .calendar-label-container {
     margin-left: 31px;
   }
 
-  #files-label-container {
+  .files-label-container {
     margin-left: 27px;
   }
 
@@ -182,12 +370,12 @@ export default class TheContent extends Vue {
       line-height: 4.5vw;
     }
 
-    #tasks-label-container {
+    .tasks-label-container {
       margin-left: 5vw;
     }
 
-    #kanban-label-container, #activity-label-container,
-    #calendar-label-container, #files-label-container {
+    .kanban-label-container, .activity-label-container,
+    .calendar-label-container, .files-label-container {
       margin-left: 7vw;
     }
 

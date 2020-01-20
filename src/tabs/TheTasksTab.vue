@@ -1,22 +1,14 @@
 <template lang="pug">
-  #tasks-container.container
+  .tasks-container.container
     .tasks
-      form#new-task-container(@submit.prevent="addNewTask")
-        #new-task-name-container
-          input#new-task-name(type="text", required="", placeholder='enter new task name...',
-            v-model='newTask.name')
-        #new-task-description-container
-          textarea#new-task-description(rows='3', required="",
-            placeholder='enter new task description...',
-            v-model="newTask.description")
-        button#new-task-add-button(type="submit") &#10003 Add
+      button.new-task-add-button(@click="showNewTaskModal()") + Add new task
       ul
         li(v-for="(task, index) in tasks", v-bind:key="index", v-bind:class="task.animationClass")
           .task-upper-row
-            span#task-name {{ task.name }}
+            span.task-name {{ task.name }}
             .task-delete-button(@click="deleteTask(index)") &#215
-          span#task-description {{ task.description }}
-          span#task-deadline {{ task.deadline }}
+          span.task-description(@click="showDescription(index)") {{ task.description }}
+          span.task-deadline {{ task.deadline }}
 </template>
 
 <script lang="ts">
@@ -42,11 +34,13 @@ export default class TheTasksTab extends Vue {
   }
 
   @Watch('$route', { immediate: true, deep: true })
-  onUrlChange() {
-    this.tasks.forEach((task) => {
-      // eslint-disable-next-line no-param-reassign
-      task.animationClass = 'task';
-    });
+  onUrlChange(newValue: any, oldValue: any) {
+    if ((typeof oldValue !== 'undefined') && (oldValue.path === '/tasks')) {
+      this.tasks.forEach((task) => {
+        // eslint-disable-next-line no-param-reassign
+        task.animationClass = 'task';
+      });
+    }
   }
 
   newTask: TaskInterface = {
@@ -57,41 +51,8 @@ export default class TheTasksTab extends Vue {
     animationClass: '',
   };
 
-  initialTasks: TaskInterface[] = [];
-
-  created() {
-    this.initialTasks = [
-      {
-        name: 'Evening',
-        status: Status.inProgress,
-        description: "You're a big boy, come up with something.",
-        deadline: '11:30 PM',
-        animationClass: '',
-      },
-      {
-        name: 'Teeth',
-        status: Status.done,
-        description: "Your dentist told you to brush your teeth twice a day, didn't he?",
-        deadline: '11:35 PM',
-        animationClass: '',
-      },
-      {
-        name: 'Sleep',
-        status: Status.toDo,
-        description: 'It was a good day, time to let it go and have some sleep.',
-        deadline: '11:40 PM',
-        animationClass: '',
-      },
-    ];
-    this.$emit('initialize-tasks', this.initialTasks);
-  }
-
-  mounted() {
-    this.$emit('change-open-tasks-number', this.tasks.length);
-  }
-
   updated() {
-    if (this.tasks[this.tasks.length - 1].animationClass === '') {
+    if (this.tasks.length > 0 && (this.tasks[this.tasks.length - 1].animationClass === '')) {
       this.tasks[this.tasks.length - 1].animationClass = 'added-task-list-item';
     }
   }
@@ -123,8 +84,16 @@ export default class TheTasksTab extends Vue {
 
   deleteTask(index: number) {
     if (this.tasks.length > 0) {
-      this.tasks.splice(index, 1);
+      this.$emit('task-deleted', index);
     }
+  }
+
+  showDescription(index: number) {
+    this.$emit('show-task-description', index);
+  }
+
+  showNewTaskModal() {
+    this.$emit('show-new-task-modal');
   }
 
   static getRandomTime() {
@@ -150,13 +119,13 @@ export default class TheTasksTab extends Vue {
     flex-wrap: nowrap;
   }
 
-  .task-list-item #task-name {
+  .task-list-item .task-name {
     animation: initiation-name 0.7s 2 ease-in-out alternate;
   }
-  .task-list-item #task-description {
+  .task-list-item .task-description {
     animation: initiation-description 0.7s 2 ease-in-out alternate;
   }
-  .task-list-item #task-deadline {
+  .task-list-item .task-deadline {
     animation: initiation-deadline 0.7s 2 ease-in-out alternate;
   }
   .task-list-item .task-delete-button {
@@ -194,28 +163,7 @@ export default class TheTasksTab extends Vue {
     }
   }
 
-  #new-task-container {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    height: min-content;
-    width: 100%;
-  }
-
-  #new-task-container input, #new-task-container textarea {
-    box-sizing: border-box;
-    padding: 5px;
-    width: 100%;
-    border: 1px grey solid;
-  }
-
-  #new-task-container textarea {
-    resize: none;
-    margin-bottom: 10px;
-  }
-
-  #new-task-add-button {
+  .new-task-add-button {
     display: block;
     margin: auto;
     height: 30px;
@@ -232,20 +180,8 @@ export default class TheTasksTab extends Vue {
     user-select: none;
   }
 
-  #new-task-add-button:hover {
+  .new-task-add-button:hover {
     box-shadow: 0 0 5px black;
-  }
-
-  #new-task-name-container + #new-task-description-container {
-    margin-top: 10px;
-  }
-
-  span + #new-task-name, span + #new-task-description {
-    margin-top: 5px;
-  }
-
-  #new-task-name, #new-task-description {
-    border-radius: 8px;
   }
 
   .tasks ul li {
@@ -277,7 +213,7 @@ export default class TheTasksTab extends Vue {
     margin-bottom: 2px;
   }
 
-  #task-name {
+  .task-name {
     width: min-content;
     white-space: normal;
     font-size: 15px;
@@ -286,18 +222,25 @@ export default class TheTasksTab extends Vue {
     z-index: 1;
   }
 
-  #task-description, #task-deadline {
+  .task-description, .task-deadline {
     color: #131313;
     width: 100%;
   }
 
-  #task-description {
+  .task-description {
     white-space: pre-wrap;
     font-size: 15px;
     line-height: 18px;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+    user-select: none;
   }
 
-  #task-deadline {
+  .task-description:hover {
+    box-shadow: 0 0 5px black;
+  }
+
+  .task-deadline {
     white-space: normal;
     font-size: 14px;
     line-height: 20px;
@@ -343,7 +286,7 @@ export default class TheTasksTab extends Vue {
   }
 
   @media screen and (max-aspect-ratio: 1/2), (max-aspect-ratio: 2/3) and (max-width: 415px) {
-    #new-task-add-button {
+    .new-task-add-button {
       height: 7vw;
       font-size: 3.1vw;
       line-height: 7vw;
@@ -354,17 +297,14 @@ export default class TheTasksTab extends Vue {
       margin-top: 6.5vw;
     }
 
-    #task-description, #new-task-name-container span, input, textarea {
+    .task-description {
       font-size: 3.5vw;
       line-height: 4.5vw;
-    }
-
-    #task-description {
       border-radius: 2.175vw;
       padding: 4.35vw 4.35vw;
     }
 
-    #task-name, #task-deadline {
+    .tasks span:nth-child(1), .tasks span:nth-child(3) {
       font-size: 3vw;
       line-height: 4vw;
     }

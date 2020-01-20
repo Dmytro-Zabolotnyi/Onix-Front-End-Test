@@ -1,5 +1,5 @@
 <template lang="pug">
-  #header-component(@click="hideSlideMenu")
+  .header-component(@click="hideSlideMenu")
     header.upper-part
       .upper-left
         .logo(v-bind:style="{ backgroundImage: 'url(' + projectLogo + ')' }")
@@ -68,7 +68,7 @@ export default class TheHeader extends Vue {
 </script>
 
 <style scoped>
-  #header-component {
+  .header-component {
     height: 100%;
     margin-left: 270px;
     display: -webkit-box;
@@ -257,7 +257,7 @@ export default class TheHeader extends Vue {
   }
 
   @media screen and (max-aspect-ratio: 980/927), (max-width: 980px) {
-    #header-component {
+    .header-component {
       margin-left: 0;
       width: 100%;
     }

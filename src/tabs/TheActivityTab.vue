@@ -1,5 +1,5 @@
 <template lang="pug">
-  #activity-container.container
+  .activity-container.container
     .day
     .activities
       .activity(v-for="activity of activities" v-bind:key="activity.id")
