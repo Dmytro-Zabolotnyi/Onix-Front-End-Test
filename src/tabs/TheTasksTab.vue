@@ -1,3 +1,4 @@
+import moment from "moment";
 <template lang="pug">
   .tasks-container.container
     .tasks
@@ -8,13 +9,14 @@
             span.task-name {{ task.name }}
             .task-delete-button(@click="deleteTask(index)") &#215
           span.task-description(@click="showDescription(index)") {{ task.description }}
-          span.task-deadline {{ task.deadline }}
+          span.task-deadline {{ task.deadline.format('DD:MM:YYYY, hh:mm A') }}
 </template>
 
 <script lang="ts">
 import {
   Vue, Component, Prop, Watch,
 } from 'vue-property-decorator';
+import moment from 'moment';
 // @ts-ignore
 import { TaskInterface, Status } from '@/components/TheContent.vue';
 
@@ -38,7 +40,7 @@ export default class TheTasksTab extends Vue {
     if ((typeof oldValue !== 'undefined') && (oldValue.path === '/tasks')) {
       this.tasks.forEach((task) => {
         // eslint-disable-next-line no-param-reassign
-        task.animationClass = 'task';
+        task.animationClass = task.animationClass.replace(this.initialAnimation, '').replace(this.updatedAnimation, '');
       });
     }
   }
@@ -47,40 +49,13 @@ export default class TheTasksTab extends Vue {
     name: '',
     status: Status.toDo,
     description: '',
-    deadline: '',
+    deadline: moment().format('DD-MM-YYYY, hh:mm A'),
     animationClass: '',
   };
 
-  updated() {
-    if (this.tasks.length > 0 && (this.tasks[this.tasks.length - 1].animationClass === '')) {
-      this.tasks[this.tasks.length - 1].animationClass = 'added-task-list-item';
-    }
-  }
+  initialAnimation: string = ' initial';
 
-  addNewTask(event: { target: { reset: () => void; }; }) {
-    if (this.newTask.name !== '' && this.newTask.description !== '') {
-      this.tasks.push({
-        name: this.newTask.name,
-        status: this.newTask.status,
-        description: this.newTask.description,
-        deadline: TheTasksTab.getRandomTime(),
-        animationClass: '',
-      });
-
-      this.newTask.name = '';
-      this.newTask.description = '';
-
-      event.target.reset();
-
-      (async () => {
-        await this.$nextTick();
-        this.tasks[this.tasks.length - 1].animationClass = 'added-task-list-item';
-      })();
-    } else {
-      // eslint-disable-next-line no-alert
-      alert('Please fill both name and description fields to add the task...');
-    }
-  }
+  updatedAnimation: string = ' updated';
 
   deleteTask(index: number) {
     if (this.tasks.length > 0) {
@@ -95,19 +70,6 @@ export default class TheTasksTab extends Vue {
   showNewTaskModal() {
     this.$emit('show-new-task-modal');
   }
-
-  static getRandomTime() {
-    const randomMinutes = Math.floor(Math.random() * 1440);
-    const hours: any = (Math.floor(randomMinutes / 60) % 12) + 1;
-    let minutes: any = Math.floor(randomMinutes % 60);
-    const ampm = (randomMinutes < 720) ? 'AM' : 'PM';
-
-    if (minutes < 10) {
-      minutes = `0${minutes}`;
-    }
-
-    return (`${hours}:${minutes} ${ampm}`);
-  }
 }
 </script>
 
@@ -119,16 +81,16 @@ export default class TheTasksTab extends Vue {
     flex-wrap: nowrap;
   }
 
-  .task-list-item .task-name {
+  .initial .task-name {
     animation: initiation-name 0.7s 2 ease-in-out alternate;
   }
-  .task-list-item .task-description {
+  .initial .task-description {
     animation: initiation-description 0.7s 2 ease-in-out alternate;
   }
-  .task-list-item .task-deadline {
+  .initial .task-deadline {
     animation: initiation-deadline 0.7s 2 ease-in-out alternate;
   }
-  .task-list-item .task-delete-button {
+  .initial .task-delete-button {
     animation: initiation-delete 0.7s 2 ease-in-out alternate;
   }
 
@@ -153,7 +115,7 @@ export default class TheTasksTab extends Vue {
     }
   }
 
-  .added-task-list-item {
+  .updated {
     animation: addition 0.5s 6 ease-in-out alternate;
   }
 

@@ -18,15 +18,16 @@
           v-on:change-notification-counter="changeNotificationCounter($event)",
           v-on:task-closed="taskClosed($event)",
           v-on:task-deleted="deleteTask($event)",
-          v-on:show-new-task-modal="showNewTaskModal = true",
+          v-on:show-new-task-modal="showNewTaskModal()",
           v-on:show-task-description="showTaskDescription($event)",
           v-on:change-task-status="(...args)=>changeTaskStatus(args)")
-      TheNewTaskModal(v-if="showNewTaskModal",
+      TheModal(
+        v-if="showModal",
         v-on:new-task-added="(...args)=>addNewTask(args)",
-        v-on:close-new-task-modal="showNewTaskModal = false")
-      TheTaskDescriptionModal(v-if="showTaskDescriptionModal",
+        v-on:close-modal-window="closeModalWindow()",
+        v-bind:isNewTaskModalShowed="isNewTaskModalShowed",
+        v-bind:isDescriptionModalShowed="isDescriptionModalShowed",
         v-bind:descriptionTask="descriptionTask",
-        v-on:close-task-description-modal="showTaskDescriptionModal = false",
         v-on:description-updated="(...args)=>saveUpdatedDescription(args)")
 </template>
 
@@ -34,26 +35,28 @@
 import {
   Vue, Component, Prop, Watch,
 } from 'vue-property-decorator';
-import TheNewTaskModal from '@/modals/TheNewTaskModal.vue';
-import TheTaskDescriptionModal from '@/modals/TheTaskDescriptionModal.vue';
+import moment, { Moment } from 'moment';
+import TheModal from '@/modals/TheModal.vue';
 
 export interface TaskInterface {
   name: string;
   status: Status;
   description: string;
-  deadline: string;
+  deadline: Moment;
   animationClass: string;
 }
 
 export enum Status {
-  toDo = 'To Do',
-  inProgress = 'In Progress',
-  done = 'Done'
+  toDo = 'to-do',
+  inProgress = 'in-progress',
+  done = 'done',
+  error = 'error',
+  warning = 'warning'
 }
 
 @Component({
   name: 'TheContent',
-  components: { TheNewTaskModal, TheTaskDescriptionModal },
+  components: { TheModal },
 })
 export default class TheContent extends Vue {
   @Prop(Boolean) isTaskClosed!:boolean;
@@ -69,92 +72,104 @@ export default class TheContent extends Vue {
     name: '',
     status: Status.toDo,
     description: '',
-    deadline: TheContent.getRandomTime(),
+    deadline: moment(),
     animationClass: '',
   };
 
-  showNewTaskModal: boolean = false;
+  now: Moment = moment();
 
-  showTaskDescriptionModal: boolean = false;
+  past: Moment = this.now.clone().subtract(2, 'days');
+
+  future: Moment = this.now.clone().add(1, 'days');
+
+  showModal: boolean = false;
+
+  isNewTaskModalShowed: boolean = false;
+
+  isDescriptionModalShowed: boolean = false;
+
+  initialAnimation: string = 'task initial';
+
+  updatedAnimation: string = 'task updated';
 
   created() {
     this.tasks = [
       {
-        name: 'Evening',
-        status: Status.inProgress,
-        description: "You're a big boy, come up with something.",
-        deadline: '11:30 PM',
-        animationClass: '',
-      },
-      {
         name: 'Morning',
         status: Status.inProgress,
         description: 'Wake up!',
-        deadline: '11:30 PM',
+        deadline: moment(this.getRandomTime(), 'DD-MM-YYYY, hh:mm A'),
         animationClass: '',
       },
       {
         name: 'Noon',
         status: Status.inProgress,
         description: 'Work till dusk!',
-        deadline: '11:30 PM',
+        deadline: moment(this.getRandomTime(), 'DD-MM-YYYY, hh:mm A'),
+        animationClass: '',
+      },
+      {
+        name: 'Evening',
+        status: Status.inProgress,
+        description: "You're a big boy, come up with something.",
+        deadline: moment(this.getRandomTime(), 'DD-MM-YYYY, hh:mm A'),
         animationClass: '',
       },
       {
         name: 'Teeth',
         status: Status.done,
         description: "Your dentist told you to brush your teeth twice a day, didn't he?",
-        deadline: '11:35 PM',
+        deadline: moment(this.getRandomTime(), 'DD-MM-YYYY, hh:mm A'),
         animationClass: '',
       },
       {
         name: 'Hair',
         status: Status.done,
         description: 'Make a creative mess today!',
-        deadline: '11:35 PM',
+        deadline: moment(this.getRandomTime(), 'DD-MM-YYYY, hh:mm A'),
         animationClass: '',
       },
       {
         name: 'Shoes',
         status: Status.done,
         description: 'Clean them as if your life depends on it!',
-        deadline: '11:35 PM',
+        deadline: moment(this.getRandomTime(), 'DD-MM-YYYY, hh:mm A'),
         animationClass: '',
       },
       {
         name: 'Eat',
         status: Status.toDo,
         description: 'More powah!',
-        deadline: '11:40 PM',
+        deadline: moment(this.getRandomTime(), 'DD-MM-YYYY, hh:mm A'),
         animationClass: '',
       },
       {
         name: 'Sleep',
         status: Status.toDo,
         description: 'It was a good day, time to let it go and have some sleep.',
-        deadline: '11:40 PM',
+        deadline: moment(this.getRandomTime(), 'DD-MM-YYYY, hh:mm A'),
         animationClass: '',
       },
       {
         name: 'Rave',
         status: Status.toDo,
         description: 'No time to sleep!',
-        deadline: '11:40 PM',
+        deadline: moment(this.getRandomTime(), 'DD-MM-YYYY, hh:mm A'),
         animationClass: '',
       },
       {
         name: 'Repeat',
         status: Status.toDo,
         description: 'Again and again!',
-        deadline: '11:40 PM',
+        deadline: moment(this.getRandomTime(), 'DD-MM-YYYY, hh:mm A'),
         animationClass: '',
       },
     ];
 
     let i = 0;
     const timer = setInterval(() => {
-      if (i < this.tasks.length) {
-        this.tasks[i].animationClass = 'task-list-item';
+      if (i < this.tasks.length && this.$route.path === '/tasks') {
+        this.tasks[i].animationClass += this.initialAnimation;
         i += 1;
       } else {
         clearInterval(timer);
@@ -166,27 +181,41 @@ export default class TheContent extends Vue {
     this.$emit('change-open-tasks-number', this.tasks.length);
   }
 
+  updated() {
+    if (this.tasks.length > 0 && (this.tasks[this.tasks.length - 1].animationClass === '')) {
+      this.tasks[this.tasks.length - 1].animationClass += this.updatedAnimation;
+    }
+  }
+
   // eslint-disable-next-line class-methods-use-this
   addNewTask(args: string[]) {
     this.tasks.push({
       name: args[0],
       status: Status.toDo,
       description: args[1],
-      deadline: TheContent.getRandomTime(),
+      deadline: moment(),
       animationClass: '',
     });
-    this.showNewTaskModal = false;
+    this.isNewTaskModalShowed = false;
+    this.showModal = false;
+  }
+
+  showNewTaskModal() {
+    this.isNewTaskModalShowed = true;
+    this.showModal = true;
   }
 
   showTaskDescription(task: any) {
     if (typeof task === 'number') {
       this.descriptionTask = this.tasks[task];
-      this.showTaskDescriptionModal = true;
+      this.isDescriptionModalShowed = true;
+      this.showModal = true;
     } else {
       for (let i = 0; i < this.tasks.length; i += 1) {
         if (Object.is(task, this.tasks[i])) {
           this.descriptionTask = this.tasks[i];
-          this.showTaskDescriptionModal = true;
+          this.isDescriptionModalShowed = true;
+          this.showModal = true;
           break;
         }
       }
@@ -199,9 +228,10 @@ export default class TheContent extends Vue {
       if (Object.is(args[0], this.tasks[i])) {
         // eslint-disable-next-line prefer-destructuring
         this.tasks[i].description = args[1];
-        this.tasks[i].animationClass = 'added-task-list-item';
+        this.tasks[i].animationClass += this.updatedAnimation;
         descriptionUpdated = true;
-        this.showTaskDescriptionModal = false;
+        this.isDescriptionModalShowed = false;
+        this.showModal = false;
         break;
       }
     }
@@ -238,6 +268,12 @@ export default class TheContent extends Vue {
     }
   }
 
+  closeModalWindow() {
+    this.showModal = false;
+    this.isDescriptionModalShowed = false;
+    this.isNewTaskModalShowed = false;
+  }
+
   changeNotificationCounter(index: number) {
     this.$emit('change-notification-counter', index);
   }
@@ -255,17 +291,12 @@ export default class TheContent extends Vue {
     this.tasks.splice(index, 1);
   }
 
-  static getRandomTime() {
-    const randomMinutes = Math.floor(Math.random() * 1440);
-    const hours: any = (Math.floor(randomMinutes / 60) % 12) + 1;
-    let minutes: any = Math.floor(randomMinutes % 60);
-    const ampm = (randomMinutes < 720) ? 'AM' : 'PM';
+  getRandomTime() {
+    const futureMillis: number = parseInt(this.future.format('X'), 10);
+    const pastMillis: number = parseInt(this.past.format('X'), 10);
+    const randomMillis = Math.floor(Math.random() * (futureMillis - pastMillis + 1)) + pastMillis;
 
-    if (minutes < 10) {
-      minutes = `0${minutes}`;
-    }
-
-    return (`${hours}:${minutes} ${ampm}`);
+    return moment.unix(randomMillis);
   }
 }
 </script>
@@ -280,6 +311,7 @@ export default class TheContent extends Vue {
     -webkit-box-pack: center;
     justify-content: center;
     position: relative;
+    padding-top: 30px;
   }
 
   .tabs {
