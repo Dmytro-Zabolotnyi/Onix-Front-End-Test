@@ -49,7 +49,7 @@ export default class TheTasksTab extends Vue {
     name: '',
     status: Status.toDo,
     description: '',
-    deadline: moment().format('DD-MM-YYYY, hh:mm A'),
+    deadline: moment(),
     animationClass: '',
   };
 

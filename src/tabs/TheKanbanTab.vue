@@ -22,7 +22,7 @@
       input.search-input(type="text", v-model="searchName", placeholder="search by task name...")
     .kanban
       .to-do-container
-        span.label To do: {{ filteredToDoLength }}
+        span.label To do: {{ filteredToDo.length }}
         draggable.to-do-tasks(
           group="draggable",
           v-model="filteredToDo",
@@ -30,7 +30,7 @@
           :move="onMove")
           div(v-for="task in filteredToDo" v-bind:key="task.id",
             @click="showDescription(task)",
-            v-bind:class="[toDoStyle, task.animationClass]")
+            v-bind:class="[styles.toDo, task.animationClass]")
             span.task-name {{ task.name }}
             .task-deadline-container
               span.error(v-if="isDeadlineReached(task.animationClass)") &#215
@@ -38,7 +38,7 @@
               .task-deadline.date {{ task.deadline.format('DD:MM:YYYY,') }}
               .task-deadline.time {{ task.deadline.format('hh:mm A') }}
       .in-progress-container
-        span.label In progress: {{ filteredInProgressLength }}
+        span.label In progress: {{ filteredInProgress.length }}
         draggable.in-progress-tasks(
           group="draggable",
           v-model="filteredInProgress",
@@ -46,7 +46,7 @@
           :move="onMove")
           div(v-for="task in filteredInProgress" v-bind:key="task.id",
             @click="showDescription(task)",
-            v-bind:class="[inProgressStyle, task.animationClass]")
+            v-bind:class="[styles.inProgress, task.animationClass]")
             span.task-name {{ task.name }}
             .task-deadline-container
               span.error(v-if="isDeadlineReached(task.animationClass)") &#215
@@ -54,7 +54,7 @@
               .task-deadline.date {{ task.deadline.format('DD:MM:YYYY,') }}
               .task-deadline.time {{ task.deadline.format('hh:mm A') }}
       .done-container
-        span.label Done: {{ filteredDoneLength }}
+        span.label Done: {{ filteredDone.length }}
         draggable.done-tasks(
           group="draggable",
           v-model="filteredDone",
@@ -62,7 +62,7 @@
           :move="onMove")
           .task(v-for="task in filteredDone" v-bind:key="task.id",
             @click="showDescription(task)",
-            v-bind:class="[doneStyle, task.animationClass]")
+            v-bind:class="[styles.done, task.animationClass]")
             span.task-name {{ task.name }}
             .task-deadline-container
               .task-deadline.date {{ task.deadline.format('DD:MM:YYYY,') }}
@@ -148,8 +148,8 @@ export default class TheKanbanTab extends Vue {
       return false;
     }
 
-    const relatedElement: TaskInterface = event.relatedContext.element;
-    const draggedElement: TaskInterface = event.draggedContext.element;
+    const relatedElement = event.relatedContext.element;
+    const draggedElement = event.draggedContext.element;
 
     if (event.from.className !== event.to.className) {
       this.$emit('change-task-status', draggedElement, event.to.className);
@@ -235,30 +235,6 @@ export default class TheKanbanTab extends Vue {
 
   get datesAreEmpty() {
     return (this.startDate === '' && this.finishDate === '');
-  }
-
-  get toDoStyle() {
-    return this.styles.toDo;
-  }
-
-  get inProgressStyle() {
-    return this.styles.inProgress;
-  }
-
-  get doneStyle() {
-    return this.styles.done;
-  }
-
-  get filteredToDoLength() {
-    return this.filteredToDo.length;
-  }
-
-  get filteredInProgressLength() {
-    return this.filteredInProgress.length;
-  }
-
-  get filteredDoneLength() {
-    return this.filteredDone.length;
   }
 
   // eslint-disable-next-line class-methods-use-this
