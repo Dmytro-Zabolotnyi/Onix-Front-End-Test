@@ -168,7 +168,6 @@ export default class TheKanbanTab extends Vue {
   }
 
   showDescription(task: TaskInterface) {
-    console.log(task);
     this.$emit('show-task-description', task);
   }
 
