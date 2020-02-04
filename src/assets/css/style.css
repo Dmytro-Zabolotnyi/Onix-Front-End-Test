@@ -165,6 +165,12 @@ input, textarea {
     overflow-y: auto;
 }
 
+.date-pickers {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
 @media screen and (min-aspect-ratio: 1500/927) {
     .container {
         width: 60vw;

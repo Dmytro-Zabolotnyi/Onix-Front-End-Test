@@ -6,15 +6,10 @@
       v-bind:style="{ backgroundImage: 'url(' + slideMenuLabelIcon + ')' }"
     )
 
-    TheHeader(v-bind:isTaskClosed="isTaskClosed",
+    TheHeader(
       v-on:change-notification-counter="changeNotificationCounter"
-      v-on:uncheckCheckbox="hideSlideMenu",
-      v-on:change-open-tasks-number="changeOpenTasksNumber",
-      v-on:task-closed="onTaskCompleted")
-
-    TheSidebar(v-bind:notificationCounter="notificationCounter",
-      v-bind:openTasksNumber="openTasksNumber",
-      v-on:close-task="initiateTaskCompletion()")
+      v-on:uncheckCheckbox="hideSlideMenu")
+    TheSidebar(v-bind:notificationCounter="notificationCounter")
 </template>
 
 <script lang="ts">
@@ -31,13 +26,9 @@ import TheSidebar from './components/TheSidebar.vue';
 export default class TheLayout extends Vue {
   isSlideMenuActive: boolean = false;
 
-  isTaskClosed: boolean = false;
-
   slideMenuLabelIcon: string = 'images/chevron-right.svg';
 
   notificationCounter: number = 3;
-
-  openTasksNumber: number = 0;
 
   changeNotificationCounter(index: number) {
     this.notificationCounter = index;
@@ -55,18 +46,6 @@ export default class TheLayout extends Vue {
     if (this.isSlideMenuActive) {
       this.isSlideMenuActive = !this.isSlideMenuActive;
     }
-  }
-
-  changeOpenTasksNumber(openTasksNumber: number) {
-    this.openTasksNumber = openTasksNumber;
-  }
-
-  initiateTaskCompletion() {
-    this.isTaskClosed = true;
-  }
-
-  onTaskCompleted() {
-    this.isTaskClosed = false;
   }
 
   mounted() {

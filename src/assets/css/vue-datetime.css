@@ -11,6 +11,10 @@
     width: 100%;
 }
 
+#deadline {
+    text-align: left;
+}
+
 .vdatetime {
     height: 30px;
     width: 45%;
@@ -50,7 +54,7 @@
     bottom: 0;
     left: 0;
     background: rgba(0, 0, 0, .5);
-    transition: opacity .5s
+    transition: opacity .3s
 }
 
 .vdatetime-popup {
@@ -68,18 +72,22 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     line-height: 1.18;
     background: #fff;
-    -webkit-tap-highlight-color: transparent
+    -webkit-tap-highlight-color: transparent;
+    border-radius: 8px;
 }
 
 .vdatetime-popup * {
-    box-sizing: border-box
+    box-sizing: border-box;
+    user-select: none;
 }
 
 .vdatetime-popup__header {
     padding: 18px 30px;
     background: #FFC200;
     color: #fff;
-    font-size: 32px
+    font-size: 32px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 
 .vdatetime-popup__title {

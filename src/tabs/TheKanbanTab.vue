@@ -33,10 +33,11 @@
             v-bind:class="[styles.toDo, task.animationClass]")
             span.task-name {{ task.name }}
             .task-deadline-container
-              span.error(v-if="isDeadlineReached(task.animationClass)") &#215
+              span.error(v-if="isDeadlineReached(task.animationClass)",
+                v-bind:style="{ backgroundImage: 'url(' + errorSVG + ')' }")
               span.warning(v-else-if="isDeadlineClose(task.animationClass)") &#9888
-              .task-deadline.date {{ task.deadline.format('DD:MM:YYYY,') }}
-              .task-deadline.time {{ task.deadline.format('hh:mm A') }}
+              .task-deadline.date {{ deadlineDate(task.deadline) }}
+              .task-deadline.time {{ deadlineTime(task.deadline) }}
       .in-progress-container
         span.label In progress: {{ filteredInProgress.length }}
         draggable.in-progress-tasks(
@@ -49,10 +50,11 @@
             v-bind:class="[styles.inProgress, task.animationClass]")
             span.task-name {{ task.name }}
             .task-deadline-container
-              span.error(v-if="isDeadlineReached(task.animationClass)") &#215
+              span.error(v-if="isDeadlineReached(task.animationClass)",
+                v-bind:style="{ backgroundImage: 'url(' + errorSVG + ')' }")
               span.warning(v-else-if="isDeadlineClose(task.animationClass)") &#9888
-              .task-deadline.date {{ task.deadline.format('DD:MM:YYYY,') }}
-              .task-deadline.time {{ task.deadline.format('hh:mm A') }}
+              .task-deadline.date {{ deadlineDate(task.deadline) }}
+              .task-deadline.time {{ deadlineTime(task.deadline) }}
       .done-container
         span.label Done: {{ filteredDone.length }}
         draggable.done-tasks(
@@ -65,30 +67,26 @@
             v-bind:class="[styles.done, task.animationClass]")
             span.task-name {{ task.name }}
             .task-deadline-container
-              .task-deadline.date {{ task.deadline.format('DD:MM:YYYY,') }}
-              .task-deadline.time {{ task.deadline.format('hh:mm A') }}
+              .task-deadline.date {{ deadlineDate(task.deadline) }}
+              .task-deadline.time {{ deadlineTime(task.deadline) }}
 </template>
 
 <script lang="ts">
-import {
-  Component, Prop, Vue, Watch,
-} from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import draggable from 'vuedraggable';
 import moment from 'moment';
 import { Datetime } from 'vue-datetime';
 import { Settings } from 'luxon';
-// @ts-ignore
-import { Status, TaskInterface } from '@/components/TheContent.vue';
+import TaskClass, { Status } from '@/TaskClass';
+import { proxy } from '@/store';
 
-Settings.defaultLocale = 'en';
+Settings.defaultLocale = 'en-gb';
 
   @Component({
     name: 'TheKanbanTab',
     components: { draggable, Datetime, Settings },
   })
 export default class TheKanbanTab extends Vue {
-  @Prop() tasks!:TaskInterface[];
-
   @Watch('$route', { immediate: true, deep: true })
   onUrlChange(newValue: any, oldValue: any) {
     if (typeof oldValue === 'undefined' || (newValue.path === '/kanban')) {
@@ -107,11 +105,11 @@ export default class TheKanbanTab extends Vue {
     }
   }
 
-  tasksToDo: TaskInterface[] = this.getTasks(Status.toDo);
+  tasksToDo: TaskClass[] = this.getTasks(Status.toDo);
 
-  tasksInProgress: TaskInterface[] = this.getTasks(Status.inProgress);
+  tasksInProgress: TaskClass[] = this.getTasks(Status.inProgress);
 
-  tasksDone: TaskInterface[] = this.getTasks(Status.done);
+  tasksDone: TaskClass[] = this.getTasks(Status.done);
 
   startDate = '';
 
@@ -119,30 +117,22 @@ export default class TheKanbanTab extends Vue {
 
   searchName: string = '';
 
+  format: string = proxy.tasksStore.format;
+
   styles = {
     toDo: Status.toDo,
     inProgress: Status.inProgress,
     done: Status.done,
   };
 
+  errorSVG: string = 'images/Cross_red_circle.svg';
+
+  // eslint-disable-next-line class-methods-use-this
   getTasks(status: string) {
-    const array: TaskInterface[] = this.tasks.filter(task => (task.status === status));
-
-    array.forEach((task) => {
-      const className = [];
-      className.push('task');
-
-      if (task.deadline > moment()) {
-        className.push(Status.error);
-      } else if (task.deadline.clone().add(24, 'hours') > moment()) {
-        className.push(Status.warning);
-      }
-      // eslint-disable-next-line no-param-reassign
-      task.animationClass = className.join(' ');
-    });
-    return array;
+    return proxy.tasksStore.tasks.filter(task => (task.status === status));
   }
 
+  // eslint-disable-next-line class-methods-use-this
   onMove(event: any) {
     if ((event.from.className === 'done-tasks') && (event.to.className === 'to-do-tasks')) {
       return false;
@@ -152,7 +142,11 @@ export default class TheKanbanTab extends Vue {
     const draggedElement = event.draggedContext.element;
 
     if (event.from.className !== event.to.className) {
-      this.$emit('change-task-status', draggedElement, event.to.className);
+      const payload = {
+        taskToUpdate: draggedElement,
+        newStatus: event.to.className,
+      };
+      proxy.tasksStore.changeTaskStatus(payload);
     }
     return ((!relatedElement || !relatedElement.fixed) && !draggedElement.fixed);
   }
@@ -167,8 +161,8 @@ export default class TheKanbanTab extends Vue {
     return animation.includes(Status.warning);
   }
 
-  showDescription(task: TaskInterface) {
-    this.$emit('show-task-description', task);
+  showDescription(task: TaskClass) {
+    this.$emit('show-task-description', task, true);
   }
 
   get filtersCleared() {
@@ -187,29 +181,40 @@ export default class TheKanbanTab extends Vue {
     return this.filterTasks(this.tasksDone);
   }
 
-  set filteredToDo(array: TaskInterface[]) {
+  set filteredToDo(array: TaskClass[]) {
     this.tasksToDo = array;
   }
 
-  set filteredInProgress(array: TaskInterface[]) {
+  set filteredInProgress(array: TaskClass[]) {
     this.tasksInProgress = array;
   }
 
-  set filteredDone(array: TaskInterface[]) {
+  set filteredDone(array: TaskClass[]) {
     this.tasksDone = array;
   }
 
-  filterTasks(array: TaskInterface[]) {
-    let tasksToFilter: TaskInterface[] = [...array];
+  // eslint-disable-next-line class-methods-use-this
+  deadlineDate(deadline: string) {
+    return moment(deadline, this.format).format('DD-MM-YYYY,');
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  deadlineTime(deadline: string) {
+    return moment(deadline, this.format).format('hh:mm A');
+  }
+
+  filterTasks(array: TaskClass[]) {
+    let tasksToFilter: TaskClass[] = [...array];
     if (this.startDate !== '' && this.finishDate === '') {
       tasksToFilter = tasksToFilter.filter(task => (
-        task.deadline >= this.startDateToMoment));
+        moment(task.deadline, this.format) >= this.startDateToMoment));
     } else if (this.startDate === '' && this.finishDate !== '') {
       tasksToFilter = tasksToFilter.filter(task => (
-        task.deadline <= this.finishDateToMoment));
+        moment(task.deadline, this.format) <= this.finishDateToMoment));
     } else if (this.startDate !== '' && this.finishDate !== '') {
       tasksToFilter = tasksToFilter.filter(task => (
-        task.deadline >= this.startDateToMoment && task.deadline <= this.finishDateToMoment));
+        (moment(task.deadline, this.format) >= this.startDateToMoment)
+        && (moment(task.deadline, this.format) <= this.finishDateToMoment)));
     }
 
     if (this.searchNameToUppercase !== '') {
@@ -258,12 +263,6 @@ export default class TheKanbanTab extends Vue {
     width: 100%;
     padding-bottom: 10px;
     border-bottom: 3px double grey;
-  }
-
-  .date-pickers {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
   }
 
   .filter-container .arrows {
@@ -355,11 +354,11 @@ export default class TheKanbanTab extends Vue {
   }
 
   .to-do-tasks .error, .in-progress-tasks .error {
-    border: 1px solid #cc4403;
+    border: 1px solid #dd3333;
   }
 
   .to-do-tasks .warning, .in-progress-tasks .warning {
-    border: 1px solid #FFC200;
+    border: 1px solid #ffae4b;
   }
 
   .task {
@@ -378,15 +377,15 @@ export default class TheKanbanTab extends Vue {
   }
 
   .to-do {
-    background: #e2f6fd;
+    background: #E3EFFF;
   }
 
   .in-progress {
-    background: #fbf7d9;
+    background: #FFF8DD;
   }
 
   .done {
-    background: #e2f9e9;
+    background: #CEF9C6;
   }
 
   .task-name {
@@ -421,7 +420,7 @@ export default class TheKanbanTab extends Vue {
   }
 
   .task-deadline-container .warning {
-    color: #FFC200;
+    color: #ffae4b;
     font-size: 12px;
     line-height: 12px;
   }

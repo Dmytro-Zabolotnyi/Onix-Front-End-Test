@@ -1,6 +1,6 @@
 <template lang="pug">
   .modal-container
-    .modal-background(@click="closeModalWindow()")
+    .modal-backdrop(@click="closeModalWindow()")
     .modal-window(v-bind:class="modalWindowClass")
       form.new-task-container(v-if="isNewTaskModalShowed", @submit.prevent="addNewTask")
         .close-modal-window-button(@click="closeModalWindow()") &#215
@@ -11,56 +11,75 @@
           textarea.new-task-description(rows='3',
             placeholder='enter new task description...',
             v-model="newTask.description")
+        .date-pickers
+          datetime.end-date(
+            type="datetime",
+            input-id="deadline"
+            v-model="newTask.deadline",
+            placeholder="input deadline...",
+            use12-hour,
+            format="dd:MM:yyyy, hh:mm a")
         button.new-task-add-button(type="submit") &#10003 Add
       .task-description(v-if="isDescriptionModalShowed")
         .description-container
           span(v-if="!isEditing") {{ textArea }}
           textarea(v-else, v-model="textArea")
-        button.task-description-edit-button(v-if="!isEditing",
-          @click="isEditing = !isEditing") &#x270E Edit
-        button.task-description-cancel-button(v-else,
-          @click="closeModalWindow()") &#x2716 Cancel
-        button.task-description-save-button(v-if="isDescriptionChanged",
-          @click="saveDescription()") &#x1f4be Save
+        .edit(v-if="isEditable")
+          button.task-description-edit-button(v-if="!isEditing",
+            @click="isEditing = !isEditing") &#x270E Edit
+          button.task-description-cancel-button(v-else,
+            @click="closeModalWindow()") &#x2716 Cancel
+          button.task-description-save-button(v-if="isDescriptionChanged",
+            @click="saveDescription()") &#x1f4be Save
 </template>
 
 <script lang="ts">
 import {
   Vue, Component, Prop,
 } from 'vue-property-decorator';
-// @ts-ignore
-import { TaskInterface } from '@/components/TheContent.vue';
+import { Datetime } from 'vue-datetime';
+import { Settings } from 'luxon';
+import TaskClass from '@/TaskClass';
+
+Settings.defaultLocale = 'en-gb';
 
 @Component({
   name: 'TheModal',
+  components: { Datetime, Settings },
 })
 export default class TheModal extends Vue {
-  @Prop() descriptionTask!:TaskInterface;
+  @Prop() descriptionTask!:TaskClass;
 
   @Prop(Boolean) isNewTaskModalShowed!:boolean;
 
   @Prop(Boolean) isDescriptionModalShowed!:boolean;
 
+  @Prop(Boolean) editable!:boolean;
+
   newTask = {
     name: '',
     description: '',
+    deadline: '',
   };
 
   textArea: string = this.descriptionTask.description;
 
   isEditing: boolean = false;
 
+  isEditable: boolean = this.editable;
+
   addNewTask(event: { target: { reset: () => void; }; }) {
-    if (this.newTask.name !== '' && this.newTask.description !== '') {
-      this.$emit('new-task-added', this.newTask.name, this.newTask.description);
+    if (this.newTask.name !== '' && this.newTask.description !== '' && this.newTask.deadline !== '') {
+      this.$emit('new-task-added', this.newTask.name, this.newTask.description, this.newTask.deadline);
 
       this.newTask.name = '';
       this.newTask.description = '';
+      this.newTask.deadline = '';
 
       event.target.reset();
     } else {
       // eslint-disable-next-line no-alert
-      alert('Please fill both name and description fields to add the task...');
+      alert('Please fill name, description and deadline fields to add the task...');
     }
   }
 
@@ -104,7 +123,7 @@ export default class TheModal extends Vue {
     height: 100%;
   }
 
-  .modal-background {
+  .modal-backdrop {
     position: fixed;
     top: 0;
     left: 0;
@@ -170,6 +189,21 @@ export default class TheModal extends Vue {
   .new-task-container textarea {
     resize: none;
     margin-bottom: 10px;
+  }
+
+  .vdatetime {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .vdatetime-input {
+    text-align: left;
+    color: red;
+  }
+
+  .new-task-description-container {
+    display: flex;
+    justify-content: center;
   }
 
   .new-task-add-button {

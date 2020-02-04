@@ -4,67 +4,53 @@ import moment from "moment";
     .tasks
       button.new-task-add-button(@click="showNewTaskModal()") + Add new task
       ul
-        li(v-for="(task, index) in tasks", v-bind:key="index", v-bind:class="task.animationClass")
+        li(v-for="(task, index) in tasksStore.tasks",
+          v-bind:key="index",
+          v-bind:class="task.animationClass")
           .task-upper-row
             span.task-name {{ task.name }}
             .task-delete-button(@click="deleteTask(index)") &#215
           span.task-description(@click="showDescription(index)") {{ task.description }}
-          span.task-deadline {{ task.deadline.format('DD:MM:YYYY, hh:mm A') }}
+          span.task-deadline {{ task.deadline }}
 </template>
 
 <script lang="ts">
 import {
-  Vue, Component, Prop, Watch,
+  Vue, Component, Watch,
 } from 'vue-property-decorator';
-import moment from 'moment';
-// @ts-ignore
-import { TaskInterface, Status } from '@/components/TheContent.vue';
+import TaskClass, { Status } from '@/TaskClass';
+import { proxy } from '@/store';
 
 @Component({
   name: 'TheTasksTab',
 })
 export default class TheTasksTab extends Vue {
-  @Prop(Boolean) isTaskClosed!:boolean;
-
-  @Prop() tasks!:TaskInterface[];
-
-  @Watch('isTaskClosed', { immediate: true, deep: true })
-  taskCompletionInitiated() {
-    if (this.isTaskClosed) {
-      this.$emit('task-closed');
-    }
-  }
-
   @Watch('$route', { immediate: true, deep: true })
   onUrlChange(newValue: any, oldValue: any) {
     if ((typeof oldValue !== 'undefined') && (oldValue.path === '/tasks')) {
-      this.tasks.forEach((task) => {
-        // eslint-disable-next-line no-param-reassign
-        task.animationClass = task.animationClass.replace(this.initialAnimation, '').replace(this.updatedAnimation, '');
-      });
+      this.tasksStore.onTasksTabLeave();
     }
   }
 
-  newTask: TaskInterface = {
+  tasksStore = proxy.tasksStore;
+
+  newTask: TaskClass = {
     name: '',
     status: Status.toDo,
     description: '',
-    deadline: moment(),
+    added: '',
+    deadline: '',
     animationClass: '',
   };
 
-  initialAnimation: string = ' initial';
-
-  updatedAnimation: string = ' updated';
-
   deleteTask(index: number) {
-    if (this.tasks.length > 0) {
-      this.$emit('task-deleted', index);
+    if (this.tasksStore.tasks.length > 0) {
+      this.tasksStore.deleteTask(index);
     }
   }
 
   showDescription(index: number) {
-    this.$emit('show-task-description', index);
+    this.$emit('show-task-description', index, true);
   }
 
   showNewTaskModal() {

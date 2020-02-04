@@ -13,14 +13,10 @@
         router-link.link(to='/files') Files
     .tab-content
       keep-alive
-        router-view(v-bind:isTaskClosed="isTaskClosed",
-          v-bind:tasks="tasks",
+        router-view(
           v-on:change-notification-counter="changeNotificationCounter($event)",
-          v-on:task-closed="taskClosed($event)",
-          v-on:task-deleted="deleteTask($event)",
           v-on:show-new-task-modal="showNewTaskModal()",
-          v-on:show-task-description="showTaskDescription($event)",
-          v-on:change-task-status="(...args)=>changeTaskStatus(args)")
+          v-on:show-task-description="(...args)=>showTaskDescription(args)")
       TheModal(
         v-if="showModal",
         v-on:new-task-added="(...args)=>addNewTask(args)",
@@ -28,148 +24,50 @@
         v-bind:isNewTaskModalShowed="isNewTaskModalShowed",
         v-bind:isDescriptionModalShowed="isDescriptionModalShowed",
         v-bind:descriptionTask="descriptionTask",
+        v-bind:editable="editable",
         v-on:description-updated="(...args)=>saveUpdatedDescription(args)")
 </template>
 
 <script lang="ts">
 import {
-  Vue, Component, Prop, Watch,
+  Vue, Component,
 } from 'vue-property-decorator';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
+import { proxy } from '@/store';
 import TheModal from '@/modals/TheModal.vue';
-
-export interface TaskInterface {
-  name: string;
-  status: Status;
-  description: string;
-  deadline: Moment;
-  animationClass: string;
-}
-
-export enum Status {
-  toDo = 'to-do',
-  inProgress = 'in-progress',
-  done = 'done',
-  error = 'error',
-  warning = 'warning'
-}
+import TaskClass, { Status } from '@/TaskClass';
 
 @Component({
   name: 'TheContent',
   components: { TheModal },
 })
 export default class TheContent extends Vue {
-  @Prop(Boolean) isTaskClosed!:boolean;
+  tasksStore = proxy.tasksStore;
 
-  @Watch('tasks.length', { deep: true })
-  onTasksLengthChange() {
-    this.$emit('change-open-tasks-number', this.tasks.length);
-  }
-
-  tasks: TaskInterface[] = [];
-
-  descriptionTask: TaskInterface = {
+  descriptionTask: TaskClass = {
     name: '',
     status: Status.toDo,
     description: '',
-    deadline: moment(),
+    added: '',
+    deadline: '',
     animationClass: '',
   };
 
-  now: Moment = moment();
-
-  past: Moment = this.now.clone().subtract(2, 'days');
-
-  future: Moment = this.now.clone().add(1, 'days');
-
   showModal: boolean = false;
+
+  editable: boolean = false;
 
   isNewTaskModalShowed: boolean = false;
 
   isDescriptionModalShowed: boolean = false;
 
-  initialAnimation: string = 'task initial';
-
-  updatedAnimation: string = 'task updated';
-
   created() {
-    this.tasks = [
-      {
-        name: 'Morning',
-        status: Status.inProgress,
-        description: 'Wake up!',
-        deadline: moment(this.getRandomTime(), 'DD-MM-YYYY, hh:mm A'),
-        animationClass: '',
-      },
-      {
-        name: 'Noon',
-        status: Status.inProgress,
-        description: 'Work till dusk!',
-        deadline: moment(this.getRandomTime(), 'DD-MM-YYYY, hh:mm A'),
-        animationClass: '',
-      },
-      {
-        name: 'Evening',
-        status: Status.inProgress,
-        description: "You're a big boy, come up with something.",
-        deadline: moment(this.getRandomTime(), 'DD-MM-YYYY, hh:mm A'),
-        animationClass: '',
-      },
-      {
-        name: 'Teeth',
-        status: Status.done,
-        description: "Your dentist told you to brush your teeth twice a day, didn't he?",
-        deadline: moment(this.getRandomTime(), 'DD-MM-YYYY, hh:mm A'),
-        animationClass: '',
-      },
-      {
-        name: 'Hair',
-        status: Status.done,
-        description: 'Make a creative mess today!',
-        deadline: moment(this.getRandomTime(), 'DD-MM-YYYY, hh:mm A'),
-        animationClass: '',
-      },
-      {
-        name: 'Shoes',
-        status: Status.done,
-        description: 'Clean them as if your life depends on it!',
-        deadline: moment(this.getRandomTime(), 'DD-MM-YYYY, hh:mm A'),
-        animationClass: '',
-      },
-      {
-        name: 'Eat',
-        status: Status.toDo,
-        description: 'More powah!',
-        deadline: moment(this.getRandomTime(), 'DD-MM-YYYY, hh:mm A'),
-        animationClass: '',
-      },
-      {
-        name: 'Sleep',
-        status: Status.toDo,
-        description: 'It was a good day, time to let it go and have some sleep.',
-        deadline: moment(this.getRandomTime(), 'DD-MM-YYYY, hh:mm A'),
-        animationClass: '',
-      },
-      {
-        name: 'Rave',
-        status: Status.toDo,
-        description: 'No time to sleep!',
-        deadline: moment(this.getRandomTime(), 'DD-MM-YYYY, hh:mm A'),
-        animationClass: '',
-      },
-      {
-        name: 'Repeat',
-        status: Status.toDo,
-        description: 'Again and again!',
-        deadline: moment(this.getRandomTime(), 'DD-MM-YYYY, hh:mm A'),
-        animationClass: '',
-      },
-    ];
+    this.tasksStore.initDeadlineCheck();
 
     let i = 0;
     const timer = setInterval(() => {
-      if (i < this.tasks.length && this.$route.path === '/tasks') {
-        this.tasks[i].animationClass += this.initialAnimation;
+      if (i < this.tasksStore.tasks.length && this.$route.path === '/tasks') {
+        this.tasksStore.tasks[i].animationClass += ` ${Status.initial}`;
         i += 1;
       } else {
         clearInterval(timer);
@@ -177,25 +75,18 @@ export default class TheContent extends Vue {
     }, 200);
   }
 
-  mounted() {
-    this.$emit('change-open-tasks-number', this.tasks.length);
-  }
-
-  updated() {
-    if (this.tasks.length > 0 && (this.tasks[this.tasks.length - 1].animationClass === '')) {
-      this.tasks[this.tasks.length - 1].animationClass += this.updatedAnimation;
-    }
-  }
-
   // eslint-disable-next-line class-methods-use-this
   addNewTask(args: string[]) {
-    this.tasks.push({
+    const newTask: TaskClass = {
       name: args[0],
       status: Status.toDo,
       description: args[1],
-      deadline: moment(),
-      animationClass: '',
-    });
+      added: moment().format(this.tasksStore.format),
+      deadline: moment(args[2]).format(this.tasksStore.format),
+      animationClass: `task ${Status.updated}`,
+    };
+
+    this.tasksStore.addTask(newTask);
     this.isNewTaskModalShowed = false;
     this.showModal = false;
   }
@@ -205,33 +96,43 @@ export default class TheContent extends Vue {
     this.showModal = true;
   }
 
-  showTaskDescription(task: any) {
-    if (typeof task === 'number') {
-      this.descriptionTask = this.tasks[task];
+  showTaskDescription(args: any[]) {
+    if (typeof args[0] === 'number') {
+      this.descriptionTask = this.tasksStore.tasks[args[0]];
       this.isDescriptionModalShowed = true;
       this.showModal = true;
+      if (args[1]) {
+        this.editable = true;
+      }
     } else {
-      for (let i = 0; i < this.tasks.length; i += 1) {
-        if (Object.is(task, this.tasks[i])) {
-          this.descriptionTask = this.tasks[i];
+      for (let i = 0; i < this.tasksStore.tasks.length; i += 1) {
+        if (Object.is(args[0], this.tasksStore.tasks[i])) {
+          this.descriptionTask = this.tasksStore.tasks[i];
           this.isDescriptionModalShowed = true;
           this.showModal = true;
+          if (args[1]) {
+            this.editable = true;
+          }
           break;
         }
       }
     }
   }
 
-  saveUpdatedDescription(args: [TaskInterface, string]) {
+  saveUpdatedDescription(args: [TaskClass, string]) {
     let descriptionUpdated: boolean = false;
-    for (let i = 0; i < this.tasks.length; i += 1) {
-      if (Object.is(args[0], this.tasks[i])) {
-        // eslint-disable-next-line prefer-destructuring
-        this.tasks[i].description = args[1];
-        this.tasks[i].animationClass += this.updatedAnimation;
+    for (let i = 0; i < this.tasksStore.tasks.length; i += 1) {
+      if (Object.is(args[0], this.tasksStore.tasks[i])) {
+        const payload = {
+          description: args[1],
+          animationClass: Status.updated,
+          index: i,
+        };
+        this.tasksStore.changeTask(payload);
         descriptionUpdated = true;
         this.isDescriptionModalShowed = false;
         this.showModal = false;
+        this.editable = false;
         break;
       }
     }
@@ -241,62 +142,15 @@ export default class TheContent extends Vue {
     }
   }
 
-  changeTaskStatus(args: [TaskInterface, string]) {
-    let statusUpdated: number = 1;
-
-    for (let i = 0; i < this.tasks.length; i += 1) {
-      if (Object.is(args[0], this.tasks[i])) {
-        if (args[1] === 'to-do-tasks') {
-          this.tasks[i].status = Status.toDo;
-          statusUpdated = 0;
-        } else if (args[1] === 'in-progress-tasks') {
-          this.tasks[i].status = Status.inProgress;
-          statusUpdated = 0;
-        } else if (args[1] === 'done-tasks') {
-          this.tasks[i].status = Status.done;
-          statusUpdated = 0;
-        } else statusUpdated = -1;
-        break;
-      }
-    }
-    if (statusUpdated > 0) {
-      // eslint-disable-next-line no-alert
-      alert('Cannot save changes due to task already changed or deleted.');
-    } else if (statusUpdated < 0) {
-      // eslint-disable-next-line no-alert
-      alert('Cannot save changes due to unknown parameter passed.');
-    }
-  }
-
   closeModalWindow() {
     this.showModal = false;
     this.isDescriptionModalShowed = false;
     this.isNewTaskModalShowed = false;
+    this.editable = false;
   }
 
   changeNotificationCounter(index: number) {
     this.$emit('change-notification-counter', index);
-  }
-
-  changeOpenTasksNumber(openTasksNumber: number) {
-    this.$emit('change-open-tasks-number', openTasksNumber);
-  }
-
-  taskClosed() {
-    this.tasks.splice(0, 1);
-    this.$emit('task-closed');
-  }
-
-  deleteTask(index: number) {
-    this.tasks.splice(index, 1);
-  }
-
-  getRandomTime() {
-    const futureMillis: number = parseInt(this.future.format('X'), 10);
-    const pastMillis: number = parseInt(this.past.format('X'), 10);
-    const randomMillis = Math.floor(Math.random() * (futureMillis - pastMillis + 1)) + pastMillis;
-
-    return moment.unix(randomMillis);
   }
 }
 </script>

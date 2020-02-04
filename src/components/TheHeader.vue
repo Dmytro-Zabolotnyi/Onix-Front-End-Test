@@ -18,15 +18,12 @@
           .chat-icon(v-bind:style="{ backgroundImage: 'url(' + chatIcon + ')' }")
           span Chat
 
-    TheContent(v-bind:isTaskClosed="isTaskClosed"
-      v-on:change-notification-counter="changeNotificationCounter($event)"
-      v-on:change-open-tasks-number="changeOpenTasksNumber($event)"
-      v-on:task-closed="taskClosed($event)")
+    TheContent(v-on:change-notification-counter="changeNotificationCounter($event)")
 </template>
 
 <script lang="ts">
 import {
-  Vue, Component, Prop,
+  Vue, Component,
 } from 'vue-property-decorator';
 import TheContent from './TheContent.vue';
 
@@ -35,8 +32,6 @@ import TheContent from './TheContent.vue';
   components: { TheContent },
 })
 export default class TheHeader extends Vue {
-  @Prop(Boolean) isTaskClosed!:boolean;
-
   projectLogo: string = 'images/Shapes@2x.png';
 
   projectName: string = 'Website Redesign';
@@ -55,14 +50,6 @@ export default class TheHeader extends Vue {
 
   hideSlideMenu() {
     this.$emit('uncheckCheckbox');
-  }
-
-  changeOpenTasksNumber(openTasksNumber: number) {
-    this.$emit('change-open-tasks-number', openTasksNumber);
-  }
-
-  taskClosed() {
-    this.$emit('task-closed');
   }
 }
 </script>

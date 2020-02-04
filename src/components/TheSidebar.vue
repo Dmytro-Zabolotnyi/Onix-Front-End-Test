@@ -13,11 +13,11 @@
         .user-menu-shapes
     .task-stats
       .completed-tasks(@click="changeTasksCounter()")
-        .completed-number {{ this.completedTasksNumber }}
+        .completed-number {{ tasksStore.completedTasksNumber }}
         .tasks-label
           span Completed Tasks
       .open-tasks(@click="openTasksTab()")
-        .open-number {{ this.openTasksNumber }}
+        .open-number {{ tasksStore.tasks.length }}
         .tasks-label
           span Open Tasks
     .aside-menu
@@ -35,22 +35,21 @@
 import {
   Vue, Component, Prop,
 } from 'vue-property-decorator';
+import { proxy } from '@/store';
 
 @Component({
   name: 'TheSidebar',
 })
 export default class TheSidebar extends Vue {
-  @Prop(Number) openTasksNumber!: number;
-
   @Prop(Number) notificationCounter !: number;
+
+  tasksStore = proxy.tasksStore;
 
   logoIcon: string = 'images/Logo@3x.svg';
 
   companyName: string = 'PROJECTUS';
 
   searchIcon: string = 'images/Search@3x.svg';
-
-  completedTasksNumber: number = 372;
 
   user = {
     name: 'Jean Gonzales',
@@ -59,22 +58,21 @@ export default class TheSidebar extends Vue {
   };
 
   changeTasksCounter() {
-    if (this.openTasksNumber > 0) {
+    if (this.tasksStore.tasks.length > 0) {
       this.$router.push('/tasks').catch((error) => {});
 
       setTimeout(() => {
         // eslint-disable-next-line no-alert
         if (window.confirm('Are you sure you want to change the number of tasks?')) {
-          this.$emit('close-task');
+          this.tasksStore.closeTask();
+          this.tasksStore.completedTasksNumber += 1;
         }
       }, 1);
     }
   }
 
   openTasksTab() {
-    if (this.openTasksNumber > 0) {
-      this.$router.push('/tasks').catch((error) => {});
-    }
+    this.$router.push('/tasks').catch((error) => {});
   }
 }
 </script>

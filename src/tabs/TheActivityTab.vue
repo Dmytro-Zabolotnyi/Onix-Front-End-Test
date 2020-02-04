@@ -26,69 +26,15 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { proxy } from '@/store';
 
 @Component({
   name: 'TheActivityTab',
 })
 export default class TheActivityTab extends Vue {
-  activities = [
-    {
-      icon: {
-        imagePath: 'images/toolbarButton-download1.svg',
-        backgroundColor: '#E3EFFF',
-      },
-      content: {
-        text: 'Darika Samak uploaded 4 files on An option to search in '
-          + 'current projects or in all projects',
-        attachments: {
-          imagesAttached: [
-            { imagePath: 'images/attached-pic1.jpg' },
-            { imagePath: 'images/attached-pic2.jpg' },
-            { imagePath: 'images/attached-pic3.jpg' },
-            { imagePath: 'images/attached-pic4.jpg' },
-          ],
-          textsAttached: [],
-        },
-      },
-      time: '6:02 PM',
-    },
-    {
-      icon: {
-        imagePath: 'images/square-speech-bubble-svgrepo-com.svg',
-        backgroundColor: '#FFF8DD',
-      },
-      content: {
-        text: 'Emilee Simchenko commented on Account for teams and '
-          + 'personal in bottom style',
-        attachments: {
-          imagesAttached: [],
-          textsAttached: [
-            {
-              textAttached: 'During a project build, it is necessary to evaluate '
-                + 'the product design and development against project '
-                + 'requirements and outcomes',
-            },
-          ],
+  activitiesStore = proxy.activitiesStore;
 
-        },
-      },
-      time: '7:32 PM',
-    },
-    {
-      icon: {
-        imagePath: 'images/Icon@3x.svg',
-        backgroundColor: '#CEF9C6',
-      },
-      content: {
-        text: 'Darika Samak mark as done Listing on Product Hunt so that we can reach as many potential users',
-        attachments: {
-          imagesAttached: [],
-          textsAttached: [],
-        },
-      },
-      time: '8:40 PM',
-    },
-  ];
+  activities = this.activitiesStore.activities;
 
   addOnClickEvent(index: number) {
     this.$emit('change-notification-counter', index);
