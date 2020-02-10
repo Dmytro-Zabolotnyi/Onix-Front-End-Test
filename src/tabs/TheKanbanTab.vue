@@ -126,6 +126,14 @@ export default class TheKanbanTab extends Vue {
 
   errorSVG: string = 'images/Cross_red_circle.svg';
 
+  async created() {
+    await TasksApi.getTasks().then(response => response).then(() => {
+      this.tasksToDo = this.getTasks(Status.toDo);
+      this.tasksInProgress = this.getTasks(Status.inProgress);
+      this.tasksDone = this.getTasks(Status.done);
+    });
+  }
+
   // eslint-disable-next-line class-methods-use-this
   getTasks(status: string) {
     return proxy.tasksStore.tasks.filter(task => (task.status === status)).map((task) => {

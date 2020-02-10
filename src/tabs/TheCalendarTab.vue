@@ -28,6 +28,7 @@ import {
 import moment from 'moment';
 import { proxy } from '@/store';
 import TaskClass, { format } from '@/TaskClass';
+import TasksApi from '@/services/tasks.api';
 
 interface CalendarDate {
   date: number;
@@ -52,8 +53,6 @@ export default class TheCalendarTab extends Vue {
   onTasksChange() {
     this.makeCalendar();
   }
-
-  tasks = proxy.tasksStore.tasks;
 
   month: string = moment().format('MMMM').toString();
 
@@ -100,7 +99,6 @@ export default class TheCalendarTab extends Vue {
     const firstDay = parseInt(moment(`${this.month}${this.year}`, 'MMMMYYYY').format('E'), 10);
     const daysInMonth = moment(`${this.year}${this.month}`, 'YYYYMMMM').daysInMonth();
     let day = firstDay;
-    const monthAndYear = moment(`${this.month}${this.year}`, 'MMMMYYYY').format('MMYYYY');
 
     while (day > 1) {
       this.previous.push(0);
@@ -115,12 +113,13 @@ export default class TheCalendarTab extends Vue {
       this.calendar.push(calendarDate);
     }
 
-    for (let i = 0; i < this.tasks.length; i += 1) {
-      const taskCreatedDate = moment(this.tasks[i].added, format).format('MMYYYY');
+    const monthAndYear = moment(`${this.month}${this.year}`, 'MMMMYYYY').format('MMYYYY');
+    for (let i = 0; i < proxy.tasksStore.tasks.length; i += 1) {
+      const taskCreatedDate = moment(proxy.tasksStore.tasks[i].added, format).format('MMYYYY');
 
       if (Object.is(taskCreatedDate, monthAndYear)) {
-        const date = parseInt(moment(this.tasks[i].added, format).format('D'), 10);
-        this.calendar[date - 1].tasks.push(this.tasks[i]);
+        const date = parseInt(moment(proxy.tasksStore.tasks[i].added, format).format('D'), 10);
+        this.calendar[date - 1].tasks.push(proxy.tasksStore.tasks[i]);
       }
     }
   }
@@ -136,11 +135,15 @@ export default class TheCalendarTab extends Vue {
     this.$emit('show-task-description', task, false);
   }
 
-  created() {
+  async created() {
     for (let i: number = this.minYear; i <= this.maxYear; i += 1) {
       this.years.push(i);
     }
     this.makeCalendar();
+
+    await TasksApi.getTasks().then(response => response).then(() => {
+      this.makeCalendar();
+    });
   }
 }
 </script>
