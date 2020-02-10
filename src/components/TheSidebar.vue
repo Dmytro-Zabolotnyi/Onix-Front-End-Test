@@ -36,6 +36,7 @@ import {
   Vue, Component, Prop,
 } from 'vue-property-decorator';
 import { proxy } from '@/store';
+import TasksApi from '@/services/tasks.api';
 
 @Component({
   name: 'TheSidebar',
@@ -64,7 +65,7 @@ export default class TheSidebar extends Vue {
       setTimeout(() => {
         // eslint-disable-next-line no-alert
         if (window.confirm('Are you sure you want to change the number of tasks?')) {
-          this.tasksStore.closeTask();
+          TasksApi.deleteTask(0);
           this.tasksStore.completedTasksNumber += 1;
         }
       }, 1);

@@ -42,7 +42,7 @@ export default class TheFilesTab extends Vue {
   }
 
   .image-attachment span {
-    font-size: 15px;
+    font-size: 12px;
   }
 
   .image {

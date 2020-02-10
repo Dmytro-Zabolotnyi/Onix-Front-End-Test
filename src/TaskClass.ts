@@ -17,6 +17,8 @@ export enum Status {
   updated = 'updated',
 }
 
+export const format:string = 'DD-MM-YYYY, hh:mm A';
+
 export default class TaskClass implements TaskInterface {
   name = '';
 

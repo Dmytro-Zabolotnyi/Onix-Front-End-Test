@@ -29,13 +29,12 @@
 </template>
 
 <script lang="ts">
-import {
-  Vue, Component,
-} from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import moment from 'moment';
 import { proxy } from '@/store';
 import TheModal from '@/modals/TheModal.vue';
-import TaskClass, { Status } from '@/TaskClass';
+import TaskClass, { format, Status } from '../TaskClass';
+import TasksApi from '@/services/tasks.api';
 
 @Component({
   name: 'TheContent',
@@ -61,18 +60,9 @@ export default class TheContent extends Vue {
 
   isDescriptionModalShowed: boolean = false;
 
+  // eslint-disable-next-line class-methods-use-this
   created() {
-    this.tasksStore.initDeadlineCheck();
-
-    let i = 0;
-    const timer = setInterval(() => {
-      if (i < this.tasksStore.tasks.length && this.$route.path === '/tasks') {
-        this.tasksStore.tasks[i].animationClass += ` ${Status.initial}`;
-        i += 1;
-      } else {
-        clearInterval(timer);
-      }
-    }, 200);
+    TasksApi.getTasks();
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -81,12 +71,11 @@ export default class TheContent extends Vue {
       name: args[0],
       status: Status.toDo,
       description: args[1],
-      added: moment().format(this.tasksStore.format),
-      deadline: moment(args[2]).format(this.tasksStore.format),
-      animationClass: `task ${Status.updated}`,
+      added: moment().format(format),
+      deadline: moment(args[2]).format(format),
+      animationClass: Status.updated,
     };
-
-    this.tasksStore.addTask(newTask);
+    TasksApi.addTask(newTask);
     this.isNewTaskModalShowed = false;
     this.showModal = false;
   }
@@ -120,26 +109,23 @@ export default class TheContent extends Vue {
   }
 
   saveUpdatedDescription(args: [TaskClass, string]) {
-    let descriptionUpdated: boolean = false;
     for (let i = 0; i < this.tasksStore.tasks.length; i += 1) {
       if (Object.is(args[0], this.tasksStore.tasks[i])) {
+        const task: TaskClass = args[0];
+        // eslint-disable-next-line prefer-destructuring
+        task.description = args[1];
         const payload = {
-          description: args[1],
-          animationClass: Status.updated,
+          task,
           index: i,
         };
-        this.tasksStore.changeTask(payload);
-        descriptionUpdated = true;
-        this.isDescriptionModalShowed = false;
-        this.showModal = false;
-        this.editable = false;
+        TasksApi.editTask(payload);
         break;
       }
     }
-    if (!descriptionUpdated) {
-      // eslint-disable-next-line no-alert
-      alert('Cannot save changes due to task already changed or deleted.');
-    }
+
+    this.isDescriptionModalShowed = false;
+    this.showModal = false;
+    this.editable = false;
   }
 
   closeModalWindow() {

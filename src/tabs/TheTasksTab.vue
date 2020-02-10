@@ -20,6 +20,7 @@ import {
 } from 'vue-property-decorator';
 import TaskClass, { Status } from '@/TaskClass';
 import { proxy } from '@/store';
+import TasksApi from '@/services/tasks.api';
 
 @Component({
   name: 'TheTasksTab',
@@ -28,7 +29,13 @@ export default class TheTasksTab extends Vue {
   @Watch('$route', { immediate: true, deep: true })
   onUrlChange(newValue: any, oldValue: any) {
     if ((typeof oldValue !== 'undefined') && (oldValue.path === '/tasks')) {
-      this.tasksStore.onTasksTabLeave();
+      this.tasksStore.tasks.forEach((task) => {
+        // eslint-disable-next-line no-param-reassign
+        task.animationClass = task.animationClass.replace(Status.initial, '')
+          .replace(Status.updated, '')
+          .replace(/ {2}/g, ' ').trim();
+      });
+      proxy.tasksStore.onTasksTabLeave();
     }
   }
 
@@ -45,7 +52,7 @@ export default class TheTasksTab extends Vue {
 
   deleteTask(index: number) {
     if (this.tasksStore.tasks.length > 0) {
-      this.tasksStore.deleteTask(index);
+      TasksApi.deleteTask(index);
     }
   }
 
@@ -55,6 +62,18 @@ export default class TheTasksTab extends Vue {
 
   showNewTaskModal() {
     this.$emit('show-new-task-modal');
+  }
+
+  created() {
+    let i = 0;
+    const timer = setInterval(() => {
+      if (i < this.tasksStore.tasks.length && this.$route.path === '/tasks') {
+        this.tasksStore.tasks[i].animationClass += ` ${Status.initial}`;
+        i += 1;
+      } else {
+        clearInterval(timer);
+      }
+    }, 200);
   }
 }
 </script>

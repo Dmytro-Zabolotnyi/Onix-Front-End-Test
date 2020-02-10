@@ -27,7 +27,7 @@ import {
 } from 'vue-property-decorator';
 import moment from 'moment';
 import { proxy } from '@/store';
-import TaskClass from '@/TaskClass';
+import TaskClass, { format } from '@/TaskClass';
 
 interface CalendarDate {
   date: number;
@@ -116,10 +116,10 @@ export default class TheCalendarTab extends Vue {
     }
 
     for (let i = 0; i < this.tasks.length; i += 1) {
-      const taskCreatedDate = moment(this.tasks[i].added, proxy.tasksStore.format).format('MMYYYY');
+      const taskCreatedDate = moment(this.tasks[i].added, format).format('MMYYYY');
 
       if (Object.is(taskCreatedDate, monthAndYear)) {
-        const date = parseInt(moment(this.tasks[i].added, proxy.tasksStore.format).format('D'), 10);
+        const date = parseInt(moment(this.tasks[i].added, format).format('D'), 10);
         this.calendar[date - 1].tasks.push(this.tasks[i]);
       }
     }

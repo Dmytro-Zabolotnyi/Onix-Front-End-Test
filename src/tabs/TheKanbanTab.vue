@@ -28,7 +28,7 @@
           v-model="filteredToDo",
           v-bind="dragOptions",
           :move="onMove")
-          div(v-for="task in filteredToDo" v-bind:key="task.id",
+          .task(v-for="task in filteredToDo" v-bind:key="task.id",
             @click="showDescription(task)",
             v-bind:class="[styles.toDo, task.animationClass]")
             span.task-name {{ task.name }}
@@ -45,7 +45,7 @@
           v-model="filteredInProgress",
           v-bind="dragOptions",
           :move="onMove")
-          div(v-for="task in filteredInProgress" v-bind:key="task.id",
+          .task(v-for="task in filteredInProgress" v-bind:key="task.id",
             @click="showDescription(task)",
             v-bind:class="[styles.inProgress, task.animationClass]")
             span.task-name {{ task.name }}
@@ -77,15 +77,16 @@ import draggable from 'vuedraggable';
 import moment from 'moment';
 import { Datetime } from 'vue-datetime';
 import { Settings } from 'luxon';
-import TaskClass, { Status } from '@/TaskClass';
+import TaskClass, { format, Status } from '../TaskClass';
 import { proxy } from '@/store';
+import TasksApi from '@/services/tasks.api';
 
 Settings.defaultLocale = 'en-gb';
 
-  @Component({
-    name: 'TheKanbanTab',
-    components: { draggable, Datetime, Settings },
-  })
+@Component({
+  name: 'TheKanbanTab',
+  components: { draggable, Datetime, Settings },
+})
 export default class TheKanbanTab extends Vue {
   @Watch('$route', { immediate: true, deep: true })
   onUrlChange(newValue: any, oldValue: any) {
@@ -117,8 +118,6 @@ export default class TheKanbanTab extends Vue {
 
   searchName: string = '';
 
-  format: string = proxy.tasksStore.format;
-
   styles = {
     toDo: Status.toDo,
     inProgress: Status.inProgress,
@@ -129,7 +128,18 @@ export default class TheKanbanTab extends Vue {
 
   // eslint-disable-next-line class-methods-use-this
   getTasks(status: string) {
-    return proxy.tasksStore.tasks.filter(task => (task.status === status));
+    return proxy.tasksStore.tasks.filter(task => (task.status === status)).map((task) => {
+      const deadline = moment(task.deadline, format);
+      let animationClass = '';
+      const mappedTask = task;
+      if (deadline < moment()) {
+        animationClass = Status.error;
+      } else if (deadline.clone().subtract(24, 'hours') < moment()) {
+        animationClass = Status.warning;
+      }
+      mappedTask.animationClass = animationClass;
+      return mappedTask;
+    });
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -140,13 +150,28 @@ export default class TheKanbanTab extends Vue {
 
     const relatedElement = event.relatedContext.element;
     const draggedElement = event.draggedContext.element;
+    const task: TaskClass = draggedElement;
 
     if (event.from.className !== event.to.className) {
       const payload = {
-        taskToUpdate: draggedElement,
-        newStatus: event.to.className,
+        task,
+        index: 0,
       };
-      proxy.tasksStore.changeTaskStatus(payload);
+
+      for (let i = 0; i < proxy.tasksStore.tasks.length; i += 1) {
+        if (Object.is(draggedElement, proxy.tasksStore.tasks[i])) {
+          if (event.to.className === 'to-do-tasks') {
+            payload.task.status = Status.toDo;
+          } else if (event.to.className === 'in-progress-tasks') {
+            payload.task.status = Status.inProgress;
+          } else if (event.to.className === 'done-tasks') {
+            payload.task.status = Status.done;
+          }
+          payload.index = i;
+          TasksApi.editTask(payload);
+          break;
+        }
+      }
     }
     return ((!relatedElement || !relatedElement.fixed) && !draggedElement.fixed);
   }
@@ -195,26 +220,26 @@ export default class TheKanbanTab extends Vue {
 
   // eslint-disable-next-line class-methods-use-this
   deadlineDate(deadline: string) {
-    return moment(deadline, this.format).format('DD-MM-YYYY,');
+    return moment(deadline, format).format('DD-MM-YYYY,');
   }
 
   // eslint-disable-next-line class-methods-use-this
   deadlineTime(deadline: string) {
-    return moment(deadline, this.format).format('hh:mm A');
+    return moment(deadline, format).format('hh:mm A');
   }
 
   filterTasks(array: TaskClass[]) {
-    let tasksToFilter: TaskClass[] = [...array];
+    let tasksToFilter: TaskClass[] = array;
     if (this.startDate !== '' && this.finishDate === '') {
       tasksToFilter = tasksToFilter.filter(task => (
-        moment(task.deadline, this.format) >= this.startDateToMoment));
+        moment(task.deadline, format) >= this.startDateToMoment));
     } else if (this.startDate === '' && this.finishDate !== '') {
       tasksToFilter = tasksToFilter.filter(task => (
-        moment(task.deadline, this.format) <= this.finishDateToMoment));
+        moment(task.deadline, format) <= this.finishDateToMoment));
     } else if (this.startDate !== '' && this.finishDate !== '') {
       tasksToFilter = tasksToFilter.filter(task => (
-        (moment(task.deadline, this.format) >= this.startDateToMoment)
-        && (moment(task.deadline, this.format) <= this.finishDateToMoment)));
+        (moment(task.deadline, format) >= this.startDateToMoment)
+        && (moment(task.deadline, format) <= this.finishDateToMoment)));
     }
 
     if (this.searchNameToUppercase !== '') {
