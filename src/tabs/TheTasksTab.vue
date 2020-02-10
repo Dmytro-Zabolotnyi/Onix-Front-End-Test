@@ -20,7 +20,6 @@ import {
 } from 'vue-property-decorator';
 import TaskClass, { Status } from '@/TaskClass';
 import { proxy } from '@/store';
-import TasksApi from '@/services/tasks.api';
 
 @Component({
   name: 'TheTasksTab',
@@ -52,7 +51,7 @@ export default class TheTasksTab extends Vue {
 
   deleteTask(index: number) {
     if (this.tasksStore.tasks.length > 0) {
-      TasksApi.deleteTask(index);
+      this.tasksStore.setTaskToDel(index);
     }
   }
 

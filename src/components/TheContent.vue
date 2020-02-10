@@ -34,7 +34,6 @@ import moment from 'moment';
 import { proxy } from '@/store';
 import TheModal from '@/modals/TheModal.vue';
 import TaskClass, { format, Status } from '../TaskClass';
-import TasksApi from '@/services/tasks.api';
 
 @Component({
   name: 'TheContent',
@@ -60,12 +59,10 @@ export default class TheContent extends Vue {
 
   isDescriptionModalShowed: boolean = false;
 
-  // eslint-disable-next-line class-methods-use-this
   created() {
-    TasksApi.getTasks();
+    this.tasksStore.getTasks();
   }
 
-  // eslint-disable-next-line class-methods-use-this
   addNewTask(args: string[]) {
     const newTask: TaskClass = {
       name: args[0],
@@ -75,7 +72,7 @@ export default class TheContent extends Vue {
       deadline: moment(args[2]).format(format),
       animationClass: Status.updated,
     };
-    TasksApi.addTask(newTask);
+    this.tasksStore.pushTask(newTask);
     this.isNewTaskModalShowed = false;
     this.showModal = false;
   }
@@ -118,7 +115,7 @@ export default class TheContent extends Vue {
           task,
           index: i,
         };
-        TasksApi.editTask(payload);
+        this.tasksStore.setTaskToEdit(payload);
         break;
       }
     }

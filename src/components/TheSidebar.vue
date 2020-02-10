@@ -12,7 +12,7 @@
       .user-menu-button
         .user-menu-shapes
     .task-stats
-      .completed-tasks(@click="changeTasksCounter()")
+      .completed-tasks(@click="closeTask()")
         .completed-number {{ tasksStore.completedTasksNumber }}
         .tasks-label
           span Completed Tasks
@@ -36,7 +36,6 @@ import {
   Vue, Component, Prop,
 } from 'vue-property-decorator';
 import { proxy } from '@/store';
-import TasksApi from '@/services/tasks.api';
 
 @Component({
   name: 'TheSidebar',
@@ -58,14 +57,14 @@ export default class TheSidebar extends Vue {
     picture: 'images/user-pic.png',
   };
 
-  changeTasksCounter() {
+  closeTask() {
     if (this.tasksStore.tasks.length > 0) {
       this.$router.push('/tasks').catch((error) => {});
 
       setTimeout(() => {
         // eslint-disable-next-line no-alert
-        if (window.confirm('Are you sure you want to change the number of tasks?')) {
-          TasksApi.deleteTask(0);
+        if (window.confirm('Are you sure you want to close task?')) {
+          proxy.tasksStore.setTaskToDel(0);
           this.tasksStore.completedTasksNumber += 1;
         }
       }, 1);

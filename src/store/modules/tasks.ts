@@ -2,6 +2,7 @@ import {
   createModule, mutation, action,
 } from 'vuex-class-component';
 import TaskClass, { Status } from '@/TaskClass';
+import TasksApi from '@/services/tasks.api';
 
 const VuexModule = createModule({
   namespaced: 'tasksStore',
@@ -30,27 +31,34 @@ export default class TasksStore extends VuexModule {
   }
 
   @mutation onTasksTabLeave() {
-    this.tasks.forEach((task) => {
-      // eslint-disable-next-line no-param-reassign
-      task.animationClass = task.animationClass.replace(Status.initial, '')
+    for (let i = 0; i < this.tasks.length; i += 1) {
+      const task = this.tasks[i];
+      task.animationClass = this.tasks[i].animationClass.replace(Status.initial, '')
         .replace(Status.updated, '')
         .replace(/ {2}/g, ' ').trim();
-    });
+      this.tasks.splice(i, 1, task);
+    }
   }
 
-  @action async getTasks(tasks: any) {
-    this.setTasks(tasks);
+  @action async getTasks() {
+    this.setTasks(await TasksApi.getTasks().then(response => response));
   }
 
   @action async pushTask(payload: TaskClass) {
-    this.addTask(payload);
+    if (await TasksApi.addTask(payload).then(response => response)) {
+      this.addTask(payload);
+    }
   }
 
   @action async setTaskToDel(index: number) {
-    this.deleteTask(index);
+    if (await TasksApi.deleteTask(index).then(response => response)) {
+      this.deleteTask(index);
+    }
   }
 
   @action async setTaskToEdit(payload: any) {
-    this.changeTask(payload);
+    if (await TasksApi.editTask(payload).then(response => response)) {
+      this.changeTask(payload);
+    }
   }
 }
